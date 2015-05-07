@@ -29,8 +29,6 @@
 		D96C02BF1AE850EB00001936 /* Timer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D96C02B81AE850EB00001936 /* Timer.cpp */; };
 		D96C02CF1AEAE49900001936 /* Shader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D96C02C61AEAE49900001936 /* Shader.cpp */; };
 		D96C02D01AEAE49900001936 /* ShaderFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D96C02C91AEAE49900001936 /* ShaderFactory.cpp */; };
-		D96C02D11AEAE49900001936 /* TextManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D96C02CD1AEAE49900001936 /* TextManager.cpp */; };
-		D96C02D81AEAFBA300001936 /* FontAtlas.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D96C02D61AEAFBA300001936 /* FontAtlas.cpp */; };
 		D96C02F21AEB01DD00001936 /* libfreetype.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D96C02EF1AEB01DD00001936 /* libfreetype.a */; };
 		D96C02F31AEB01DD00001936 /* libpng16.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D96C02F01AEB01DD00001936 /* libpng16.a */; };
 		D96C02F41AEB01DD00001936 /* libz.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D96C02F11AEB01DD00001936 /* libz.a */; };
@@ -44,6 +42,8 @@
 		D9CBADF51AF976EF0017917C /* Jura-Book.ttf in CopyFiles */ = {isa = PBXBuildFile; fileRef = D96C02E31AEB01B700001936 /* Jura-Book.ttf */; };
 		D9CBADF61AF976EF0017917C /* Orangeki.ttf in CopyFiles */ = {isa = PBXBuildFile; fileRef = D96C02E41AEB01B700001936 /* Orangeki.ttf */; };
 		D9CBADF71AF976EF0017917C /* Segment14.otf in CopyFiles */ = {isa = PBXBuildFile; fileRef = D96C02E51AEB01B700001936 /* Segment14.otf */; };
+		D9DA78731AFBF41A007A28AA /* FontAtlas.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D9DA786D1AFBF41A007A28AA /* FontAtlas.cpp */; };
+		D9DA78741AFBF41A007A28AA /* TextManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D9DA78711AFBF41A007A28AA /* TextManager.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -124,12 +124,6 @@
 		D96C02C81AEAE49900001936 /* ShaderDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShaderDefaults.h; sourceTree = "<group>"; };
 		D96C02C91AEAE49900001936 /* ShaderFactory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ShaderFactory.cpp; sourceTree = "<group>"; };
 		D96C02CA1AEAE49900001936 /* ShaderFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShaderFactory.h; sourceTree = "<group>"; };
-		D96C02CB1AEAE49900001936 /* IText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IText.h; sourceTree = "<group>"; };
-		D96C02CC1AEAE49900001936 /* TextDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextDefaults.h; sourceTree = "<group>"; };
-		D96C02CD1AEAE49900001936 /* TextManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TextManager.cpp; sourceTree = "<group>"; };
-		D96C02CE1AEAE49900001936 /* TextManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextManager.h; sourceTree = "<group>"; };
-		D96C02D61AEAFBA300001936 /* FontAtlas.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FontAtlas.cpp; sourceTree = "<group>"; };
-		D96C02D71AEAFBA300001936 /* FontAtlas.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FontAtlas.h; sourceTree = "<group>"; };
 		D96C02DD1AEB01B700001936 /* Bentham.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Bentham.ttf; sourceTree = "<group>"; };
 		D96C02DE1AEB01B700001936 /* ClearSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ClearSans-Regular.ttf"; sourceTree = "<group>"; };
 		D96C02DF1AEB01B700001936 /* Cretino.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Cretino.ttf; sourceTree = "<group>"; };
@@ -144,6 +138,12 @@
 		D96C02F11AEB01DD00001936 /* libz.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libz.a; sourceTree = "<group>"; };
 		D9BC15081AE46089009B7ADE /* Locator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Locator.cpp; sourceTree = "<group>"; };
 		D9BC15091AE46089009B7ADE /* Locator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Locator.h; sourceTree = "<group>"; };
+		D9DA786D1AFBF41A007A28AA /* FontAtlas.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FontAtlas.cpp; sourceTree = "<group>"; };
+		D9DA786E1AFBF41A007A28AA /* FontAtlas.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FontAtlas.h; sourceTree = "<group>"; };
+		D9DA786F1AFBF41A007A28AA /* IText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IText.h; sourceTree = "<group>"; };
+		D9DA78701AFBF41A007A28AA /* TextDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextDefaults.h; sourceTree = "<group>"; };
+		D9DA78711AFBF41A007A28AA /* TextManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TextManager.cpp; sourceTree = "<group>"; };
+		D9DA78721AFBF41A007A28AA /* TextManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextManager.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -230,6 +230,7 @@
 			isa = PBXGroup;
 			children = (
 				D9BC15051AE46089009B7ADE /* Core */,
+				D9DA786C1AFBF41A007A28AA /* Text */,
 				D90CE61A1AE3DEE5009F05EB /* main.cpp */,
 			);
 			path = Source;
@@ -269,12 +270,6 @@
 				D96C02C81AEAE49900001936 /* ShaderDefaults.h */,
 				D96C02C91AEAE49900001936 /* ShaderFactory.cpp */,
 				D96C02CA1AEAE49900001936 /* ShaderFactory.h */,
-				D96C02CB1AEAE49900001936 /* IText.h */,
-				D96C02CC1AEAE49900001936 /* TextDefaults.h */,
-				D96C02CD1AEAE49900001936 /* TextManager.cpp */,
-				D96C02CE1AEAE49900001936 /* TextManager.h */,
-				D96C02D61AEAFBA300001936 /* FontAtlas.cpp */,
-				D96C02D71AEAFBA300001936 /* FontAtlas.h */,
 			);
 			path = Renderer;
 			sourceTree = "<group>";
@@ -366,6 +361,20 @@
 			path = Core;
 			sourceTree = "<group>";
 		};
+		D9DA786C1AFBF41A007A28AA /* Text */ = {
+			isa = PBXGroup;
+			children = (
+				D9DA786D1AFBF41A007A28AA /* FontAtlas.cpp */,
+				D9DA786E1AFBF41A007A28AA /* FontAtlas.h */,
+				D9DA786F1AFBF41A007A28AA /* IText.h */,
+				D9DA78701AFBF41A007A28AA /* TextDefaults.h */,
+				D9DA78711AFBF41A007A28AA /* TextManager.cpp */,
+				D9DA78721AFBF41A007A28AA /* TextManager.h */,
+			);
+			name = Text;
+			path = Core/Text;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -434,7 +443,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				D96C02BE1AE850EB00001936 /* StringUtil.cpp in Sources */,
-				D96C02D81AEAFBA300001936 /* FontAtlas.cpp in Sources */,
 				D96C02BA1AE850EB00001936 /* Scene.cpp in Sources */,
 				D96C02BF1AE850EB00001936 /* Timer.cpp in Sources */,
 				D949F3241AE5B2E100318804 /* Renderer.cpp in Sources */,
@@ -445,10 +453,11 @@
 				D96C02A91AE84BB800001936 /* CommandProcessor.cpp in Sources */,
 				D96C02BB1AE850EB00001936 /* SceneManager.cpp in Sources */,
 				D949F31F1AE5B2BF00318804 /* Input.cpp in Sources */,
+				D9DA78741AFBF41A007A28AA /* TextManager.cpp in Sources */,
 				D96C02BD1AE850EB00001936 /* Random.cpp in Sources */,
 				D96C02BC1AE850EB00001936 /* FileUtil.cpp in Sources */,
+				D9DA78731AFBF41A007A28AA /* FontAtlas.cpp in Sources */,
 				D9BC15111AE46089009B7ADE /* Locator.cpp in Sources */,
-				D96C02D11AEAE49900001936 /* TextManager.cpp in Sources */,
 				D90CE61B1AE3DEE5009F05EB /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
