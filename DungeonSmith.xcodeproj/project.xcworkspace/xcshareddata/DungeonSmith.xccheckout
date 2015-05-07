@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>D447428B-C4F8-4237-95EA-02825812040C</string>
+	<key>IDESourceControlProjectName</key>
+	<string>DungeonSmith</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>7F0F6046-4257-480B-B947-ACFAC5B0C3FB</key>
+		<string>https://github.com/eVillain/dungeonsmith.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>DungeonSmith.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>7F0F6046-4257-480B-B947-ACFAC5B0C3FB</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/eVillain/dungeonsmith.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>7F0F6046-4257-480B-B947-ACFAC5B0C3FB</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>7F0F6046-4257-480B-B947-ACFAC5B0C3FB</string>
+			<key>IDESourceControlWCCName</key>
+			<string>dungeonsmith</string>
+		</dict>
+	</array>
+</dict>
+</plist>
