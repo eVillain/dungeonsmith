@@ -33,11 +33,11 @@ typedef struct {
     Color color;
     int size;
     FontName font;
-    int blobID;
+    int blockID;
     double timer;
-    bool isUIBlob;
+    bool isUIText;
     std::string text;
-} TextBlob;
+} TextBlock;
 
 class IText {
 public:
@@ -45,7 +45,7 @@ public:
     virtual void Initialize( ) = 0;
     virtual void Terminate( void ) = 0;
     
-    // TODO: Make this class so this function returns the TextBlob object
+    // TODO: Make this class so this function returns the TextBlock object
     // which you can just manipulate directly, eliminating the need for the setter functions below
     virtual int AddText(std::string text, glm::vec3 position,
                 bool UISpace = false, int size = 16,
@@ -53,19 +53,19 @@ public:
                 Color color = COLOR_WHITE,
                 glm::vec3 rotation = glm::vec3(0,0,0)) = 0;
     
-    virtual void RemoveText(int blobID) = 0;
+    virtual void RemoveText(int blockID) = 0;
     
-    virtual void UpdateText( unsigned int blobID, std::string newText ) = 0;
+    virtual void UpdateText( unsigned int blockID, std::string newText ) = 0;
     
-    virtual void UpdateTextColor( unsigned int blobID, Color newColor ) = 0;
+    virtual void UpdateTextColor( unsigned int blockID, Color newColor ) = 0;
     
-    virtual void UpdateTextPos( unsigned int blobID, glm::vec3 newPos ) = 0;
+    virtual void UpdateTextPos( unsigned int blockID, glm::vec3 newPos ) = 0;
     
-    virtual void UpdateTextRot( unsigned int blobID, glm::vec3 newRot ) = 0;
+    virtual void UpdateTextRot( unsigned int blockID, glm::vec3 newRot ) = 0;
     
-    virtual void UpdateTextTimer( unsigned int blobID, double newTimer ) = 0;
+    virtual void UpdateTextTimer( unsigned int blockID, double newTimer ) = 0;
     
-    virtual void GetTextSize( unsigned int blobID, float &width, float &height ) = 0;
+    virtual void GetTextSize( unsigned int blockID, float &width, float &height ) = 0;
     virtual std::string GetFontFileName( FontName theFont ) = 0;
     
     virtual void Update( double delta ) = 0;
@@ -84,19 +84,19 @@ public:
                         Color color = COLOR_WHITE,
                 glm::vec3 rotation = glm::vec3(0,0,0)) { /* Do nothing */ return -1; };
     
-    void RemoveText(int blobID) { /* Do nothing */ };
+    void RemoveText(int blockID) { /* Do nothing */ };
     
-    void UpdateText( unsigned int blobID, std::string newText ) { /* Do nothing */ };
+    void UpdateText( unsigned int blockID, std::string newText ) { /* Do nothing */ };
     
-    void UpdateTextColor( unsigned int blobID, Color newColor ) { /* Do nothing */ };
+    void UpdateTextColor( unsigned int blockID, Color newColor ) { /* Do nothing */ };
     
-    void UpdateTextPos( unsigned int blobID, glm::vec3 newPos ) { /* Do nothing */ };
+    void UpdateTextPos( unsigned int blockID, glm::vec3 newPos ) { /* Do nothing */ };
     
-    void UpdateTextRot( unsigned int blobID, glm::vec3 newRot ) { /* Do nothing */ };
+    void UpdateTextRot( unsigned int blockID, glm::vec3 newRot ) { /* Do nothing */ };
     
-    void UpdateTextTimer( unsigned int blobID, double newTimer ) { /* Do nothing */ };
+    void UpdateTextTimer( unsigned int blockID, double newTimer ) { /* Do nothing */ };
     
-    void GetTextSize( unsigned int blobID, float &width, float &height ) { /* Do nothing */ };
+    void GetTextSize( unsigned int blockID, float &width, float &height ) { /* Do nothing */ };
     std::string GetFontFileName( FontName theFont ) { /* Do nothing */ return ""; };
     
     void Update( double delta ) { /* Do nothing */ };

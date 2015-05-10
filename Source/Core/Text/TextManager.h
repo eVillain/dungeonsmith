@@ -21,32 +21,6 @@
 class Shader;
 
 class TextManager : public IText {
-private:
-    // Font atlases by font filename and iterator
-    typedef std::map<std::string, FontAtlas*> AtlasList;
-    typedef AtlasList::const_iterator AtlasIter;
-    
-    // The next blob ID to be generated
-    unsigned int _nextId = 0;
-    
-    // Container for fonts
-    AtlasList atlases;
-
-    
-    // Counter for each frame
-    int blobsRendered;
-    
-    bool initialized = false;
-    FT_Library ft;
-    
-    // OpenGL Shader mode vars - should move somewhere else
-    Shader* textShader = NULL;
-    GLuint vertexArrayID = 0;
-    GLuint vertexBufferID = 0;
-    
-    FontAtlas* GetAtlas( std::string filename, int size );
-    void RenderBlob( TextBlob b );
-    int AddBlob( TextBlob& newBlob );
 public:
     TextManager();
     ~TextManager();
@@ -60,26 +34,50 @@ public:
                 Color color = COLOR_WHITE,
                 glm::vec3 rotation = glm::vec3(0,0,0));
     
-    void RemoveText(int blobID);
+    void RemoveText(int blockID);
     
-    void UpdateText( unsigned int blobID, std::string newText );
+    void UpdateText( unsigned int blockID, std::string newText );
     
-    void UpdateTextColor( unsigned int blobID, Color newColor );
+    void UpdateTextColor( unsigned int blockID, Color newColor );
     
-    void UpdateTextPos( unsigned int blobID, glm::vec3 newPos );
+    void UpdateTextPos( unsigned int blockID, glm::vec3 newPos );
     
-    void UpdateTextRot( unsigned int blobID, glm::vec3 newRot );
+    void UpdateTextRot( unsigned int blockID, glm::vec3 newRot );
 
-    void UpdateTextTimer( unsigned int blobID, double newTimer );
+    void UpdateTextTimer( unsigned int blockID, double newTimer );
 
-    void GetTextSize( unsigned int blobID, float &width, float &height );
+    void GetTextSize( unsigned int blockID, float &width, float &height );
     std::string GetFontFileName( FontName theFont );
     
     void Update( double delta );
     void RenderLabels( void );
-    void Render( TextBlob& b, FontAtlas * a );
-    void RenderFixed( TextBlob& b, FontAtlas * a );
-
+    void Render( TextBlock& b, FontAtlas * a );
+    void RenderFixed( TextBlock& b, FontAtlas * a );
+    
+private:
+    // FreeType library
+    FT_Library ft;
+    
+    // Font atlases by font filename and iterator
+    typedef std::map<std::string, FontAtlas*> AtlasList;
+    typedef AtlasList::const_iterator AtlasIter;
+    // Container for fonts
+    AtlasList atlases;
+    
+    bool initialized;
+    // The next text block ID to be generated
+    unsigned int nextID = 0;
+    // Counter for each frame
+    int blocksRendered;
+    
+    // OpenGL Shader mode vars - should move somewhere else
+    Shader* textShader = NULL;
+    GLuint vao = 0;
+    GLuint vbo = 0;
+    
+    FontAtlas* GetAtlas( std::string filename, int size );
+    void RenderBlock( TextBlock b );
+    int AddBlock( TextBlock& newBlock );
 };
 
 #endif

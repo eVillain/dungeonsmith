@@ -277,11 +277,11 @@ void Console::Refresh() {
                 double labelPosY = CONSOLE_TEXT_HEIGHT+(msgCount + 2)*CONSOLE_FONT_SIZE;
                 // Move existing labels up
                 for (int i = 0; i < msgCount; i++) {
-                    if (m_textLines[i].blobID != -1) {  // Move text
-                        tMan->UpdateTextPos( m_textLines[i].blobID,
+                    if (m_textLines[i].blockID != -1) {  // Move text
+                        tMan->UpdateTextPos( m_textLines[i].blockID,
                                              glm::vec3(labelPosX, labelPosY, CONSOLE_TEXT_DEPTH));
                     } else {                            // Add line
-                        m_textLines[i].blobID = tMan->AddText( m_textLines[i].text,
+                        m_textLines[i].blockID = tMan->AddText( m_textLines[i].text,
                                                                glm::vec3(labelPosX, labelPosY, CONSOLE_TEXT_DEPTH),
                                                                true,
                                                                CONSOLE_FONT_SIZE,
@@ -312,8 +312,8 @@ void Console::Hide() {
     if ( !tMan ) { return; }
     for (size_t i = 0; i < m_textLines.size(); i++)
     {
-        tMan->RemoveText(m_textLines[i].blobID);
-        m_textLines[i].blobID = -1;
+        tMan->RemoveText(m_textLines[i].blockID);
+        m_textLines[i].blockID = -1;
     }
     
     visible = false;

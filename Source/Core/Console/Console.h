@@ -23,7 +23,7 @@
 
 typedef struct {
     std::string text;
-    int blobID;
+    int blockID;
     Color color;
     double timeStamp;
 } ConsoleLine;
