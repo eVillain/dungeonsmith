@@ -2,7 +2,7 @@
 //  FontAtlas.cpp
 //  Bloxelizer
 //
-//  Created by Ville-Veikko Urrila on 1/17/13.
+//  Created by The Drudgerist on 1/17/13.
 //  Copyright (c) 2013 The Drudgerist. All rights reserved.
 //
 #include "FontAtlas.h"

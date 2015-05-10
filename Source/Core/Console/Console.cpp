@@ -2,7 +2,7 @@
 //  Console.cpp
 //  NeverEngine
 //
-//  Created by Ville-Veikko Urrila on 17/11/12.
+//  Created by The Drudgerist on 17/11/12.
 //  Copyright (c) 2013 The Drudgerist. All rights reserved.
 //
 

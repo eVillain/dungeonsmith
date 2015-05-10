@@ -73,6 +73,7 @@ void VertexBuffer_XYZW_RGBA::Unbind()
 {
     glBindVertexArray(0);
 }
+
 void VertexBuffer_XYZW_RGBA::Clear()
 {
     bufferCount = 0;

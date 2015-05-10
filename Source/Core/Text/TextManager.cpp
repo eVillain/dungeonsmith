@@ -2,7 +2,7 @@
 //  TextManager.cpp
 //  Bloxelizer
 //
-//  Created by Ville-Veikko Urrila on 9/4/12.
+//  Created by The Drudgerist on 9/4/12.
 //  Copyright (c) 2012 The Drudgerist. All rights reserved.
 //
 

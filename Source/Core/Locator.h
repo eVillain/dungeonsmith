@@ -2,7 +2,7 @@
 //  Locator.h
 //  Ingenium
 //
-//  Created by eVillain on 26/01/15.
+//  Created by The Drudgerist on 26/01/15.
 //  Copyright (c) 2015 BitWiseOperators. All rights reserved.
 //
 //  Service locator class as a brute method for accessing engine singletons

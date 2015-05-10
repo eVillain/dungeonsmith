@@ -2,7 +2,7 @@
 //  Input.cpp
 //  NeverEngine
 //
-//  Created by Ville-Veikko Urrila on 10/10/12.
+//  Created by The Drudgerist on 10/10/12.
 //  Copyright (c) 2013 The Drudgerist. All rights reserved.
 //
 

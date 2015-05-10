@@ -2,7 +2,7 @@
 //  ShaderDefaults.h
 //  Ingenium
 //
-//  Created by eVillain on 02/02/15.
+//  Created by The Drudgerist on 02/02/15.
 //  Copyright (c) 2015 BitWiseOperators. All rights reserved.
 //
 

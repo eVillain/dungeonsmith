@@ -4,7 +4,7 @@
 //  InputFunctors.h
 //  Bloxelizer
 //
-//  Created by Ville-Veikko Urrila on 4/27/13.
+//  Created by The Drudgerist on 4/27/13.
 //  Copyright (c) 2013 The Drudgerist. All rights reserved.
 //
 
