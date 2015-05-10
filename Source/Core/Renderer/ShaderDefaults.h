@@ -1,13 +1,13 @@
 //
 //  ShaderDefaults.h
-//  Ingenium
+//  DungeonSmith
 //
 //  Created by The Drudgerist on 02/02/15.
 //  Copyright (c) 2015 BitWiseOperators. All rights reserved.
 //
 
-#ifndef Ingenium_ShaderDefaults_h
-#define Ingenium_ShaderDefaults_h
+#ifndef DungeonSmith_ShaderDefaults_h
+#define DungeonSmith_ShaderDefaults_h
 
 #include <string>
 
@@ -24,7 +24,7 @@ enum ShaderType {
  *********************************************************************/
 
 const GLchar *default_vertex_shader[] = {
-    "#version 330 core\n"
+    "#version 400\n"
     "layout(location = 0) in vec4 vCoord;\n"
     "layout(location = 1) in vec4 vColor;\n"
     "out vec4 fragmentColor;\n"
@@ -34,7 +34,7 @@ const GLchar *default_vertex_shader[] = {
     " fragmentColor = vColor; }"
 };
 const GLchar *default_frag_shader[] = {
-    "#version 330 core\n"
+    "#version 400\n"
     "in vec4 fragmentColor;\n"
     "out vec4 color;\n"
     "void main()\n"

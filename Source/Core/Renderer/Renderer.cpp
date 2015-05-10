@@ -13,6 +13,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include "Shader.h"
 #include "GLErrorUtil.h"
+#include "DrawPrimitives.h"
+#include "TextureManager.h"
 
 #define UI_NEARDEPTH -100.0
 #define UI_FARDEPTH 100.0
@@ -108,9 +110,9 @@ bool Renderer::Initialize()
         }
 
         //Initialize OpenGL
-        if( !InitializeBuffers() )
+        if( !InitializeComponents() )
         {
-            printf( "[Renderer] Unable to initialize buffers!\n" );
+            printf( "[Renderer] Unable to initialize renderer components!\n" );
             success = false;
         }
     }
@@ -124,6 +126,8 @@ bool Renderer::Terminate()
     //Success flag
     bool success = true;
     
+    success = TerminateComponents();
+    
     // clean up
     if ( window )
     {
@@ -131,6 +135,28 @@ bool Renderer::Terminate()
         window = NULL;
     }
     SDL_Quit();
+    
+    return success;
+}
+
+bool Renderer::InitializeComponents()
+{
+    bool success = true;
+    
+    primitives = new DrawPrimitives(this);
+    textureManager = new TextureManager();
+    
+    return success;
+}
+
+bool Renderer::TerminateComponents()
+{
+    bool success = true;
+    
+    delete primitives;
+    primitives = NULL;
+    delete textureManager;
+    textureManager = NULL;
     
     return success;
 }
@@ -149,18 +175,7 @@ void Renderer::EndDraw()
     SDL_GL_SwapWindow(window);
 }
 
-bool Renderer::InitializeBuffers()
-{
-    //Success flag
-    bool success = true;
-    
-    
-    primitives = new DrawPrimitives(this);
-    
-    
-    
-    return success;
-}
+
 
 glm::vec2 Renderer::GetWindowSize()
 {

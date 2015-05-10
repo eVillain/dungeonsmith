@@ -34,6 +34,19 @@
 		D96C02F41AEB01DD00001936 /* libz.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D96C02F11AEB01DD00001936 /* libz.a */; };
 		D9BC15111AE46089009B7ADE /* Locator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D9BC15081AE46089009B7ADE /* Locator.cpp */; };
 		D9C16FD61AFEC88A00F66B19 /* VertexBuffer_XYZW_RGBA.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D9C16FD41AFEC88A00F66B19 /* VertexBuffer_XYZW_RGBA.cpp */; };
+		D9C16FDA1AFF568200F66B19 /* UIWidget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D9C16FD81AFF568200F66B19 /* UIWidget.cpp */; };
+		D9C16FE01AFF5DC900F66B19 /* Sprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D9C16FDC1AFF5DC900F66B19 /* Sprite.cpp */; };
+		D9C16FE11AFF5DC900F66B19 /* SpriteBatch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D9C16FDE1AFF5DC900F66B19 /* SpriteBatch.cpp */; };
+		D9C16FE61AFF68CE00F66B19 /* Texture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D9C16FE21AFF68CE00F66B19 /* Texture.cpp */; };
+		D9C16FE71AFF68CE00F66B19 /* TextureManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D9C16FE41AFF68CE00F66B19 /* TextureManager.cpp */; };
+		D9C16FEA1AFF6E7100F66B19 /* Rect2D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D9C16FE81AFF6E7100F66B19 /* Rect2D.cpp */; };
+		D9C16FEF1AFF6F4700F66B19 /* Dictionary.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D9C16FEC1AFF6F4700F66B19 /* Dictionary.cpp */; };
+		D9C16FF11AFF6F8800F66B19 /* libpugixmld.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D9C16FF01AFF6F8800F66B19 /* libpugixmld.a */; };
+		D9C16FF61AFFF23000F66B19 /* forward_color.fsh in CopyFiles */ = {isa = PBXBuildFile; fileRef = D9C16FF21AFFF22900F66B19 /* forward_color.fsh */; };
+		D9C16FF71AFFF23000F66B19 /* forward_tex.fsh in CopyFiles */ = {isa = PBXBuildFile; fileRef = D9C16FF31AFFF22900F66B19 /* forward_tex.fsh */; };
+		D9C16FF81AFFF23000F66B19 /* forward_vColor.vsh in CopyFiles */ = {isa = PBXBuildFile; fileRef = D9C16FF41AFFF22900F66B19 /* forward_vColor.vsh */; };
+		D9C16FF91AFFF23000F66B19 /* forward_vTex_uColor.vsh in CopyFiles */ = {isa = PBXBuildFile; fileRef = D9C16FF51AFFF22900F66B19 /* forward_vTex_uColor.vsh */; };
+		D9C16FFC1AFFF4A900F66B19 /* VertexBuffer_XYZW_UV.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D9C16FFA1AFFF4A900F66B19 /* VertexBuffer_XYZW_UV.cpp */; };
 		D9CBADEF1AF976EF0017917C /* Bentham.ttf in CopyFiles */ = {isa = PBXBuildFile; fileRef = D96C02DD1AEB01B700001936 /* Bentham.ttf */; };
 		D9CBADF01AF976EF0017917C /* ClearSans-Regular.ttf in CopyFiles */ = {isa = PBXBuildFile; fileRef = D96C02DE1AEB01B700001936 /* ClearSans-Regular.ttf */; };
 		D9CBADF11AF976EF0017917C /* Cretino.ttf in CopyFiles */ = {isa = PBXBuildFile; fileRef = D96C02DF1AEB01B700001936 /* Cretino.ttf */; };
@@ -47,8 +60,6 @@
 		D9DA78741AFBF41A007A28AA /* TextManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D9DA78711AFBF41A007A28AA /* TextManager.cpp */; };
 		D9DA787A1AFC0A89007A28AA /* GLErrorUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D9DA78781AFC0A89007A28AA /* GLErrorUtil.cpp */; };
 		D9DA787D1AFC0F77007A28AA /* DrawPrimitives.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D9DA787B1AFC0F77007A28AA /* DrawPrimitives.cpp */; };
-		D9DA78841AFC1513007A28AA /* Line.fsh in CopyFiles */ = {isa = PBXBuildFile; fileRef = D9DA787F1AFC14DF007A28AA /* Line.fsh */; };
-		D9DA78851AFC1513007A28AA /* Line.vsh in CopyFiles */ = {isa = PBXBuildFile; fileRef = D9DA78801AFC14DF007A28AA /* Line.vsh */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -86,8 +97,10 @@
 			dstPath = Shaders;
 			dstSubfolderSpec = 16;
 			files = (
-				D9DA78841AFC1513007A28AA /* Line.fsh in CopyFiles */,
-				D9DA78851AFC1513007A28AA /* Line.vsh in CopyFiles */,
+				D9C16FF61AFFF23000F66B19 /* forward_color.fsh in CopyFiles */,
+				D9C16FF71AFFF23000F66B19 /* forward_tex.fsh in CopyFiles */,
+				D9C16FF81AFFF23000F66B19 /* forward_vColor.vsh in CopyFiles */,
+				D9C16FF91AFFF23000F66B19 /* forward_vTex_uColor.vsh in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -156,6 +169,28 @@
 		D9BC15091AE46089009B7ADE /* Locator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Locator.h; sourceTree = "<group>"; };
 		D9C16FD41AFEC88A00F66B19 /* VertexBuffer_XYZW_RGBA.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VertexBuffer_XYZW_RGBA.cpp; sourceTree = "<group>"; };
 		D9C16FD51AFEC88A00F66B19 /* VertexBuffer_XYZW_RGBA.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VertexBuffer_XYZW_RGBA.h; sourceTree = "<group>"; };
+		D9C16FD81AFF568200F66B19 /* UIWidget.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UIWidget.cpp; sourceTree = "<group>"; };
+		D9C16FD91AFF568200F66B19 /* UIWidget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIWidget.h; sourceTree = "<group>"; };
+		D9C16FDC1AFF5DC900F66B19 /* Sprite.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Sprite.cpp; sourceTree = "<group>"; };
+		D9C16FDD1AFF5DC900F66B19 /* Sprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Sprite.h; sourceTree = "<group>"; };
+		D9C16FDE1AFF5DC900F66B19 /* SpriteBatch.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpriteBatch.cpp; sourceTree = "<group>"; };
+		D9C16FDF1AFF5DC900F66B19 /* SpriteBatch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpriteBatch.h; sourceTree = "<group>"; };
+		D9C16FE21AFF68CE00F66B19 /* Texture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Texture.cpp; sourceTree = "<group>"; };
+		D9C16FE31AFF68CE00F66B19 /* Texture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Texture.h; sourceTree = "<group>"; };
+		D9C16FE41AFF68CE00F66B19 /* TextureManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TextureManager.cpp; sourceTree = "<group>"; };
+		D9C16FE51AFF68CE00F66B19 /* TextureManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextureManager.h; sourceTree = "<group>"; };
+		D9C16FE81AFF6E7100F66B19 /* Rect2D.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Rect2D.cpp; sourceTree = "<group>"; };
+		D9C16FE91AFF6E7100F66B19 /* Rect2D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Rect2D.h; sourceTree = "<group>"; };
+		D9C16FEC1AFF6F4700F66B19 /* Dictionary.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Dictionary.cpp; sourceTree = "<group>"; };
+		D9C16FED1AFF6F4700F66B19 /* Dictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Dictionary.h; sourceTree = "<group>"; };
+		D9C16FEE1AFF6F4700F66B19 /* DictionaryHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DictionaryHelpers.h; sourceTree = "<group>"; };
+		D9C16FF01AFF6F8800F66B19 /* libpugixmld.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libpugixmld.a; sourceTree = "<group>"; };
+		D9C16FF21AFFF22900F66B19 /* forward_color.fsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = forward_color.fsh; sourceTree = "<group>"; };
+		D9C16FF31AFFF22900F66B19 /* forward_tex.fsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = forward_tex.fsh; sourceTree = "<group>"; };
+		D9C16FF41AFFF22900F66B19 /* forward_vColor.vsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = forward_vColor.vsh; sourceTree = "<group>"; };
+		D9C16FF51AFFF22900F66B19 /* forward_vTex_uColor.vsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = forward_vTex_uColor.vsh; sourceTree = "<group>"; };
+		D9C16FFA1AFFF4A900F66B19 /* VertexBuffer_XYZW_UV.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VertexBuffer_XYZW_UV.cpp; sourceTree = "<group>"; };
+		D9C16FFB1AFFF4A900F66B19 /* VertexBuffer_XYZW_UV.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VertexBuffer_XYZW_UV.h; sourceTree = "<group>"; };
 		D9DA786D1AFBF41A007A28AA /* FontAtlas.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FontAtlas.cpp; sourceTree = "<group>"; };
 		D9DA786E1AFBF41A007A28AA /* FontAtlas.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FontAtlas.h; sourceTree = "<group>"; };
 		D9DA786F1AFBF41A007A28AA /* IText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IText.h; sourceTree = "<group>"; };
@@ -166,8 +201,6 @@
 		D9DA78791AFC0A89007A28AA /* GLErrorUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLErrorUtil.h; sourceTree = "<group>"; };
 		D9DA787B1AFC0F77007A28AA /* DrawPrimitives.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DrawPrimitives.cpp; sourceTree = "<group>"; };
 		D9DA787C1AFC0F77007A28AA /* DrawPrimitives.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawPrimitives.h; sourceTree = "<group>"; };
-		D9DA787F1AFC14DF007A28AA /* Line.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = Line.fsh; sourceTree = "<group>"; };
-		D9DA78801AFC14DF007A28AA /* Line.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = Line.vsh; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -180,6 +213,7 @@
 				D96C02F31AEB01DD00001936 /* libpng16.a in Frameworks */,
 				D96C02F21AEB01DD00001936 /* libfreetype.a in Frameworks */,
 				D90CE61D1AE3DF81009F05EB /* SDL2.framework in Frameworks */,
+				D9C16FF11AFF6F8800F66B19 /* libpugixmld.a in Frameworks */,
 				D96C02F41AEB01DD00001936 /* libz.a in Frameworks */,
 				D92C60F81AE3E69D00FE2C33 /* libGLEW.a in Frameworks */,
 			);
@@ -254,7 +288,6 @@
 			isa = PBXGroup;
 			children = (
 				D9BC15051AE46089009B7ADE /* Core */,
-				D9DA786C1AFBF41A007A28AA /* Text */,
 				D90CE61A1AE3DEE5009F05EB /* main.cpp */,
 			);
 			path = Source;
@@ -264,9 +297,10 @@
 			isa = PBXGroup;
 			children = (
 				D96C02EF1AEB01DD00001936 /* libfreetype.a */,
-				D96C02F01AEB01DD00001936 /* libpng16.a */,
-				D96C02F11AEB01DD00001936 /* libz.a */,
 				D92C60F71AE3E69D00FE2C33 /* libGLEW.a */,
+				D96C02F01AEB01DD00001936 /* libpng16.a */,
+				D9C16FF01AFF6F8800F66B19 /* libpugixmld.a */,
+				D96C02F11AEB01DD00001936 /* libz.a */,
 			);
 			name = Libs;
 			path = OSX/Libs;
@@ -285,8 +319,14 @@
 		D949F3201AE5B2E100318804 /* Renderer */ = {
 			isa = PBXGroup;
 			children = (
+				D9C16FE21AFF68CE00F66B19 /* Texture.cpp */,
+				D9C16FE31AFF68CE00F66B19 /* Texture.h */,
+				D9C16FE41AFF68CE00F66B19 /* TextureManager.cpp */,
+				D9C16FE51AFF68CE00F66B19 /* TextureManager.h */,
 				D96C02AB1AE84D5600001936 /* Color.h */,
 				D949F3211AE5B2E100318804 /* IRenderer.h */,
+				D9C16FE81AFF6E7100F66B19 /* Rect2D.cpp */,
+				D9C16FE91AFF6E7100F66B19 /* Rect2D.h */,
 				D949F3221AE5B2E100318804 /* Renderer.cpp */,
 				D949F3231AE5B2E100318804 /* Renderer.h */,
 				D96C02C61AEAE49900001936 /* Shader.cpp */,
@@ -300,6 +340,8 @@
 				D9DA787C1AFC0F77007A28AA /* DrawPrimitives.h */,
 				D9C16FD41AFEC88A00F66B19 /* VertexBuffer_XYZW_RGBA.cpp */,
 				D9C16FD51AFEC88A00F66B19 /* VertexBuffer_XYZW_RGBA.h */,
+				D9C16FFA1AFFF4A900F66B19 /* VertexBuffer_XYZW_UV.cpp */,
+				D9C16FFB1AFFF4A900F66B19 /* VertexBuffer_XYZW_UV.h */,
 			);
 			path = Renderer;
 			sourceTree = "<group>";
@@ -379,10 +421,14 @@
 			children = (
 				D96C02A11AE84BB800001936 /* CommandProcessor */,
 				D96C02A51AE84BB800001936 /* Console */,
+				D9C16FEB1AFF6F4700F66B19 /* Dictionary */,
+				D9C16FD71AFF568200F66B19 /* GUI */,
 				D949F3191AE5B2BF00318804 /* Input */,
 				D949F3201AE5B2E100318804 /* Renderer */,
 				D96C02AC1AE850EB00001936 /* SceneManager */,
 				D9DA787E1AFC14DF007A28AA /* Shaders */,
+				D9C16FDB1AFF5DC900F66B19 /* Sprites */,
+				D9DA786C1AFBF41A007A28AA /* Text */,
 				D96C02B11AE850EB00001936 /* Utils */,
 				D94BE2811AE464B20004EC98 /* HyperVisor.cpp */,
 				D94BE2821AE464B20004EC98 /* HyperVisor.h */,
@@ -390,6 +436,36 @@
 				D9BC15091AE46089009B7ADE /* Locator.h */,
 			);
 			path = Core;
+			sourceTree = "<group>";
+		};
+		D9C16FD71AFF568200F66B19 /* GUI */ = {
+			isa = PBXGroup;
+			children = (
+				D9C16FD81AFF568200F66B19 /* UIWidget.cpp */,
+				D9C16FD91AFF568200F66B19 /* UIWidget.h */,
+			);
+			path = GUI;
+			sourceTree = "<group>";
+		};
+		D9C16FDB1AFF5DC900F66B19 /* Sprites */ = {
+			isa = PBXGroup;
+			children = (
+				D9C16FDC1AFF5DC900F66B19 /* Sprite.cpp */,
+				D9C16FDD1AFF5DC900F66B19 /* Sprite.h */,
+				D9C16FDE1AFF5DC900F66B19 /* SpriteBatch.cpp */,
+				D9C16FDF1AFF5DC900F66B19 /* SpriteBatch.h */,
+			);
+			path = Sprites;
+			sourceTree = "<group>";
+		};
+		D9C16FEB1AFF6F4700F66B19 /* Dictionary */ = {
+			isa = PBXGroup;
+			children = (
+				D9C16FEC1AFF6F4700F66B19 /* Dictionary.cpp */,
+				D9C16FED1AFF6F4700F66B19 /* Dictionary.h */,
+				D9C16FEE1AFF6F4700F66B19 /* DictionaryHelpers.h */,
+			);
+			path = Dictionary;
 			sourceTree = "<group>";
 		};
 		D9DA786C1AFBF41A007A28AA /* Text */ = {
@@ -402,15 +478,16 @@
 				D9DA78711AFBF41A007A28AA /* TextManager.cpp */,
 				D9DA78721AFBF41A007A28AA /* TextManager.h */,
 			);
-			name = Text;
-			path = Core/Text;
+			path = Text;
 			sourceTree = "<group>";
 		};
 		D9DA787E1AFC14DF007A28AA /* Shaders */ = {
 			isa = PBXGroup;
 			children = (
-				D9DA787F1AFC14DF007A28AA /* Line.fsh */,
-				D9DA78801AFC14DF007A28AA /* Line.vsh */,
+				D9C16FF21AFFF22900F66B19 /* forward_color.fsh */,
+				D9C16FF31AFFF22900F66B19 /* forward_tex.fsh */,
+				D9C16FF41AFFF22900F66B19 /* forward_vColor.vsh */,
+				D9C16FF51AFFF22900F66B19 /* forward_vTex_uColor.vsh */,
 			);
 			path = Shaders;
 			sourceTree = "<group>";
@@ -485,22 +562,30 @@
 			files = (
 				D96C02BE1AE850EB00001936 /* StringUtil.cpp in Sources */,
 				D9DA787A1AFC0A89007A28AA /* GLErrorUtil.cpp in Sources */,
+				D9C16FE11AFF5DC900F66B19 /* SpriteBatch.cpp in Sources */,
 				D96C02BA1AE850EB00001936 /* Scene.cpp in Sources */,
 				D96C02BF1AE850EB00001936 /* Timer.cpp in Sources */,
+				D9C16FEA1AFF6E7100F66B19 /* Rect2D.cpp in Sources */,
 				D949F3241AE5B2E100318804 /* Renderer.cpp in Sources */,
 				D96C02D01AEAE49900001936 /* ShaderFactory.cpp in Sources */,
+				D9C16FEF1AFF6F4700F66B19 /* Dictionary.cpp in Sources */,
+				D9C16FE01AFF5DC900F66B19 /* Sprite.cpp in Sources */,
 				D96C02CF1AEAE49900001936 /* Shader.cpp in Sources */,
 				D94BE2851AE464B20004EC98 /* HyperVisor.cpp in Sources */,
 				D96C02AA1AE84BB800001936 /* Console.cpp in Sources */,
+				D9C16FDA1AFF568200F66B19 /* UIWidget.cpp in Sources */,
 				D9DA787D1AFC0F77007A28AA /* DrawPrimitives.cpp in Sources */,
 				D96C02A91AE84BB800001936 /* CommandProcessor.cpp in Sources */,
+				D9C16FE71AFF68CE00F66B19 /* TextureManager.cpp in Sources */,
 				D96C02BB1AE850EB00001936 /* SceneManager.cpp in Sources */,
 				D949F31F1AE5B2BF00318804 /* Input.cpp in Sources */,
 				D9DA78741AFBF41A007A28AA /* TextManager.cpp in Sources */,
+				D9C16FFC1AFFF4A900F66B19 /* VertexBuffer_XYZW_UV.cpp in Sources */,
 				D96C02BD1AE850EB00001936 /* Random.cpp in Sources */,
 				D96C02BC1AE850EB00001936 /* FileUtil.cpp in Sources */,
 				D9DA78731AFBF41A007A28AA /* FontAtlas.cpp in Sources */,
 				D9C16FD61AFEC88A00F66B19 /* VertexBuffer_XYZW_RGBA.cpp in Sources */,
+				D9C16FE61AFF68CE00F66B19 /* Texture.cpp in Sources */,
 				D9BC15111AE46089009B7ADE /* Locator.cpp in Sources */,
 				D90CE61B1AE3DEE5009F05EB /* main.cpp in Sources */,
 			);

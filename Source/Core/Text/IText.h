@@ -1,6 +1,6 @@
 //
 //  IText.h
-//  Ingenium
+//  DungeonSmith
 //
 //  Created by The Drudgerist on 26/01/15.
 //  Copyright (c) 2015 BitWiseOperators. All rights reserved.

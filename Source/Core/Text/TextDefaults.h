@@ -1,13 +1,13 @@
 //
 //  TextDefaults.h
-//  Ingenium
+//  DungeonSmith
 //
 //  Created by The Drudgerist on 08/02/15.
 //  Copyright (c) 2015 BitWiseOperators. All rights reserved.
 //
 
-#ifndef Ingenium_TextDefaults_h
-#define Ingenium_TextDefaults_h
+#ifndef DungeonSmith_TextDefaults_h
+#define DungeonSmith_TextDefaults_h
 
 /**********************************************************************
  * Default shader programs

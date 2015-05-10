@@ -13,8 +13,10 @@
 // This structure is used for OpenGL colors with alpha channel
 typedef struct Color {
 	GLfloat r, g, b, a;
-    inline bool operator==(const Color& rhs){ return (r==rhs.r&&g==rhs.g&&b==rhs.b&&a==rhs.a); }
-    inline bool operator!=(const Color& rhs){ return (r!=rhs.r||g!=rhs.g||b!=rhs.b||a!=rhs.a); }
+    inline bool operator==(const Color& rhs)
+    { return (r==rhs.r&&g==rhs.g&&b==rhs.b&&a==rhs.a); }
+    inline bool operator!=(const Color& rhs)
+    { return (r!=rhs.r||g!=rhs.g||b!=rhs.b||a!=rhs.a); }
 } Color;
 
 static inline Color RGBAByteColor(GLuint r, GLuint g, GLuint b, GLuint a){
@@ -103,9 +105,6 @@ const Color COLOR_SELECTED_CONSTRAINT = {0.5f, 1.0f, 0.7f, 1.0f};
 const Color COLOR_SELECT  = {0.4f,0.6f,1.0f,1.0f};
 
 const Color COLOR_BB = { 0.3f, 0.5f, 0.3f, 1.0f };
-//const Color DEFAULT_BODY_COLOR = {0.5f, 0.5f, 1.0f, 1.0f};
-//const Color DEFAULT_SHAPE_COLOR = {0.8f, 0.8f, 0.8f, 1.0f};
-//const Color DEFAULT_STATIC_COLOR = {0.333f, 0.333f, 0.333f, 1.0f};
 const Color COLOR_DEFAULT_LIGHT = {1.0f, 1.0f, 0.9f, 1.0f};
 
 const Color COLOR_BULLET = { 1.0f, 1.0f, 0.0f, 1.0f };

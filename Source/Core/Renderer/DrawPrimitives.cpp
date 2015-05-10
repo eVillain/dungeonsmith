@@ -16,8 +16,11 @@ DrawPrimitives::DrawPrimitives(Renderer* renderer)
 {
     _renderer = renderer;
     lineBuffer = new VertexBuffer_XYZW_RGBA(1024);  // TODO: Define default line buffer size
-    polyBuffer = new VertexBuffer_XYZW_RGBA(1024);  // TODO: Define default line buffer size
-    shader = ShaderFactory::LoadFromFile("Line.fsh", "Line.vsh");
+    polyBuffer = new VertexBuffer_XYZW_RGBA(1024);  //      As above, so below
+    texturedPolyBuffer = new VertexBuffer_XYZW_UV(1024);
+    
+    forward_vColor_shader = ShaderFactory::LoadFromFile("forward_color.fsh", "forward_vColor.vsh");
+    forward_vTex_uColor_shader = ShaderFactory::LoadFromFile("forward_tex.fsh", "forward_vTex_uColor.vsh");
 }
 
 DrawPrimitives::~DrawPrimitives()
@@ -25,15 +28,18 @@ DrawPrimitives::~DrawPrimitives()
     _renderer = NULL;
     delete lineBuffer;
     
-    ShaderFactory::ClearShader(shader);
-    shader = NULL;
+    ShaderFactory::ClearShader(forward_vColor_shader);
+    ShaderFactory::ClearShader(forward_vTex_uColor_shader);
+    forward_vColor_shader = NULL;
+    forward_vTex_uColor_shader = NULL;
 }
+
 void DrawPrimitives::Render()
 {
-    shader->Begin();
+    forward_vColor_shader->Begin();
     glm::mat4 mvp;
     _renderer->GetUIMatrix(mvp);
-    shader->setUniformM4fv("MVP", mvp);
+    forward_vColor_shader->setUniformM4fv("MVP", mvp);
     
     // Render polygons
     polyBuffer->Bind();
@@ -49,7 +55,7 @@ void DrawPrimitives::Render()
     lineBuffer->Clear();
     lineBuffer->Unbind();
     
-    shader->End();
+    forward_vColor_shader->End();
 }
 
 void DrawPrimitives::Line(const glm::vec2& a,
@@ -69,10 +75,38 @@ void DrawPrimitives::Line(const glm::vec2& a,
     lineBuffer->Buffer( aVert );
     lineBuffer->Buffer( bVert );
 }
-void DrawPrimitives::Rectangle(const glm::vec2 position,
-                               const glm::vec2 size,
-                               Color color,
-                               float z)
+void DrawPrimitives::RectOutline(const glm::vec2 position,
+                                 const glm::vec2 size,
+                                 const Color& color,
+                                 const float z)
+{
+    const float halfWidth = size.x/2.0;
+    const float halfHeight = size.y/2.0;
+    Vertex_XYZW_RGBA verts[8] = {
+        position.x-halfWidth,position.y+halfHeight,z,1.0,   // top-left
+        color.r,color.g,color.b,color.a,
+        position.x-halfWidth,position.y-halfHeight,z,1.0,   // bottom-left
+        color.r,color.g,color.b,color.a,
+        position.x-halfWidth,position.y-halfHeight,z,1.0,   // bottom-left
+        color.r,color.g,color.b,color.a,
+        position.x+halfWidth,position.y-halfHeight,z,1.0,   // bottom-right
+        color.r,color.g,color.b,color.a,
+        position.x+halfWidth,position.y-halfHeight,z,1.0,   // bottom-right
+        color.r,color.g,color.b,color.a,
+        position.x+halfWidth,position.y+halfHeight,z,1.0,   // top-right
+        color.r,color.g,color.b,color.a,
+        position.x+halfWidth,position.y+halfHeight,z,1.0,   // top-right
+        color.r,color.g,color.b,color.a,
+        position.x-halfWidth,position.y+halfHeight,z,1.0,   // top-left
+        color.r,color.g,color.b,color.a,
+    };
+    lineBuffer->Buffer( *verts, 8 );
+}
+
+void DrawPrimitives::RectFilled(const glm::vec2 position,
+                                const glm::vec2 size,
+                                const Color& color,
+                                const float z)
 {
     const float halfWidth = size.x/2.0;
     const float halfHeight = size.y/2.0;
@@ -92,11 +126,12 @@ void DrawPrimitives::Rectangle(const glm::vec2 position,
     };
     polyBuffer->Buffer( *verts, 6 );
 }
+
 void DrawPrimitives::RectangleGradientX(const glm::vec2 position,
-                        const glm::vec2 size,
-                        Color colorLeft,
-                        Color colorRight,
-                        float z)
+                                        const glm::vec2 size,
+                                        const Color& colorLeft,
+                                        const Color& colorRight,
+                                        const float z)
 {
     const float halfWidth = size.x/2.0;
     const float halfHeight = size.y/2.0;
@@ -116,11 +151,12 @@ void DrawPrimitives::RectangleGradientX(const glm::vec2 position,
     };
     polyBuffer->Buffer( *verts, 6 );
 }
+
 void DrawPrimitives::RectangleGradientY(const glm::vec2 position,
-                        const glm::vec2 size,
-                        Color colorBottom,
-                        Color colorTop,
-                        float z)
+                                        const glm::vec2 size,
+                                        const Color& colorBottom,
+                                        const Color& colorTop,
+                                        const float z)
 {
     const float halfWidth = size.x/2.0;
     const float halfHeight = size.y/2.0;
@@ -140,11 +176,12 @@ void DrawPrimitives::RectangleGradientY(const glm::vec2 position,
     };
     polyBuffer->Buffer( *verts, 6 );
 }
-void DrawPrimitives::Circle(glm::vec2 center,
-                            float angle,
-                            float radius,
-                            Color color,
-                            float z,
+
+void DrawPrimitives::Circle(const glm::vec2 center,
+                            const float angle,
+                            const float radius,
+                            const Color& color,
+                            const float z,
                             const int pixelsPerSeg)
 {
     // Outside segments in circle
@@ -182,4 +219,40 @@ void DrawPrimitives::Circle(glm::vec2 center,
         };
         polyBuffer->Buffer(vertC);
     }
+}
+
+void DrawPrimitives::Texture(const Rect2D rect,
+                             const Rect2D texRect,
+                             const GLuint tex,
+                             const float z,
+                             const Color& color) {
+    Vertex_XYZW_UV verts[6] = {
+        rect.x       , rect.y,        z, 1, texRect.x,           texRect.y,             // BL
+        rect.x+rect.w, rect.y,        z, 1, texRect.x+texRect.w, texRect.y,             // BR
+        rect.x+rect.w, rect.y+rect.h, z, 1, texRect.x+texRect.w, texRect.y+texRect.h,   // TR
+        rect.x       , rect.y+rect.h, z, 1, texRect.x,           texRect.y+texRect.h,   // TL
+        rect.x       , rect.y,        z, 1, texRect.x,           texRect.y,             // BL
+        rect.x+rect.w, rect.y+rect.h, z, 1, texRect.x+texRect.w, texRect.y+texRect.h,   // TR
+    };
+
+    texturedPolyBuffer->Buffer(*verts, 6);
+    
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, tex);
+    forward_vTex_uColor_shader->Begin();
+    glm::mat4 mvp;
+    _renderer->GetUIMatrix(mvp);
+    forward_vTex_uColor_shader->setUniformM4fv("MVP", mvp);
+    forward_vTex_uColor_shader->setUniform4fv("u_color", color);
+    forward_vTex_uColor_shader->setUniform1iv("textureMap", 0);
+    
+    // Render textured polygons
+    texturedPolyBuffer->Bind();
+    texturedPolyBuffer->Upload();
+    glDrawArrays(GL_TRIANGLES, 0, texturedPolyBuffer->Count());
+    texturedPolyBuffer->Clear();
+    texturedPolyBuffer->Unbind();
+    
+    forward_vTex_uColor_shader->End();
+    glBindVertexArray(0);
 }

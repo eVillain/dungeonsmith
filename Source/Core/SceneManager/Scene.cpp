@@ -1,6 +1,6 @@
 //
 //  Scene.cpp
-//  NeverEngine
+//  DungeonSmith
 //
 //  Created by The Drudgerist on 8/28/12.
 //  Copyright (c) 2012 The Drudgerist. All rights reserved.

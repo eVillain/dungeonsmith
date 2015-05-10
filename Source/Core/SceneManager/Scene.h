@@ -2,7 +2,7 @@
 #define NGN_SCENE_H
 //
 //  Scene.h
-//  NeverEngine
+//  DungeonSmith
 //
 //  Created by The Drudgerist on 8/10/12.
 //  Copyright (c) 2012 The Drudgerist. All rights reserved.

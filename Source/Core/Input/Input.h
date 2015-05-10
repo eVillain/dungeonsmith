@@ -1,6 +1,6 @@
 //
 //  Input.h
-//  NeverEngine
+//  DungeonSmith
 //
 //  Takes keyboard/mouse/joystick events from GLFW
 //  and passes them to the currently active Scene

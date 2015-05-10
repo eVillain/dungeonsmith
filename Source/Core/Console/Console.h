@@ -1,6 +1,6 @@
 //
 //  Console.h
-//  Ingenium
+//  DungeonSmith
 //
 //  Created by The Drudgerist on 17/11/12.
 //  Copyright (c) 2013 The Drudgerist. All rights reserved.

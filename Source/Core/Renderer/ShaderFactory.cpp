@@ -1,8 +1,6 @@
 //
 //  ShaderFactory.cpp
-//  NeverEngine
-//
-//  TODO: Rename to ShaderFactory, since that's what this is
+//  DungeonSmith
 //
 //  Created by The Drudgerist on 9/7/12.
 //  Copyright (c) 2012 The Drudgerist. All rights reserved.
@@ -39,7 +37,7 @@ Shader* ShaderFactory::LoadFromFile( const std::string fshPath,
 
     if (shader->GetProgram() == 0)
     {
-        printf("[ShaderMan] Shader program loading failed, loading default\n");
+        printf("[ShaderFactory] Shader program loading failed, loading default\n");
         shader->InitFromSource( default_vertex_shader, default_frag_shader );
     }
     shaders.push_back(shader);
@@ -60,7 +58,7 @@ void ShaderFactory::ClearShaders()
 {
     if ( shaders.size() )
     {
-        printf("[ShaderMan] Releasing shaders...\n");
+        printf("[ShaderFactory] Releasing shaders...\n");
         for( unsigned int i=0; i< shaders.size(); i++ )
         {
             delete shaders[i];

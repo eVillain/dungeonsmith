@@ -12,6 +12,8 @@
 #include <glm/glm.hpp>
 #include "Color.h"
 #include "VertexBuffer_XYZW_RGBA.h"
+#include "VertexBuffer_XYZW_UV.h"
+#include "Rect2D.h"
 
 class Renderer;
 class Shader;
@@ -30,33 +32,48 @@ public:
               const Color& bColor,
               const float z=0.0);
     
-    void Rectangle(const glm::vec2 position,
-                   const glm::vec2 size,
-                   Color color,
-                   float z=0.0);
+    void RectOutline(const glm::vec2 position,
+                     const glm::vec2 size,
+                     const Color& color,
+                     const float z = 0.0);
+    void RectFilled(const glm::vec2 position,
+                    const glm::vec2 size,
+                    const Color& color,
+                    const float z=0.0);
+    
     void RectangleGradientX(const glm::vec2 position,
                             const glm::vec2 size,
-                            Color colorLeft,
-                            Color colorRight,
+                            const Color& colorLeft,
+                            const Color& colorRight,
                             float z=0.0);
     void RectangleGradientY(const glm::vec2 position,
                             const glm::vec2 size,
-                            Color colorBottom,
-                            Color colorTop,
+                            const Color& colorBottom,
+                            const Color& colorTop,
                             float z=0.0);
+    
     
     void Circle(const glm::vec2 center,
                 const float angle,
                 const float radius,
-                const Color color,
+                const Color& color,
                 const float z=0.0,
                 const int pixelsPerSeg=8);
+    
+    void Texture(const Rect2D rect,
+                 const Rect2D texRect,
+                 const GLuint tex,
+                 const float z,
+                 const Color& color);
     
     void Render();
 private:
     Renderer* _renderer;
     VertexBuffer_XYZW_RGBA * lineBuffer;
     VertexBuffer_XYZW_RGBA * polyBuffer;
-    Shader* shader;
+    VertexBuffer_XYZW_UV * texturedPolyBuffer;
+    
+    Shader* forward_vColor_shader;
+    Shader* forward_vTex_uColor_shader;
 };
 #endif /* defined(__DungeonSmith__DrawPrimitives__) */

@@ -11,6 +11,7 @@
 
 #include <glm/glm.hpp>
 class DrawPrimitives;
+class TextureManager;
 
 class IRenderer {
 public:
@@ -24,8 +25,9 @@ public:
     
     virtual void GetUIMatrix( glm::mat4& target ) = 0;
     virtual DrawPrimitives* Primitives() = 0;
-    virtual glm::vec2 GetWindowSize() = 0;
+    virtual TextureManager* Textures() = 0;
 
+    virtual glm::vec2 GetWindowSize() = 0;
 };
 
 class NullRenderer : public IRenderer {
@@ -37,6 +39,8 @@ public:
     
     void GetUIMatrix( glm::mat4& target ) {};
     DrawPrimitives* Primitives() { return NULL; };
+    TextureManager* Textures() { return NULL; };
+
     glm::vec2 GetWindowSize() { return glm::vec2(1,1); };
 };
 

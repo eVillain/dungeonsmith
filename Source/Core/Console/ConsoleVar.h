@@ -1,6 +1,6 @@
 //
 //  ConsoleVar.h
-//  Ingenium
+//  DungeonSmith
 //
 //  Created by The Drudgerist on 7/2/13.
 //  Copyright (c) 2013 The Drudgerist. All rights reserved.

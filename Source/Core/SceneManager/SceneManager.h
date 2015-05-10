@@ -2,7 +2,7 @@
 #define NGN_SCENE_MANAGER_H
 //
 //  SceneManager.h
-//  Ingenium
+//  DungeonSmith
 //
 //  Created by The Drudgerist on 8/10/12.
 //  Copyright (c) 2012 The Drudgerist. All rights reserved.

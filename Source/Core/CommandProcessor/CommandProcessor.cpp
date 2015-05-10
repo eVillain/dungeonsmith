@@ -1,6 +1,6 @@
 //
 //  CommandProcessor.cpp
-//  Ingenium
+//  DungeonSmith
 //
 //  Created by The Drudgerist on 02/12/13.
 //  Copyright (c) 2013 The Drudgerist. All rights reserved.

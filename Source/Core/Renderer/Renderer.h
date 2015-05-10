@@ -12,9 +12,9 @@
 #include <glm/glm.hpp>
 #include "IRenderer.h"
 #include "Color.h"
-#include "DrawPrimitives.h"
 
 class SDL_Window;
+class TextureManager;
 
 class Renderer : public IRenderer {
     friend class DrawPrimitives;
@@ -33,12 +33,15 @@ public:
     glm::vec2 GetWindowSize();
     
     DrawPrimitives* Primitives() { return primitives; };
+    TextureManager* Textures() { return textureManager; };
 private:
-    bool InitializeBuffers();
+    bool InitializeComponents();
+    bool TerminateComponents();
     
     SDL_Window * window;
     
     DrawPrimitives* primitives;
+    TextureManager* textureManager;
 };
 
 #endif /* defined(__DungeonSmith__Renderer__) */
