@@ -12,6 +12,7 @@
 #include "Renderer.h"
 #include <glm/gtc/matrix_transform.hpp>
 #include "Shader.h"
+#include "GLErrorUtil.h"
 
 #define UI_NEARDEPTH -100.0
 #define UI_FARDEPTH 100.0
@@ -88,6 +89,9 @@ bool Renderer::Initialize()
     }
     else
     {
+        const GLubyte * version = glGetString(GL_VERSION);
+        printf("[Renderer] OpenGL Version:%s\n", version);
+
         //Initialize GLEW
         glewExperimental = GL_TRUE;
         GLenum glewError = glewInit();
@@ -95,23 +99,21 @@ bool Renderer::Initialize()
         {
             printf( "[Renderer] Error initializing GLEW! %s\n", glewGetErrorString( glewError ) );
         }
-        
+        glGetError();   // Ignore one bad ENUM in GLEW initialization
+
         //Use Vsync
         if( SDL_GL_SetSwapInterval( 1 ) < 0 )
         {
             printf( "[Renderer] Warning: Unable to set VSync! SDL Error: %s\n", SDL_GetError() );
         }
-        
+
         //Initialize OpenGL
-        if( !InitializeGL() )
+        if( !InitializeBuffers() )
         {
-            printf( "[Renderer] Unable to initialize OpenGL!\n" );
+            printf( "[Renderer] Unable to initialize buffers!\n" );
             success = false;
         }
     }
-    
-    const GLubyte * version = glGetString(GL_VERSION);
-    printf("[Renderer] OpenGL Version:%s\n", version);
 
     return success;
 }
@@ -137,27 +139,41 @@ void Renderer::BeginDraw()
 {
     //Clear color buffer
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    
 }
 
 void Renderer::EndDraw()
 {
+    primitives->Render();
     // Swap buffers, brings backbuffer to front and vice-versa
     SDL_GL_SwapWindow(window);
 }
 
-bool Renderer::InitializeGL()
+bool Renderer::InitializeBuffers()
 {
     //Success flag
     bool success = true;
     
+    
+    primitives = new DrawPrimitives(this);
+    
+    
+    
     return success;
+}
+
+glm::vec2 Renderer::GetWindowSize()
+{
+    int windowWidth, windowHeight;
+    SDL_GetWindowSize(window, &windowWidth, &windowHeight);
+    return glm::vec2(windowWidth,windowHeight);
 }
 
 // Matrix functionality
 void Renderer::GetUIMatrix( glm::mat4& target ) {
-    int windowWidth = 640;
-    int windowHeight = 480;
-    // 2D projection with origin (0,0) as center of window
+    int windowWidth, windowHeight;
+    SDL_GetWindowSize(window, &windowWidth, &windowHeight);
+    // 2D projection with origin (0,0) at center of window
     GLfloat hw = windowWidth*0.5f;
     GLfloat hh = windowHeight*0.5f;
     target = glm::ortho<GLfloat>(-hw, hw, -hh, hh, UI_NEARDEPTH, UI_FARDEPTH);

@@ -11,10 +11,14 @@
 
 #include <glm/glm.hpp>
 #include "IRenderer.h"
+#include "Color.h"
+#include "DrawPrimitives.h"
 
 class SDL_Window;
 
 class Renderer : public IRenderer {
+    friend class DrawPrimitives;
+    
 public:
     Renderer();
     ~Renderer();
@@ -26,11 +30,15 @@ public:
     void EndDraw();
 
     void GetUIMatrix( glm::mat4& target );
+    glm::vec2 GetWindowSize();
+    
+    DrawPrimitives* Primitives() { return primitives; };
 private:
-    bool InitializeGL();
+    bool InitializeBuffers();
     
     SDL_Window * window;
     
+    DrawPrimitives* primitives;
 };
 
 #endif /* defined(__DungeonSmith__Renderer__) */

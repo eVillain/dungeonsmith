@@ -10,6 +10,7 @@
 #define DungeonSmith_IRenderer_h
 
 #include <glm/glm.hpp>
+class DrawPrimitives;
 
 class IRenderer {
 public:
@@ -22,6 +23,8 @@ public:
     virtual void EndDraw() = 0;
     
     virtual void GetUIMatrix( glm::mat4& target ) = 0;
+    virtual DrawPrimitives* Primitives() = 0;
+    virtual glm::vec2 GetWindowSize() = 0;
 
 };
 
@@ -33,6 +36,8 @@ public:
     void EndDraw() {};
     
     void GetUIMatrix( glm::mat4& target ) {};
+    DrawPrimitives* Primitives() { return NULL; };
+    glm::vec2 GetWindowSize() { return glm::vec2(1,1); };
 };
 
 #endif

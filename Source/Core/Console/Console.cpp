@@ -21,6 +21,7 @@
 #include "Locator.h"
 #include "HyperVisor.h"
 #include "IRenderer.h"
+#include "DrawPrimitives.h"
 #include "CommandProcessor.h"
 #include "StringUtil.h"
 #include "Timer.h"
@@ -224,14 +225,15 @@ void Console::ToggleVisibility() {
 }
 void Console::Draw( double delta ) {
     if (!visible) return;
-    //        int winWidth = m_hyperVisor->GetOptions()->GetOptionDataPtr<int>("r_resolutionX");
-    //        int winHeight = m_hyperVisor->GetOptions()->GetOptionDataPtr<int>("r_resolutionY");
-    //        // Draw background box
-    //        Color gradCol1 = COLOR_UI_GRADIENT1; gradCol1.a = 0.5f;
-    //        Color gradCol2 = COLOR_UI_GRADIENT2; gradCol2.a = 0.5f;
-    //        float wh = winWidth/2.0f;
-    //        float hh = winHeight/2.0f;
-    //        Draw::GradientVertical(Rect2D(-wh, CONSOLE_TEXT_HEIGHT, winWidth-1, hh), gradCol1, gradCol2, CONSOLE_BG_DEPTH);
+    glm::vec2 windowSize = Locator::getRenderer().GetWindowSize();
+    // Draw background box
+    Color gradColTop = COLOR_UI_GRADIENT1; gradColTop.a = 0.5f;
+    Color gradColBottom = COLOR_UI_GRADIENT2; gradColBottom.a = 0.5f;
+    Locator::getRenderer().Primitives()->RectangleGradientY(glm::vec2(0, (windowSize.y/4.0f)+CONSOLE_TEXT_HEIGHT),
+                                                            glm::vec2(windowSize.x, windowSize.y/2.0f-CONSOLE_TEXT_HEIGHT),
+                                                            gradColBottom,
+                                                            gradColTop,
+                                                            CONSOLE_BG_DEPTH);
 }
 void Console::SaveLog( void ) {
     std::string logPath = FileUtil::GetPath().append("Console.log");
@@ -298,7 +300,7 @@ void Console::Show() {
     IText* tMan = &Locator::getText();
     if ( !tMan || visible ) { return; }
 //        int winWidth = Locator::getRenderer().GetSettings().viewWidth;
-//        std::string consoleInfo = "Console:  Ingenium v.";
+//        std::string consoleInfo = "Console:  DungeonSmith v.";
 //        consoleInfo.append(Locator::getHyperVisor().GetVersion());
 //        textWidget = new UITextInputSCB(-winWidth/2, 1.0, winWidth-1, CONSOLE_TEXT_HEIGHT, CONSOLE_TEXT_DEPTH,consoleInfo, &Process );
 //        textWidget->StartTextInput();
