@@ -10,7 +10,7 @@
 #define NGN_ITEXT_H
 
 #include <string>
-#include <glm/glm.hpp>
+#include "RenderDefines.h"
 #include "Color.h"
 
 // Supported fonts: Hard-wired for now, must make these configurable later

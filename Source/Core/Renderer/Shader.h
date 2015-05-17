@@ -12,7 +12,7 @@
 #include <vector>
 #include <string>
 #include <GL/glew.h>
-#include <glm/glm.hpp>
+#include "RenderDefines.h"
 #include "Color.h"
 
 class Shader {

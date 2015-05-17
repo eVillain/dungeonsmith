@@ -9,7 +9,7 @@
 #ifndef __DungeonSmith__VertexBuffer_XYZW_RGBA__
 #define __DungeonSmith__VertexBuffer_XYZW_RGBA__
 
-#include <glm/glm.hpp>
+#include "RenderDefines.h"
 #include <GL/glew.h>
 
 // Structure for simple colored vertex data/impostor sphere

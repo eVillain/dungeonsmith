@@ -11,6 +11,7 @@
 #include "Scene.h"
 #include "Locator.h"
 #include "HyperVisor.h"
+#include "CommandProcessor.h"
 
 #define DEBUGSCENES 0
 

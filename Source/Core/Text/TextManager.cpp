@@ -6,8 +6,6 @@
 //  Copyright (c) 2012 The Drudgerist. All rights reserved.
 //
 
-#include <string>
-
 #include "TextManager.h"
 #include "TextDefaults.h"
 #include "HyperVisor.h"
@@ -15,7 +13,10 @@
 #include "IRenderer.h"
 #include "FileUtil.h"
 #include "Shader.h"
+#include "MatrixUtil.h"
+
 #include <glm/gtc/matrix_transform.hpp>     // glm::translate, glm::rotate, glm::scale
+#include <string>
 
 // Vector of text blocks to render
 typedef std::vector<TextBlock> TextBlockVector;
@@ -269,7 +270,8 @@ void TextManager::RenderBlock( TextBlock b ) {
     
     glm::mat4 mvp;
     if ( b.isUIText ) {
-        Locator::getRenderer().GetUIMatrix(mvp);
+        glm::vec2 windowSize = Locator::getRenderer().GetWindowSize();
+        MatrixUtil::GetUIMatrix(mvp, windowSize.x, windowSize.y);
     } else {
 //        Locator::getRenderer().GetGameMatrix(mvp);
         float r_scale = 1.0f/(b.size*4.0f);

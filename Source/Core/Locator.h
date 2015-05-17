@@ -14,6 +14,7 @@
 #include "IRenderer.h"
 #include "HyperVisor.h"
 #include "IText.h"
+#include "SceneManager.h"
 
 class Locator {
 public:
@@ -21,7 +22,9 @@ public:
     // Getters to current services
     static IRenderer& getRenderer() { return *_renderService; }
     static IText& getText() { return *_textService; };
-
+    static SceneManager& getSceneManager() { return _sceneManager; };
+    
+    
     // Setters for configuring services
     static void provideRenderer(IRenderer* service)
     {
@@ -52,6 +55,8 @@ private:
     static IText* _textService;
     static NullText _nullTextService;
     
+    // Scene manager, should always be available
+    static SceneManager _sceneManager;
     // Hypervisor, should be removed for release build
     static HyperVisor* _hv;
 };

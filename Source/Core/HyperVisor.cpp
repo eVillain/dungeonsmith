@@ -15,6 +15,7 @@
 #include "Timer.h"
 #include "TextManager.h"
 #include "FileUtil.h"
+#include "Scene.h"
 
 HyperVisor::HyperVisor() :
 quit(false),
@@ -100,19 +101,20 @@ int HyperVisor::Run()
         
         CommandProcessor::Update(deltaTime);
         
+        Scene& currentScene = Locator::getSceneManager().GetActiveScene();
+        currentScene.Update(deltaTime);
         
         Locator::getText().Update(deltaTime);
 
         // --- Render stuff --- //
         Locator::getRenderer().BeginDraw();
 
-        
+        currentScene.Draw();
         // Test drawing
 //        Locator::getRenderer().Primitives()->Line(glm::vec2(), glm::vec2(10,10), COLOR_RED, COLOR_BLUE);
 //        Locator::getRenderer().Primitives()->Circle(glm::vec2(-20,-20), 0.0, 20.0, COLOR_YELLOW);
 //        Locator::getRenderer().Primitives()->Rectangle(glm::vec2(100,100), glm::vec2(40,30), COLOR_GREEN, 1.0);
 
-        
         Console::Draw(deltaTime);
         
         Locator::getText().RenderLabels();

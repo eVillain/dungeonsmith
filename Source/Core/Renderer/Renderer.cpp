@@ -10,42 +10,10 @@
 #include <SDL2/SDL.h>
 #include <GL/glew.h>
 #include "Renderer.h"
-#include <glm/gtc/matrix_transform.hpp>
 #include "Shader.h"
 #include "GLErrorUtil.h"
 #include "DrawPrimitives.h"
 #include "TextureManager.h"
-
-#define UI_NEARDEPTH -100.0
-#define UI_FARDEPTH 100.0
-
-// Testing only, remove later
-GLuint gVBO = 0;
-GLuint gVAO = 0;
-
-GLuint vs,fs;
-GLuint shader_programme;
-Shader* shader;
-
-//Get vertex source
-const char* vertex_shader_test =
-{
-    "#version 400\n"
-    "in vec3 vp;"
-    "void main () {"
-    "  gl_Position = vec4 (vp, 1.0);"
-    "}"
-};
-
-//Test fragment source
-const char* fragment_shader_test =
-{
-    "#version 400\n"
-    "out vec4 frag_colour;"
-    "void main () {"
-    "  frag_colour = vec4 (0.5, 0.0, 0.5, 1.0);"
-    "}"
-};
 
 Renderer::Renderer() :
 window(NULL)
@@ -143,6 +111,10 @@ bool Renderer::InitializeComponents()
 {
     bool success = true;
     
+    int windowWidth, windowHeight;
+    SDL_GetWindowSize(window, &windowWidth, &windowHeight);
+    gbuffer.Initialize(windowWidth, windowHeight);
+    
     primitives = new DrawPrimitives(this);
     textureManager = new TextureManager();
     
@@ -184,13 +156,5 @@ glm::vec2 Renderer::GetWindowSize()
     return glm::vec2(windowWidth,windowHeight);
 }
 
-// Matrix functionality
-void Renderer::GetUIMatrix( glm::mat4& target ) {
-    int windowWidth, windowHeight;
-    SDL_GetWindowSize(window, &windowWidth, &windowHeight);
-    // 2D projection with origin (0,0) at center of window
-    GLfloat hw = windowWidth*0.5f;
-    GLfloat hh = windowHeight*0.5f;
-    target = glm::ortho<GLfloat>(-hw, hw, -hh, hh, UI_NEARDEPTH, UI_FARDEPTH);
-}
+
 

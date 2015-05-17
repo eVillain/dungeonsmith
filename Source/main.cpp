@@ -6,9 +6,11 @@
 //  Copyright (c) 2015 The Drudgerist. All rights reserved.
 //
 
-#include <iostream>
-
 #include "HyperVisor.h"
+
+#include "Locator.h"
+#include "SceneManager.h"
+#include "LocalGame.h"
 
 int main(int argc, char * arg[])
 {
@@ -19,6 +21,10 @@ int main(int argc, char * arg[])
     // to be be parsed and if possible executed by the CommandProcessor
     hv.Initialize(argc, arg);
     
+    // Test game scene, this should be selected some other way or we should have
+    // a default main menu / intro scene to add here
+    Locator::getSceneManager().AddActiveScene( new LocalGame());
+
     // Here we pass control over to the HyperVisor to execute the main loop.
     // When finished the engine will return a termination code.
     // Abnormal termination is signalled by a non-zero return.

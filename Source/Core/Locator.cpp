@@ -14,6 +14,6 @@ NullText Locator::_nullTextService;
 // Set all services to be null services first
 IRenderer* Locator::_renderService = &_nullRenderService;
 IText* Locator::_textService = &_nullTextService;
-
+SceneManager Locator::_sceneManager;
 HyperVisor* Locator::_hv = NULL;
 

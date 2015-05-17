@@ -11,7 +11,7 @@
 uint32_t rand_x[5]; // Mother of all randoms history buffer
 
 // Output random bits
-uint32_t RandomBits()
+uint32_t Random::RandomBits()
 {
     uint64_t sum;
     sum = (uint64_t)2111111111UL * (uint64_t)rand_x[3] +
@@ -24,13 +24,15 @@ uint32_t RandomBits()
     rand_x[0] = (uint32_t)sum;                          // Low 32 bits of sum
     return rand_x[0];
 }
+
 // returns a random number between 0 and 1:
-double RandomDouble()
+double Random::RandomDouble()
 {
     return (double)RandomBits() * (1./(65536.*65536.));
 }
+
 // returns integer random number in desired interval:
-int RandomInt(int min, int max)
+int Random::RandomInt(int min, int max)
 {
     // Output random integer in the interval min <= x <= max
     // Relative error on frequencies < 2^-32
@@ -49,8 +51,9 @@ int RandomInt(int min, int max)
     // Convert back to signed and return result
     return (int32_t)intRand + min;
 }
+
 // this function initializes the random number generator:
-void RandomSeed (int seed)
+void Random::RandomSeed (int seed)
 {
     int i;
     uint32_t s = seed;

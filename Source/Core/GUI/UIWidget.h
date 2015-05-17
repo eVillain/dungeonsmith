@@ -8,7 +8,7 @@
 //  The purpose of this class is to serve as a base class for
 //  all the user-interface widgets (buttons, sliders, text input boxes etc.)
 //
-//  Created by Ville-Veikko Urrila on 10/01/13.
+//  Created by The Drudgerist on 10/01/13.
 //  Copyright (c) 2013 The Drudgerist. All rights reserved.
 //
 

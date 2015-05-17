@@ -9,7 +9,7 @@
 #ifndef DungeonSmith_IRenderer_h
 #define DungeonSmith_IRenderer_h
 
-#include <glm/glm.hpp>
+#include "RenderDefines.h"
 class DrawPrimitives;
 class TextureManager;
 
@@ -23,7 +23,6 @@ public:
     virtual void BeginDraw() = 0;
     virtual void EndDraw() = 0;
     
-    virtual void GetUIMatrix( glm::mat4& target ) = 0;
     virtual DrawPrimitives* Primitives() = 0;
     virtual TextureManager* Textures() = 0;
 
@@ -37,7 +36,6 @@ public:
     void BeginDraw() {};
     void EndDraw() {};
     
-    void GetUIMatrix( glm::mat4& target ) {};
     DrawPrimitives* Primitives() { return NULL; };
     TextureManager* Textures() { return NULL; };
 

@@ -8,7 +8,7 @@
 //========================================================================
 // Random
 // Mother of all randoms!
-// Random number generators
+// (Pseudo)Random number generators
 //========================================================================
 
 #ifndef __DungeonSmith__Random__

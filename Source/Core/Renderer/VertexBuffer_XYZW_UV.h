@@ -9,8 +9,7 @@
 #ifndef __DungeonSmith__VertexBuffer_XYZW_UV__
 #define __DungeonSmith__VertexBuffer_XYZW_UV__
 
-#include <glm/glm.hpp>
-#include <GL/glew.h>
+#include "RenderDefines.h"
 
 // Structure for simple textured vertex data
 typedef struct {

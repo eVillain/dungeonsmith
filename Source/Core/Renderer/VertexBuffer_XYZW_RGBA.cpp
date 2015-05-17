@@ -30,9 +30,8 @@ bufferCount(0)
     glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex_XYZW_RGBA)*bufferMax, NULL, GL_STATIC_DRAW);
     
     check_gl_error();
-    
-    glBindVertexArray(0);
-    
+
+    glBindVertexArray(0);    
 }
 
 VertexBuffer_XYZW_RGBA::~VertexBuffer_XYZW_RGBA()

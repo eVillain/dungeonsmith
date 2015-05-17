@@ -6,7 +6,7 @@
 //  In that case we will create an abstract Texture interface class and
 //  move the loading logic elsewhere.
 //
-//  Created by Ville-Veikko Urrila on 1/12/13.
+//  Created by The Drudgerist on 1/12/13.
 //  Copyright (c) 2013 The Drudgerist. All rights reserved.
 //
 
@@ -59,8 +59,5 @@ public:
     GLuint GetHeight( void ) const { return height; };
     std::string GetPath( void ) const { return filePath; };
 };
-
-
-
 
 #endif

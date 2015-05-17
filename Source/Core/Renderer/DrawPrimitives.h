@@ -9,7 +9,7 @@
 #ifndef __DungeonSmith__DrawPrimitives__
 #define __DungeonSmith__DrawPrimitives__
 
-#include <glm/glm.hpp>
+#include "RenderDefines.h"
 #include "Color.h"
 #include "VertexBuffer_XYZW_RGBA.h"
 #include "VertexBuffer_XYZW_UV.h"

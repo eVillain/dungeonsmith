@@ -2,7 +2,7 @@
 #define NGN_SPRITE_H
 
 #include <string>
-#include <glm/glm.hpp>
+#include "RenderDefines.h"
 #include "Texture.h"
 #include "Color.h"
 #include "Rect2D.h"

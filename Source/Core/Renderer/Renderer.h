@@ -9,9 +9,10 @@
 #ifndef __DungeonSmith__Renderer__
 #define __DungeonSmith__Renderer__
 
-#include <glm/glm.hpp>
+#include "RenderDefines.h"
 #include "IRenderer.h"
 #include "Color.h"
+#include "GBuffer.h"
 
 class SDL_Window;
 class TextureManager;
@@ -29,7 +30,6 @@ public:
     void BeginDraw();
     void EndDraw();
 
-    void GetUIMatrix( glm::mat4& target );
     glm::vec2 GetWindowSize();
     
     DrawPrimitives* Primitives() { return primitives; };
@@ -39,6 +39,7 @@ private:
     bool TerminateComponents();
     
     SDL_Window * window;
+    GBuffer gbuffer;
     
     DrawPrimitives* primitives;
     TextureManager* textureManager;

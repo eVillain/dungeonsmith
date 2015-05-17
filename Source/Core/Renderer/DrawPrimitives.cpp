@@ -8,6 +8,7 @@
 
 #include "DrawPrimitives.h"
 #include "Renderer.h"
+#include "MatrixUtil.h"
 
 #include "Shader.h"
 #include "ShaderFactory.h"
@@ -38,7 +39,9 @@ void DrawPrimitives::Render()
 {
     forward_vColor_shader->Begin();
     glm::mat4 mvp;
-    _renderer->GetUIMatrix(mvp);
+    glm::vec2 windowSize = _renderer->GetWindowSize();
+    MatrixUtil::GetUIMatrix(mvp, windowSize.x, windowSize.y);
+
     forward_vColor_shader->setUniformM4fv("MVP", mvp);
     
     // Render polygons
@@ -241,7 +244,9 @@ void DrawPrimitives::Texture(const Rect2D rect,
     glBindTexture(GL_TEXTURE_2D, tex);
     forward_vTex_uColor_shader->Begin();
     glm::mat4 mvp;
-    _renderer->GetUIMatrix(mvp);
+    glm::vec2 windowSize = _renderer->GetWindowSize();
+    MatrixUtil::GetUIMatrix(mvp, windowSize.x, windowSize.y);
+
     forward_vTex_uColor_shader->setUniformM4fv("MVP", mvp);
     forward_vTex_uColor_shader->setUniform4fv("u_color", color);
     forward_vTex_uColor_shader->setUniform1iv("textureMap", 0);
