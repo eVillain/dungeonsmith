@@ -22,8 +22,8 @@ public:
     
     VertexBuffer_XYZW_UV(uint16_t numVerts);
     ~VertexBuffer_XYZW_UV();
-    void Buffer(Vertex_XYZW_UV& vert);
-    void Buffer(Vertex_XYZW_UV& verts, uint16_t count);
+    void Buffer(const Vertex_XYZW_UV& vert);
+    void Buffer(const Vertex_XYZW_UV& verts, uint16_t count);
     void Bind();
     void Upload();
     void Unbind();

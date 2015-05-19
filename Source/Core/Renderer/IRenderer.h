@@ -21,6 +21,7 @@ public:
     virtual bool Terminate() = 0;
 
     virtual void BeginDraw() = 0;
+    virtual void PostProcess() = 0;
     virtual void EndDraw() = 0;
     
     virtual DrawPrimitives* Primitives() = 0;
@@ -34,6 +35,7 @@ public:
     bool Initialize() { return true; };
     bool Terminate() { return true; };
     void BeginDraw() {};
+    void PostProcess() {};
     void EndDraw() {};
     
     DrawPrimitives* Primitives() { return NULL; };

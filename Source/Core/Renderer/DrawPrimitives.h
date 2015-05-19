@@ -66,12 +66,15 @@ public:
                  const float z,
                  const Color& color);
     
+    void TextureFullScreen( const GLuint tex );
+
     void Render();
 private:
     Renderer* _renderer;
     VertexBuffer_XYZW_RGBA * lineBuffer;
     VertexBuffer_XYZW_RGBA * polyBuffer;
     VertexBuffer_XYZW_UV * texturedPolyBuffer;
+    VertexBuffer_XYZW_UV * unitSquareBuffer;
     
     Shader* forward_vColor_shader;
     Shader* forward_vTex_uColor_shader;

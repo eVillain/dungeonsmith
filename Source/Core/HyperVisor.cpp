@@ -115,6 +115,8 @@ int HyperVisor::Run()
 //        Locator::getRenderer().Primitives()->Circle(glm::vec2(-20,-20), 0.0, 20.0, COLOR_YELLOW);
 //        Locator::getRenderer().Primitives()->Rectangle(glm::vec2(100,100), glm::vec2(40,30), COLOR_GREEN, 1.0);
 
+        Locator::getRenderer().PostProcess();
+        
         Console::Draw(deltaTime);
         
         Locator::getText().RenderLabels();

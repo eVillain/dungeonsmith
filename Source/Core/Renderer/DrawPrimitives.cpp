@@ -12,6 +12,16 @@
 
 #include "Shader.h"
 #include "ShaderFactory.h"
+#include <glm/gtc/matrix_transform.hpp>
+
+const glm::mat4 screenMVP = glm::ortho<GLfloat>(-0.5, 0.5, -0.5, 0.5, -1.0, 1.0);
+
+static const Vertex_XYZW_UV squareVerts[4] = {
+    -0.5,-0.5, 0.0, 1.0, 0.0, 0.0,  // BL
+     0.5,-0.5, 0.0, 1.0, 1.0, 0.0,  // BR
+     0.5, 0.5, 0.0, 1.0, 1.0, 1.0,  // TR
+    -0.5, 0.5, 0.0, 1.0, 0.0, 1.0,  // TL
+};
 
 DrawPrimitives::DrawPrimitives(Renderer* renderer)
 {
@@ -19,6 +29,12 @@ DrawPrimitives::DrawPrimitives(Renderer* renderer)
     lineBuffer = new VertexBuffer_XYZW_RGBA(1024);  // TODO: Define default line buffer size
     polyBuffer = new VertexBuffer_XYZW_RGBA(1024);  //      As above, so below
     texturedPolyBuffer = new VertexBuffer_XYZW_UV(1024);
+    
+    unitSquareBuffer = new VertexBuffer_XYZW_UV(4);
+    unitSquareBuffer->Bind();
+    unitSquareBuffer->Buffer(*squareVerts, 4);
+    unitSquareBuffer->Upload();
+    unitSquareBuffer->Unbind();
     
     forward_vColor_shader = ShaderFactory::LoadFromFile("forward_color.fsh", "forward_vColor.vsh");
     forward_vTex_uColor_shader = ShaderFactory::LoadFromFile("forward_tex.fsh", "forward_vTex_uColor.vsh");
@@ -28,6 +44,9 @@ DrawPrimitives::~DrawPrimitives()
 {
     _renderer = NULL;
     delete lineBuffer;
+    delete polyBuffer;
+    delete texturedPolyBuffer;
+    delete unitSquareBuffer;
     
     ShaderFactory::ClearShader(forward_vColor_shader);
     ShaderFactory::ClearShader(forward_vTex_uColor_shader);
@@ -248,7 +267,7 @@ void DrawPrimitives::Texture(const Rect2D rect,
     MatrixUtil::GetUIMatrix(mvp, windowSize.x, windowSize.y);
 
     forward_vTex_uColor_shader->setUniformM4fv("MVP", mvp);
-    forward_vTex_uColor_shader->setUniform4fv("u_color", color);
+    forward_vTex_uColor_shader->setUniform4fv("uColor", color);
     forward_vTex_uColor_shader->setUniform1iv("textureMap", 0);
     
     // Render textured polygons
@@ -261,3 +280,20 @@ void DrawPrimitives::Texture(const Rect2D rect,
     forward_vTex_uColor_shader->End();
     glBindVertexArray(0);
 }
+
+void DrawPrimitives::TextureFullScreen( const GLuint tex ) {
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, tex);
+    
+    forward_vTex_uColor_shader->Begin();
+    forward_vTex_uColor_shader->setUniformM4fv("MVP", screenMVP);
+    forward_vTex_uColor_shader->setUniform4fv("uColor", COLOR_WHITE);
+    forward_vTex_uColor_shader->setUniform1iv("textureMap", 0);
+    
+    unitSquareBuffer->Bind();
+    glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
+    unitSquareBuffer->Unbind();
+    forward_vTex_uColor_shader->End();
+    glBindVertexArray(0);
+}
+

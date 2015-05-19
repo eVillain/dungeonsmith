@@ -27,7 +27,11 @@ public:
     bool Initialize();
     bool Terminate();
 
+    // Begins drawing in a new frame - clears buffers and binds G-Buffer
     void BeginDraw();
+    // Runs post-processing on G-Buffer and binds frame buffer
+    void PostProcess();
+    // Finishes drawing for this frame - swaps frame buffer
     void EndDraw();
 
     glm::vec2 GetWindowSize();
@@ -43,6 +47,9 @@ private:
     
     DrawPrimitives* primitives;
     TextureManager* textureManager;
+    
+    // Options
+    bool _useAA;
 };
 
 #endif /* defined(__DungeonSmith__Renderer__) */

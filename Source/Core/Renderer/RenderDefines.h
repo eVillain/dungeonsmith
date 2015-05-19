@@ -18,4 +18,14 @@
 #include <glm/glm.hpp>
 #include <GL/glew.h>
 
+
+typedef enum : GLint {
+    Stencil_Mode_Clear = 0,
+    Stencil_Mode_Sky = 1,
+    Stencil_Mode_Solid = 2,
+    Stencil_Mode_Light = 3,
+    Stencil_Mode_Transparent = 4,
+} StencilMode;
+
+
 #endif

@@ -32,7 +32,8 @@ CheckOpenGLError(#stmt, __FILE__, __LINE__); \
 /*  ----------------------------    *
  *    OpenGL GBuffer STUFF      *
  *  ----------------------------    */
-static GLuint GenerateTextureRGBAF(GLuint width, GLuint height) {
+static GLuint GenerateTextureRGBAF(GLuint width, GLuint height)
+{
     GLuint returnTexture = -1;
     GL_CHECK( glGenTextures(1, &returnTexture) );  // Generate rgb color render texture
     GL_CHECK( glBindTexture(GL_TEXTURE_2D, returnTexture) );   // Bind current texture
@@ -44,7 +45,9 @@ static GLuint GenerateTextureRGBAF(GLuint width, GLuint height) {
     glBindTexture(GL_TEXTURE_2D, 0);
     return returnTexture;
 }
-static GLuint GenerateTextureDepth(GLuint width, GLuint height) {
+
+static GLuint GenerateTextureDepth(GLuint width, GLuint height)
+{
     GLuint returnTexture = -1;
     GL_CHECK( glGenTextures(1, &returnTexture) );  // Generate rgb color render texture
     GL_CHECK( glBindTexture(GL_TEXTURE_2D, returnTexture) );   // Bind current texture
@@ -57,7 +60,9 @@ static GLuint GenerateTextureDepth(GLuint width, GLuint height) {
     glBindTexture(GL_TEXTURE_2D, 0);
     return returnTexture;
 }
-static GLuint GenerateTextureNormal(GLuint width, GLuint height) {
+
+static GLuint GenerateTextureNormal(GLuint width, GLuint height)
+{
     GLuint returnTexture = -1;
     GL_CHECK( glGenTextures(1, &returnTexture) );  // Generate rgb color render texture
     GL_CHECK( glBindTexture(GL_TEXTURE_2D, returnTexture) );   // Bind current texture
@@ -99,7 +104,8 @@ void GBuffer::Initialize(GLuint width, GLuint height)
     glDrawBuffers(3, (GLenum*)DrawBuffers);
 }
 
-void GBuffer::Terminate() {
+void GBuffer::Terminate()
+{
     if (_diffuse) glDeleteTextures( 1, &_diffuse );
     if (_specular) glDeleteTextures( 1, &_specular );
     if (_depth) glDeleteTextures( 1, &_depth );
@@ -107,11 +113,13 @@ void GBuffer::Terminate() {
     if (_fbo) glDeleteFramebuffers(1, &_fbo);
 }
 
-void GBuffer::Bind() {
+void GBuffer::Bind()
+{
     glBindFramebuffer(GL_FRAMEBUFFER, _fbo);
 }
 
-void GBuffer::UnBind() {
+void GBuffer::UnBind()
+{
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
@@ -119,7 +127,9 @@ void GBuffer::Clear()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 }
-void GBuffer::Resize( GLuint width, GLuint height  ) {
+
+void GBuffer::Resize( GLuint width, GLuint height  )
+{
     Terminate();
     Initialize(width, height);
 }

@@ -43,16 +43,16 @@ VertexBuffer_XYZW_UV::~VertexBuffer_XYZW_UV()
     buffer = NULL;
 }
 
-void VertexBuffer_XYZW_UV::Buffer(Vertex_XYZW_UV& vert)
+void VertexBuffer_XYZW_UV::Buffer(const Vertex_XYZW_UV& vert)
 {
     if ( bufferCount == bufferMax ) return;
     buffer[bufferCount] = vert;
     bufferCount++;
 }
 
-void VertexBuffer_XYZW_UV::Buffer(Vertex_XYZW_UV& verts, uint16_t count)
+void VertexBuffer_XYZW_UV::Buffer(const Vertex_XYZW_UV& verts, uint16_t count)
 {
-    if ( bufferCount+count == bufferMax ) return;
+    if ( bufferCount+count > bufferMax ) return;
     memcpy( &buffer[bufferCount], &verts, sizeof(Vertex_XYZW_UV)*count);
     bufferCount += count;
 }

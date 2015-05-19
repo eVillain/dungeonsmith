@@ -15,6 +15,7 @@
 
 #include "Scene.h"
 #include "World.h"
+#include "Camera.h"
 
 class LocalGame : public Scene {
 public:
@@ -34,6 +35,8 @@ public:
 
 private:
     World world;
+    Camera camera;
+    
 };
 
 #endif

@@ -6,14 +6,14 @@
 //  Copyright (c) 2015 The Drudgerist. All rights reserved.
 //
 
-//#include <iostream>
-#include <SDL2/SDL.h>
-#include <GL/glew.h>
 #include "Renderer.h"
 #include "Shader.h"
 #include "GLErrorUtil.h"
 #include "DrawPrimitives.h"
 #include "TextureManager.h"
+
+#include <SDL2/SDL.h>
+#include <GL/glew.h>
 
 Renderer::Renderer() :
 window(NULL)
@@ -135,9 +135,44 @@ bool Renderer::TerminateComponents()
 
 void Renderer::BeginDraw()
 {
-    //Clear color buffer
-    glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    // Enable back face culling
+    glCullFace( GL_BACK );
+    glEnable( GL_CULL_FACE );
+
+    // Disable all smoothing, if we want anti-aliasing we will do it in a shader
+    glDisable( GL_MULTISAMPLE_ARB );
+    glDisable( GL_LINE_SMOOTH );
+    glDisable( GL_POINT_SMOOTH );
     
+    // Enable blending - mode Normal TODO: Set blend modes in a utility class
+    glEnable( GL_BLEND );
+    glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
+    
+    // Enable depth test and write to depth buffer
+    glDepthFunc( GL_LEQUAL );
+    glEnable( GL_DEPTH_TEST );
+    glDepthMask( GL_TRUE );
+    
+    // Clear color, depth and stencil
+    glClearColor( 0.0f, 0.0f, 0.0f, 0.0f );
+    glClearDepth( 1.0 );
+    glClearStencil( Stencil_Mode_Clear );
+    
+    // Bind frame buffer and clear it
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT );
+    
+    // Get our G-Buffer ready for deferred rendering
+    gbuffer.Bind();
+    gbuffer.Clear();
+}
+
+void Renderer::PostProcess()
+{
+    // Bind frame buffer
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    
+    primitives->TextureFullScreen(gbuffer.GetDiffuse());
 }
 
 void Renderer::EndDraw()
@@ -148,7 +183,7 @@ void Renderer::EndDraw()
 }
 
 
-
+// Getters
 glm::vec2 Renderer::GetWindowSize()
 {
     int windowWidth, windowHeight;
