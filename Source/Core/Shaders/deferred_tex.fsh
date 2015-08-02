@@ -1,4 +1,4 @@
-#version 330 core
+#version 400
 
 layout(location = 0) out vec4 diffuseColor;
 layout(location = 1) out vec4 specularColor;
@@ -19,9 +19,7 @@ uniform float texScale = 1.0;
 void main(){
 	vec4 finalColor = texture(textureMap, fragment.texCoord*texScale);
     finalColor *= fragment.color;
-    
-    if ( finalColor.a < 0.0001 ) discard;
-    
+        
     diffuseColor = finalColor;
     specularColor = finalColor;
     normal = vec3(0.0,1.0,0.0);

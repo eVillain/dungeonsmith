@@ -11,6 +11,7 @@
 #include "Locator.h"
 #include "SceneManager.h"
 #include "LocalGame.h"
+#include "MainMenu.h"
 
 int main(int argc, char * arg[])
 {
@@ -23,7 +24,7 @@ int main(int argc, char * arg[])
     
     // Test game scene, this should be selected some other way or we should have
     // a default main menu / intro scene to add here
-    Locator::getSceneManager().AddActiveScene( new LocalGame());
+    Locator::getSceneManager().AddActiveScene( new MainMenu());
 
     // Here we pass control over to the HyperVisor to execute the main loop.
     // When finished the engine will return a termination code.

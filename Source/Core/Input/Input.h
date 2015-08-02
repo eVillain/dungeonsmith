@@ -19,16 +19,6 @@
 #include "InputFunctors.h"
 
 class Input {
-private:
-    static std::map<std::string, typeInputEvent> InputBindings;      // Map of inputs to events
-    static std::vector<EventFunctorBase*> eventObserverList;
-    
-    // Keyboard text input
-    static void StartTextInput();
-    static void UpdateTextInput();
-    static void CancelTextInput();
-
-    
 public:
     static void ProcessInput();
     
@@ -38,12 +28,25 @@ public:
     static void RegisterEventObserver( EventFunctorBase* observer );
     static void UnRegisterEventObserver( EventFunctorBase* observer );
     
+    static void RegisterMouseObserver( MouseFunctorBase* observer );
+    static void UnRegisterMouseObserver( MouseFunctorBase* observer );
+    
     // Bind an input (Keyboard/Mouse/Joystick) to an Event
     static void Bind( std::string input, std::string event );
 
-    // Convert mouse coordinates to UI space (deprecated)
-    static void MouseToUI(double* x, double* y);
+    static void SetDefaultBindings();
+private:
+    // Map of inputs to events
+    static std::map<std::string, typeInputEvent> InputBindings;
+    static std::vector<EventFunctorBase*> eventObserverList;
+    static std::vector<MouseFunctorBase*> mouseObserverList;
+
+    // Keyboard text input
+    static void StartTextInput();
+    static void UpdateTextInput();
+    static void CancelTextInput();
     
+    static glm::ivec2 ConvertSDLCoordToScreen( int x, int y );
 };
 
 #endif

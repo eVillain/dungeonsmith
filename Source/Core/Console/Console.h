@@ -21,9 +21,11 @@
 #define CONSOLE_MAX_MESSAGES 10
 #define CONSOLE_TEXT_HEIGHT 22
 
+class TextLabel;
+
 typedef struct {
     std::string text;
-    int blockID;
+    TextLabel* label;
     Color color;
     double timeStamp;
 } ConsoleLine;

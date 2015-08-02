@@ -21,6 +21,7 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 #include <string>
+#include <map>
 
 // Maximum texture width
 #define MAX_ATLAS_WIDTH 1024
@@ -60,5 +61,9 @@ public:
     int GetHeight( void ) { return h; };
     GlyphInfo* GetGlyphInfo( void ) { return gInfo; };
 };
+
+// Font atlases by font filename and iterator
+typedef std::map<std::string, FontAtlas*> AtlasList;
+typedef AtlasList::const_iterator AtlasIter;
 
 #endif

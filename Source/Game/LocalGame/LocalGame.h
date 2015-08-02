@@ -15,28 +15,37 @@
 
 #include "Scene.h"
 #include "World.h"
-#include "Camera.h"
+#include "InputFunctors.h"
+
+class TextLabel;
 
 class LocalGame : public Scene {
 public:
     LocalGame();
-    ~LocalGame( void );
+    ~LocalGame();
     
     // Overridden from Scene
-    void Initialize( void );
-    void ReInitialize( void );
-    void Release( void );
+    void Initialize();
+    void ReInitialize();
+    void Release();
     void Cleanup();
     
-    void Pause( void );
-    void Resume( void );
+    void Pause();
+    void Resume();
     void Update ( double deltaTime );
-    void Draw( void );
+    void Draw();
 
 private:
     World world;
-    Camera camera;
     
+    EventFunctor<LocalGame> eventFunctor;
+    bool OnEvent( const typeInputEvent& theEvent, const float& amount );
+    
+    void UpdateMovement();
+    glm::vec2 inputMove;
+    glm::vec2 inputLook;
+    
+    TextLabel* _labelFPS;
 };
 
 #endif

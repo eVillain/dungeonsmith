@@ -23,7 +23,7 @@ public:
     // Function to deal with mouse position changes, called whenever the mouse cursor moves
     void CameraRotate( const float rotX, const float rotY );
     // Function to calculate which direction we need to move the camera and by what amount
-    void CalculateCameraMovement(glm::vec3 movement);    
+    void CalculateCameraMovement(const glm::vec3& movement);
     // Function to move the camera the amount we've calculated in the calculateCameraMovement function
     void MoveCamera( double dela );
     

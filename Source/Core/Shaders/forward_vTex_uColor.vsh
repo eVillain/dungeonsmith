@@ -1,4 +1,4 @@
-#version 330 core
+#version 400
 
 // Input vertex data, different for all executions of this shader.
 layout(location = 0) in vec4 vCoord;

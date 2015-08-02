@@ -11,7 +11,10 @@
 
 #include "RenderDefines.h"
 class DrawPrimitives;
+class DrawMesh;
 class TextureManager;
+class LightSystem3D;
+class Camera;
 
 class IRenderer {
 public:
@@ -21,27 +24,38 @@ public:
     virtual bool Terminate() = 0;
 
     virtual void BeginDraw() = 0;
-    virtual void PostProcess() = 0;
+    virtual void FinishDeferred() = 0;
     virtual void EndDraw() = 0;
     
-    virtual DrawPrimitives* Primitives() = 0;
-    virtual TextureManager* Textures() = 0;
+    virtual void SetCamera( Camera* camera ) = 0;
+    virtual Camera* GetCamera() = 0;
 
-    virtual glm::vec2 GetWindowSize() = 0;
+    virtual DrawPrimitives* Primitives() = 0;
+    virtual DrawMesh* Mesh() = 0;
+    virtual TextureManager* Textures() = 0;
+    virtual LightSystem3D* Lighting() = 0;
+
+    virtual glm::ivec2 GetWindowSize() = 0;
 };
 
 class NullRenderer : public IRenderer {
 public:    
     bool Initialize() { return true; };
     bool Terminate() { return true; };
+    
     void BeginDraw() {};
-    void PostProcess() {};
+    void FinishDeferred() {};
     void EndDraw() {};
     
-    DrawPrimitives* Primitives() { return NULL; };
-    TextureManager* Textures() { return NULL; };
+    void SetCamera( Camera* camera ) {};
+    Camera* GetCamera() { return nullptr; };
+    
+    DrawPrimitives* Primitives() { return nullptr; };
+    DrawMesh* Mesh() { return nullptr; };
+    TextureManager* Textures() { return nullptr; };
+    LightSystem3D* Lighting() {return nullptr; };
 
-    glm::vec2 GetWindowSize() { return glm::vec2(1,1); };
+    glm::ivec2 GetWindowSize() { return glm::ivec2(1,1); };
 };
 
 #endif

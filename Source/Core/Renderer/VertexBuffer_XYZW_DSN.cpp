@@ -10,7 +10,7 @@
 #include "GLErrorUtil.h"
 #include <cstring>
 
-VertexBuffer_XYZW_DSN::VertexBuffer_XYZW_DSN(uint16_t count) :
+VertexBuffer_XYZW_DSN::VertexBuffer_XYZW_DSN(int count) :
 bufferMax(count),
 bufferCount(0)
 {
@@ -19,22 +19,21 @@ bufferCount(0)
     glGenVertexArrays(1, &vao);
     glGenBuffers(1, &vbo);
     
-    glBindVertexArray(vao);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    Bind();
     
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
     glEnableVertexAttribArray(2);
     glEnableVertexAttribArray(3);
-
+    
     glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex_XYZW_DSN), 0);
     glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex_XYZW_DSN), (GLvoid*)(4*sizeof(GLfloat)));
-    glVertexAttribPointer(1, 1, GL_FLOAT, GL_FALSE, sizeof(Vertex_XYZW_DSN), (GLvoid*)(8*sizeof(GLfloat)));
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex_XYZW_DSN), (GLvoid*)(9*sizeof(GLfloat)));
-    
+    glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, sizeof(Vertex_XYZW_DSN), (GLvoid*)(8*sizeof(GLfloat)));
+    glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex_XYZW_DSN), (GLvoid*)(9*sizeof(GLfloat)));
+
     glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex_XYZW_DSN)*bufferMax, NULL, GL_STATIC_DRAW);
     
-    check_gl_error();
+    CHECK_GL_ERROR();
     
     glBindVertexArray(0);
 }
@@ -44,7 +43,7 @@ VertexBuffer_XYZW_DSN::~VertexBuffer_XYZW_DSN()
     glDeleteBuffers(1, &vbo);
     glDeleteVertexArrays(1, &vao);
     delete [] buffer;
-    buffer = NULL;
+    buffer = nullptr;
 }
 
 void VertexBuffer_XYZW_DSN::Buffer(Vertex_XYZW_DSN& vert)
@@ -54,9 +53,9 @@ void VertexBuffer_XYZW_DSN::Buffer(Vertex_XYZW_DSN& vert)
     bufferCount++;
 }
 
-void VertexBuffer_XYZW_DSN::Buffer(Vertex_XYZW_DSN& verts, uint16_t count)
+void VertexBuffer_XYZW_DSN::Buffer(Vertex_XYZW_DSN& verts, int count)
 {
-    if ( bufferCount+count == bufferMax ) return;
+    if ( bufferCount+count > bufferMax ) return;
     memcpy( &buffer[bufferCount], &verts, sizeof(Vertex_XYZW_DSN)*count);
     bufferCount += count;
 }
@@ -81,5 +80,14 @@ void VertexBuffer_XYZW_DSN::Unbind()
 void VertexBuffer_XYZW_DSN::Clear()
 {
     bufferCount = 0;
+}
+
+void VertexBuffer_XYZW_DSN::Resize(const int numVerts)
+{
+    bufferCount = 0;
+    bufferMax = numVerts;
+    
+    delete buffer;
+    buffer = new Vertex_XYZW_DSN[numVerts];
 }
 

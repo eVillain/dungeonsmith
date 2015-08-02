@@ -25,21 +25,23 @@ typedef struct {
 class VertexBuffer_XYZW_DSN {
 public:
     
-    VertexBuffer_XYZW_DSN(uint16_t numVerts);
+    VertexBuffer_XYZW_DSN(int numVerts);
     ~VertexBuffer_XYZW_DSN();
     void Buffer(Vertex_XYZW_DSN& vert);
-    void Buffer(Vertex_XYZW_DSN& verts, uint16_t count);
+    void Buffer(Vertex_XYZW_DSN& verts, int count);
     void Bind();
     void Upload();
     void Unbind();
     void Clear();
-    const uint16_t Count() { return bufferCount; };
+    void Resize( const int numVerts );
+    const int MaxSize() { return bufferMax; };
+    const int Count() { return bufferCount; };
 private:
     Vertex_XYZW_DSN* buffer;
     GLuint vao;
     GLuint vbo;
-    uint16_t bufferMax;
-    uint16_t bufferCount;
+    int bufferMax;
+    int bufferCount;
 };
 
 #endif /* defined(__DungeonSmith__VertexBuffer_XYZW_DSN__) */

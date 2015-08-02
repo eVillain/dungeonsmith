@@ -8,6 +8,9 @@
 
 #include "Locator.h"
 
+#include "GUIManager.h"
+
+
 NullRenderer Locator::_nullRenderService;
 NullText Locator::_nullTextService;
 
@@ -15,5 +18,7 @@ NullText Locator::_nullTextService;
 IRenderer* Locator::_renderService = &_nullRenderService;
 IText* Locator::_textService = &_nullTextService;
 SceneManager Locator::_sceneManager;
-HyperVisor* Locator::_hv = NULL;
+HyperVisor* Locator::_hv = nullptr;
 
+ThreadPool* Locator::_threadPool = nullptr;
+GUI::GUIManager Locator::_guiManager;

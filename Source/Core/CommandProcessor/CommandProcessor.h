@@ -29,7 +29,7 @@
 // CommandProcessor::AddCommand("commandName2", InstanceCommand<ClassName*,std::string>(&ClassName::MemberFunction, instancePtr));
 // CommandProcessor::Execute("commandName2", std::string("This string gets passed to the function"));
 //
-// TODO: Make cool macros to simplify usage of this class
+// TODO: Make cool macros to simplify usage of this class, something like:
 //#define ADD_COMMAND(name,class,type1,function) CommandProcessor::AddCommand(name, Command<type1>(function));
 //#define ADD_INSTANCECOMMAND(name,type1,function,instance) CommandProcessor::AddCommand(name, InstanceCommand<class*,type1>(&class::function, instance));
 
@@ -139,7 +139,7 @@ public:
     // Process and execute the given command
     static void Process( std::string command );
     // Buffer raw text into the buffer
-    static void Buffer( std::string input );
+    static void Buffer( const std::string input );
     // Buffer command-line arguments into buffer
     static void Buffer( int argc, char * arg[] );
     

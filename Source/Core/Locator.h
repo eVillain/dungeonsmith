@@ -15,6 +15,9 @@
 #include "HyperVisor.h"
 #include "IText.h"
 #include "SceneManager.h"
+#include "Camera.h"
+#include "GUIManager.h"
+#include "ThreadPool.h"
 
 class Locator {
 public:
@@ -24,6 +27,8 @@ public:
     static IText& getText() { return *_textService; };
     static SceneManager& getSceneManager() { return _sceneManager; };
     
+    static GUI::GUIManager& getGUI() { return _guiManager; };
+    static ThreadPool& getThreadPool() { return *_threadPool; };
     
     // Setters for configuring services
     static void provideRenderer(IRenderer* service)
@@ -46,6 +51,10 @@ public:
     {
         _hv = service;
     }
+    static void provideThreadPool(ThreadPool* service)
+    {
+        _threadPool = service;
+    }
     
 private:
     // Renderer
@@ -59,6 +68,11 @@ private:
     static SceneManager _sceneManager;
     // Hypervisor, should be removed for release build
     static HyperVisor* _hv;
+    // Thread pool
+    static ThreadPool* _threadPool;
+    
+    static GUI::GUIManager _guiManager;
 };
 
 #endif /* defined(NGN_LOCATOR_H) */
+

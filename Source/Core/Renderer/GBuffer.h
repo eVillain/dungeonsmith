@@ -20,12 +20,17 @@ public:
     void Clear();
     void UnBind();
 
+    void BindDraw();
+    void BindRead();
+    
     void Resize( GLuint width, GLuint height );
     
-    GLuint GetDiffuse() { return _diffuse; };
-    GLuint GetSpecular() { return _specular; };
-    GLuint GetDepth() { return _depth; };
-    GLuint GetNormal() { return _normal; };
+    const GLuint GetFBO() const { return _fbo; };
+    
+    const GLuint GetDiffuse() const { return _diffuse; };
+    const GLuint GetSpecular() const { return _specular; };
+    const GLuint GetDepth() const { return _depth; };
+    const GLuint GetNormal() const { return _normal; };
     
 private:
     GLuint _width;

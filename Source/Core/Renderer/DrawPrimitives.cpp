@@ -7,6 +7,7 @@
 //
 
 #include "DrawPrimitives.h"
+#include "Locator.h"
 #include "Renderer.h"
 #include "MatrixUtil.h"
 
@@ -16,37 +17,22 @@
 
 const glm::mat4 screenMVP = glm::ortho<GLfloat>(-0.5, 0.5, -0.5, 0.5, -1.0, 1.0);
 
-static const Vertex_XYZW_UV squareVerts[4] = {
-    -0.5,-0.5, 0.0, 1.0, 0.0, 0.0,  // BL
-     0.5,-0.5, 0.0, 1.0, 1.0, 0.0,  // BR
-     0.5, 0.5, 0.0, 1.0, 1.0, 1.0,  // TR
-    -0.5, 0.5, 0.0, 1.0, 0.0, 1.0,  // TL
-};
-
-DrawPrimitives::DrawPrimitives(Renderer* renderer)
+void DrawPrimitives::Initialize()
 {
-    _renderer = renderer;
     lineBuffer = new VertexBuffer_XYZW_RGBA(1024);  // TODO: Define default line buffer size
-    polyBuffer = new VertexBuffer_XYZW_RGBA(1024);  //      As above, so below
+    polyBuffer = new VertexBuffer_XYZW_RGBA(1024);  // As above, so below
     texturedPolyBuffer = new VertexBuffer_XYZW_UV(1024);
-    
-    unitSquareBuffer = new VertexBuffer_XYZW_UV(4);
-    unitSquareBuffer->Bind();
-    unitSquareBuffer->Buffer(*squareVerts, 4);
-    unitSquareBuffer->Upload();
-    unitSquareBuffer->Unbind();
+
     
     forward_vColor_shader = ShaderFactory::LoadFromFile("forward_color.fsh", "forward_vColor.vsh");
-    forward_vTex_uColor_shader = ShaderFactory::LoadFromFile("forward_tex.fsh", "forward_vTex_uColor.vsh");
+    forward_vTex_uColor_shader = ShaderFactory::LoadFromFile("forward_tex_color.fsh", "forward_vTex_uColor.vsh");
 }
 
-DrawPrimitives::~DrawPrimitives()
+void DrawPrimitives::Terminate()
 {
-    _renderer = NULL;
     delete lineBuffer;
     delete polyBuffer;
     delete texturedPolyBuffer;
-    delete unitSquareBuffer;
     
     ShaderFactory::ClearShader(forward_vColor_shader);
     ShaderFactory::ClearShader(forward_vTex_uColor_shader);
@@ -58,7 +44,7 @@ void DrawPrimitives::Render()
 {
     forward_vColor_shader->Begin();
     glm::mat4 mvp;
-    glm::vec2 windowSize = _renderer->GetWindowSize();
+    glm::vec2 windowSize = Locator::getRenderer().GetWindowSize();
     MatrixUtil::GetUIMatrix(mvp, windowSize.x, windowSize.y);
 
     forward_vColor_shader->setUniformM4fv("MVP", mvp);
@@ -105,21 +91,21 @@ void DrawPrimitives::RectOutline(const glm::vec2 position,
     const float halfWidth = size.x/2.0;
     const float halfHeight = size.y/2.0;
     Vertex_XYZW_RGBA verts[8] = {
-        position.x-halfWidth,position.y+halfHeight,z,1.0,   // top-left
+        position.x-(halfWidth-1),position.y+(halfHeight-1),z,1.0,   // top-left
+        color.r,color.g,color.b,color.a,
+        position.x-(halfWidth-1),position.y-(halfHeight-1),z,1.0,   // bottom-left
         color.r,color.g,color.b,color.a,
         position.x-halfWidth,position.y-halfHeight,z,1.0,   // bottom-left
         color.r,color.g,color.b,color.a,
-        position.x-halfWidth,position.y-halfHeight,z,1.0,   // bottom-left
-        color.r,color.g,color.b,color.a,
-        position.x+halfWidth,position.y-halfHeight,z,1.0,   // bottom-right
+        position.x+(halfWidth-1),position.y-halfHeight,z,1.0,   // bottom-right
         color.r,color.g,color.b,color.a,
         position.x+halfWidth,position.y-halfHeight,z,1.0,   // bottom-right
         color.r,color.g,color.b,color.a,
         position.x+halfWidth,position.y+halfHeight,z,1.0,   // top-right
         color.r,color.g,color.b,color.a,
-        position.x+halfWidth,position.y+halfHeight,z,1.0,   // top-right
+        position.x+(halfWidth-1),position.y+halfHeight,z,1.0,   // top-right
         color.r,color.g,color.b,color.a,
-        position.x-halfWidth,position.y+halfHeight,z,1.0,   // top-left
+        position.x-halfWidth,position.y+halfHeight-1,z,1.0,   // top-left
         color.r,color.g,color.b,color.a,
     };
     lineBuffer->Buffer( *verts, 8 );
@@ -176,8 +162,8 @@ void DrawPrimitives::RectangleGradientX(const glm::vec2 position,
 
 void DrawPrimitives::RectangleGradientY(const glm::vec2 position,
                                         const glm::vec2 size,
-                                        const Color& colorBottom,
                                         const Color& colorTop,
+                                        const Color& colorBottom,
                                         const float z)
 {
     const float halfWidth = size.x/2.0;
@@ -263,7 +249,7 @@ void DrawPrimitives::Texture(const Rect2D rect,
     glBindTexture(GL_TEXTURE_2D, tex);
     forward_vTex_uColor_shader->Begin();
     glm::mat4 mvp;
-    glm::vec2 windowSize = _renderer->GetWindowSize();
+    glm::vec2 windowSize = Locator::getRenderer().GetWindowSize();
     MatrixUtil::GetUIMatrix(mvp, windowSize.x, windowSize.y);
 
     forward_vTex_uColor_shader->setUniformM4fv("MVP", mvp);
@@ -277,22 +263,6 @@ void DrawPrimitives::Texture(const Rect2D rect,
     texturedPolyBuffer->Clear();
     texturedPolyBuffer->Unbind();
     
-    forward_vTex_uColor_shader->End();
-    glBindVertexArray(0);
-}
-
-void DrawPrimitives::TextureFullScreen( const GLuint tex ) {
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, tex);
-    
-    forward_vTex_uColor_shader->Begin();
-    forward_vTex_uColor_shader->setUniformM4fv("MVP", screenMVP);
-    forward_vTex_uColor_shader->setUniform4fv("uColor", COLOR_WHITE);
-    forward_vTex_uColor_shader->setUniform1iv("textureMap", 0);
-    
-    unitSquareBuffer->Bind();
-    glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
-    unitSquareBuffer->Unbind();
     forward_vTex_uColor_shader->End();
     glBindVertexArray(0);
 }

@@ -15,17 +15,14 @@
 #include "VertexBuffer_XYZW_UV.h"
 #include "Rect2D.h"
 
-class Renderer;
 class Shader;
 
 class DrawPrimitives {
-    
-    
 public:
-    DrawPrimitives(Renderer* renderer);
-    ~DrawPrimitives();
+    void Initialize();
+    void Terminate();
     
-    // Drawing
+    // 2D Drawing functions
     void Line(const glm::vec2& a,
               const glm::vec2& b,
               const Color& aColor,
@@ -48,8 +45,8 @@ public:
                             float z=0.0);
     void RectangleGradientY(const glm::vec2 position,
                             const glm::vec2 size,
-                            const Color& colorBottom,
                             const Color& colorTop,
+                            const Color& colorBottom,
                             float z=0.0);
     
     
@@ -66,15 +63,11 @@ public:
                  const float z,
                  const Color& color);
     
-    void TextureFullScreen( const GLuint tex );
-
     void Render();
 private:
-    Renderer* _renderer;
     VertexBuffer_XYZW_RGBA * lineBuffer;
     VertexBuffer_XYZW_RGBA * polyBuffer;
     VertexBuffer_XYZW_UV * texturedPolyBuffer;
-    VertexBuffer_XYZW_UV * unitSquareBuffer;
     
     Shader* forward_vColor_shader;
     Shader* forward_vTex_uColor_shader;

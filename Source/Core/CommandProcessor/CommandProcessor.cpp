@@ -126,7 +126,7 @@ void CommandProcessor::Process( std::string command )
     }
 }
 
-void CommandProcessor::Buffer( std::string input )
+void CommandProcessor::Buffer( const std::string input )
 {
     // Add lines to end of our queue
     StringUtil::SplitIntoLines(input, commandBuffer);

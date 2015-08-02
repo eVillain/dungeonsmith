@@ -14,12 +14,12 @@
 #include "Timer.h"
 
 Camera::Camera() {
-    fieldOfView = 60.0f;
-    nearDepth = 0.1f;
-    farDepth = 250.1f;
+    fieldOfView = 90.0f;
+    nearDepth = 0.01f;
+    farDepth = 50.0f;
     focalDepth = 6.0;
     focalLength = 30.0;
-    fStop = 10.1f;
+    fStop = 10.0f;
     exposure = 4.0f;
     debugLens = false;
     autoFocus = false;
@@ -33,11 +33,11 @@ Camera::Camera() {
     rotationSensitivity = glm::vec2(20.0f,20.0f);
     speed = glm::vec3(0.0f, 0.0f, 0.0f);
     movement = glm::vec3(0.0f,0.0f,0.0f);
-    movementSpeedFactor = 20.0f;
+    movementSpeedFactor = 1.0f;
     
-    targetPosition = glm::vec3(0.0f,8.0f,-8.0f);
+    targetPosition = glm::vec3(0.0f,0.0f,0.0f);
     targetRotation = glm::vec3(0.0f,0.0f,0.0f);
-    elasticMovement = true;
+    elasticMovement = false;
     autoRotate = false;
     thirdPerson = false;
     physicsClip = true;
@@ -111,6 +111,8 @@ void Camera::Update( double delta ) {
         shakeAmount *= shakeDecay;
         if ( fabsf(shakeAmount) < 0.01f ) { shakeAmount = 0.0f; shakeVect = glm::vec3(); }
     }
+    
+//    printf("Camera: %f,%f,%f - %f,%f,%f\n", position.x, position.y, position.z, rotation.x, rotation.y, rotation.z);
 }
 // Function to deal with mouse position changes, called whenever the mouse cursor moves
 void Camera::CameraRotate( const float rotX, const float rotY ) {
@@ -119,20 +121,20 @@ void Camera::CameraRotate( const float rotX, const float rotY ) {
     rotation.y += rotX;
     
     // Control looking up and down with the mouse forward/back movement
-    MathUtils::Clamp(rotation.x, -90.0f, 90.0f);
+    MathUtils::Clamp((double)rotation.x, (double)-M_PI_2, (double)M_PI_2);
     
     // Looking left and right. Keep the angles in the range -180.0f (anticlockwise turn looking behind) to 180.0f (clockwise turn looking behind)
-    if (rotation.y < -180.0f) {
-        rotation.y += 360.0f;
+    if (rotation.y < -M_PI) {
+        rotation.y += 2*M_PI;
     }
-    if (rotation.y > 180.0f) {
-        rotation.y -= 360.0f;
+    if (rotation.y > M_PI) {
+        rotation.y -= 2*M_PI;
     }
     targetRotation = rotation;
 }
 
 // Function to calculate which direction we need to move the camera and by what amount
-void Camera::CalculateCameraMovement(glm::vec3 direction) {
+void Camera::CalculateCameraMovement(const glm::vec3& direction) {
     // Break up our movement into components along the X, Y and Z axis
     float camMovementXComponent = 0.0f;
     float camMovementYComponent = 0.0f;
@@ -140,18 +142,18 @@ void Camera::CalculateCameraMovement(glm::vec3 direction) {
     // Forward/backward movement
     if (direction.z != 0.0f) {
         // Control X-Axis movement
-        float pitchFactor = cos(MathUtils::ToRadians(rotation.x));
-        camMovementXComponent += ( movementSpeedFactor * float(sin(MathUtils::ToRadians(rotation.y))) * direction.z ) * pitchFactor;
+        float pitchFactor = cos(rotation.x);
+        camMovementXComponent += ( movementSpeedFactor * float(sin((rotation.y))) * direction.z ) * pitchFactor;
         // Control Y-Axis movement
-        camMovementYComponent += movementSpeedFactor * float(sin(MathUtils::ToRadians(rotation.x))* -direction.z );
+        camMovementYComponent += movementSpeedFactor * float(sin((rotation.x))* -direction.z );
         // Control Z-Axis movement
-        float yawFactor = (cos(MathUtils::ToRadians(rotation.x)));
-        camMovementZComponent += ( movementSpeedFactor * float(cos(MathUtils::ToRadians(rotation.y))) * direction.z ) * yawFactor;
+        float yawFactor = (cos((rotation.x)));
+        camMovementZComponent += ( movementSpeedFactor * float(cos((rotation.y))) * direction.z ) * yawFactor;
     }
     // Strafing
     if ( direction.x !=  0.0f ) {
         // Calculate our Y-Axis rotation in radians once here because we use it twice
-        float yRotRad = MathUtils::ToRadians(rotation.y);
+        float yRotRad = (rotation.y);
         camMovementXComponent +=  movementSpeedFactor * float(cos(yRotRad)) * direction.x;
         camMovementZComponent +=  movementSpeedFactor * float(sin(yRotRad)) * -direction.x;
     }

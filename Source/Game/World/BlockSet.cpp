@@ -1,9 +1,9 @@
 //
-//  UIManager.cpp
+//  BlockSet.cpp
 //  DungeonSmith
 //
-//  Created by The Drudgerist on 12/05/15.
+//  Created by eVillain on 01/08/15.
 //  Copyright (c) 2015 The Drudgerist. All rights reserved.
 //
 
-#include "UIManager.h"
+#include "BlockSet.h"

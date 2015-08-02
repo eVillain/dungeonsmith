@@ -17,6 +17,13 @@ typedef struct Color {
     { return (r==rhs.r&&g==rhs.g&&b==rhs.b&&a==rhs.a); }
     inline bool operator!=(const Color& rhs)
     { return (r!=rhs.r||g!=rhs.g||b!=rhs.b||a!=rhs.a); }
+    inline Color& operator*=(const float& rhs)
+    {
+        r *= rhs;
+        g *= rhs;
+        b *= rhs;
+        return *this;
+    }
 } Color;
 
 static inline Color RGBAByteColor(GLuint r, GLuint g, GLuint b, GLuint a){
@@ -33,6 +40,7 @@ static inline Color LAColor(GLfloat l, GLfloat a){
 	return color;
 }
 
+/* --- PRIMARY COLORS --- */
 const Color COLOR_NONE = {0.0f, 0.0f, 0.0f, 0.0f};
 const Color COLOR_BLACK = {0.0f, 0.0f, 0.0f, 1.0f};
 const Color COLOR_WHITE = {1.0f, 1.0f, 1.0f, 1.0f};
@@ -48,15 +56,17 @@ const Color COLOR_CYAN = {0.0f, 1.0f, 1.0f, 1.0f};
 const Color COLOR_ORANGE = {1.0f,0.5f,0.0f,1.0f};
 const Color COLOR_BROWN = {0.59f, 0.29f, 0.0f, 1.0f};
 
+/* --- GUI COLORS --- */
 const Color COLOR_UI_TEXT = {0.5f,0.5f,0.5f,1.0f};
 const Color COLOR_UI_TEXT_ACTIVE = {0.5f,0.5f,0.8f,1.0f};
 const Color COLOR_UI_TEXT_HIGHLIGHT = {0.8f,0.8f,1.0f,1.0f};
 
-const Color COLOR_UI_BORDER1 = {0.0f,0.0f,0.0f,1.0f};
-const Color COLOR_UI_BORDER2 = {1.0f,1.0f,1.0f,0.1f};
-const Color COLOR_UI_GRADIENT1 = {0.3125f,0.3125f,0.3125f,1.0f};
-const Color COLOR_UI_GRADIENT2 = {0.25f,0.25f,0.25f,1.0f};
+const Color COLOR_UI_BORDER_OUTER = {0.0f,0.0f,0.0f,1.0f};
+const Color COLOR_UI_BORDER_INNER = {1.0f,1.0f,1.0f,0.25f};
+const Color COLOR_UI_GRADIENT_TOP = {0.3125f,0.3125f,0.3125f,1.0f};
+const Color COLOR_UI_GRADIENT_BOTTOM = {0.25f,0.25f,0.25f,1.0f};
 
+/* --- OTHER RANDOM COLORS --- */
 const Color COLOR_FOG_DEFAULT = {0.5f, 0.6f, 0.8f, 1.0f};
 
 const Color COLOR_BLOCK_LEAVES = {0.05f, 0.6f, 0.1f, 0.8f};
@@ -106,7 +116,5 @@ const Color COLOR_SELECT  = {0.4f,0.6f,1.0f,1.0f};
 
 const Color COLOR_BB = { 0.3f, 0.5f, 0.3f, 1.0f };
 const Color COLOR_DEFAULT_LIGHT = {1.0f, 1.0f, 0.9f, 1.0f};
-
-const Color COLOR_BULLET = { 1.0f, 1.0f, 0.0f, 1.0f };
 
 #endif

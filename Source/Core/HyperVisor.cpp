@@ -16,6 +16,8 @@
 #include "TextManager.h"
 #include "FileUtil.h"
 #include "Scene.h"
+#include "GUIManager.h"
+#include "ThreadPool.h"
 
 HyperVisor::HyperVisor() :
 quit(false),
@@ -39,6 +41,11 @@ void HyperVisor::Initialize(int argc, char * arg[])
         // the engine subsystems can register commands in their initializers.
         CommandProcessor::Initialize();
 
+        const int hwThreads = std::thread::hardware_concurrency();
+		const int numThreads = (2*hwThreads)-1;
+
+        ThreadPool* threadPool = new ThreadPool(numThreads);
+        
         Input::Initialize();
         Input::RegisterEventObserver(&eventFunctor);
         Console::Initialize();
@@ -52,6 +59,7 @@ void HyperVisor::Initialize(int argc, char * arg[])
         
         // Pass the engine subsystems references to our Service Locator
         Locator::provideHyperVisor(this);
+        Locator::provideThreadPool(threadPool);
         Locator::provideRenderer(renderer);
         Locator::provideText(textMan);
         
@@ -72,15 +80,19 @@ void HyperVisor::Terminate()
         
         Console::Terminate();
         
+        ThreadPool* threadPool = &Locator::getThreadPool();
+        delete threadPool;
+        
         IRenderer* renderer = &Locator::getRenderer();
         delete renderer;
         
         IText* textMan = &Locator::getText();
         delete textMan;
         
-        Locator::provideHyperVisor(NULL);
-        Locator::provideRenderer(NULL);
-        Locator::provideText(NULL);
+        Locator::provideHyperVisor(nullptr);
+        Locator::provideThreadPool(nullptr);
+        Locator::provideRenderer(nullptr);
+        Locator::provideText(nullptr);
         
         initialized = false;
     }
@@ -89,37 +101,40 @@ void HyperVisor::Terminate()
 int HyperVisor::Run()
 {
     double timeAtThisFrameStart = 0.0;
+    timeAtLastFrameStart = Timer::Seconds();
     double deltaTime = 0.0;
     while (!quit)
     {
-        timeAtThisFrameStart = Timer::Milliseconds();
-        deltaTime = timeAtLastFrameStart - timeAtThisFrameStart;
+        timeAtThisFrameStart = Timer::Seconds();
+        deltaTime = timeAtThisFrameStart - timeAtLastFrameStart;
         timeAtLastFrameStart = timeAtThisFrameStart;
         
         // --- Update stuff --- //
         Input::ProcessInput();
-        
         CommandProcessor::Update(deltaTime);
         
+        Locator::getGUI().Update(deltaTime);
+
         Scene& currentScene = Locator::getSceneManager().GetActiveScene();
         currentScene.Update(deltaTime);
         
         Locator::getText().Update(deltaTime);
 
-        // --- Render stuff --- //
+        // --- Render stuff, deferred 3D first --- //
         Locator::getRenderer().BeginDraw();
 
         currentScene.Draw();
-        // Test drawing
-//        Locator::getRenderer().Primitives()->Line(glm::vec2(), glm::vec2(10,10), COLOR_RED, COLOR_BLUE);
-//        Locator::getRenderer().Primitives()->Circle(glm::vec2(-20,-20), 0.0, 20.0, COLOR_YELLOW);
-//        Locator::getRenderer().Primitives()->Rectangle(glm::vec2(100,100), glm::vec2(40,30), COLOR_GREEN, 1.0);
+        
+        Locator::getText().Render3D();
 
-        Locator::getRenderer().PostProcess();
+        // --- Finish deferred render and switch to forward render --- //
+        Locator::getRenderer().FinishDeferred();
+        
+        Locator::getGUI().Draw();
         
         Console::Draw(deltaTime);
-        
-        Locator::getText().RenderLabels();
+
+        Locator::getText().Render2D();
         
         Locator::getRenderer().EndDraw();
     }
@@ -135,13 +150,14 @@ void HyperVisor::Stop(const int reason)
 
 // Low level events - we will try to make sure that we can always access the
 // console or at least back to the main menu so we can quit :)
-void HyperVisor::OnEvent( typeInputEvent event, float amount )
+bool HyperVisor::OnEvent( const typeInputEvent& event, const float& amount )
 {
-    if ( amount != -1 ) return; // We only care for key/button release events here
+    if ( amount != -1 ) return false; // We only care for key/button release events here
     
     if ( event == "console" )
     {
         if ( !Console::isVisible() ) Console::ToggleVisibility();
+        return true;
     }
     else if ( event == "back" )
     {
@@ -149,6 +165,8 @@ void HyperVisor::OnEvent( typeInputEvent event, float amount )
         { Console::ToggleVisibility(); }
         else
         { Stop(); } // For now we stop TODO: change this to pop the previous scene
+        return true;
     }
+    return false;
 }
 

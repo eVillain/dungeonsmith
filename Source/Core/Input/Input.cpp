@@ -10,27 +10,17 @@
 #include "Input.h"
 #include "Locator.h"
 #include "CommandProcessor.h"
+#include "StringUtil.h"
 
-std::map<std::string, typeInputEvent> Input::InputBindings;      // Map of inputs to events
+std::map<std::string, typeInputEvent> Input::InputBindings;
 std::vector<EventFunctorBase*> Input::eventObserverList;
-
+std::vector<MouseFunctorBase*> Input::mouseObserverList;
 
 void Input::Initialize() {
     // Add our binding mechanic to our console commands
     CommandProcessor::AddCommand("bind", Command<std::string,std::string>(Input::Bind));
 
-    // Bind escape key to "back" action
-    Bind("Escape", "back");
-    // Bind return key to "start" action
-    Bind("Return", "start");
-    // Bind delete and backspace for text input
-    Bind("Delete", "deleteRight");
-    Bind("BackSpace", "deleteLeft");
-
-    // Bind P key to "Pause" action
-    Bind("P", "pause");
-    // Bind ` key to "ShowConsole" action
-    Bind("C", "console");
+    SetDefaultBindings();
 }
 
 void Input::Terminate() {
@@ -42,6 +32,7 @@ void Input::Terminate() {
 void Input::RegisterEventObserver( EventFunctorBase* observer ) {
     eventObserverList.push_back( observer );
 }
+
 void Input::UnRegisterEventObserver( EventFunctorBase* observer ) {
     // Try to find observer in list
     bool found = false;
@@ -56,10 +47,26 @@ void Input::UnRegisterEventObserver( EventFunctorBase* observer ) {
         printf("[Input] tried to unregister non-existent EventObserver functor\n");
     }
 }
+
+void Input::RegisterMouseObserver( MouseFunctorBase* observer ) {
+    mouseObserverList.push_back( observer );
+}
+
+
+void Input::UnRegisterMouseObserver( MouseFunctorBase* observer ) {
+    std::vector<MouseFunctorBase*>::iterator it = std::find(mouseObserverList.begin(), mouseObserverList.end(), observer);
+    if ( it != mouseObserverList.end() )
+    {
+        mouseObserverList.erase(it);
+    }
+}
+
+
 void Input::Bind( std::string input, std::string event ) {
     printf("[Input] binding %s to %s\n", input.c_str(), event.c_str());
     InputBindings[input] = event;
 }
+
 /* Print modifier info */
 void PrintModifiers( Uint32 mod ){
     printf( "Modifers: " );
@@ -128,40 +135,102 @@ void Input::ProcessInput() {
             // Range -1.0 ~ 1.0
             float amount = 0.0f;
             std::string input;
-            /* We are only worried about SDL_KEYDOWN and SDL_KEYUP events for now */
+            /* -- SDL EVENT TYPES ARE IMPLEMENTED HERE -- */
             switch( event.type ){
                 case SDL_KEYDOWN:
-                    amount = 1.0f;
-                    input = SDL_GetKeyName( event.key.keysym.sym );
+                    if ( event.key.repeat == 0 ) {
+                        amount = 1.0f;
+                        input = SDL_GetKeyName( event.key.keysym.sym );
+                    }
                     break;                    
                 case SDL_KEYUP:
+                    if ( event.key.repeat == 0 ) {
+                        amount = -1.0f;
+                        input = SDL_GetKeyName( event.key.keysym.sym );
+                    }
+                    break;
+                case SDL_MOUSEMOTION:
+                {
+                    glm::ivec2 adjustedCoords = ConvertSDLCoordToScreen(event.motion.x, event.motion.y);
+                    for ( MouseFunctorBase* func : mouseObserverList )
+                    {
+                        bool swallowed = (*func)( adjustedCoords.x, adjustedCoords.y );
+                        if ( swallowed ) // Event was swallowed, don't propagate
+                        {
+                            break;
+                        }
+                    }
+                    break;
+                }
+                case SDL_MOUSEBUTTONDOWN:
+                    amount = 1.0f;
+                    input = "MouseButton" + StringUtil::IntToString(event.button.button);
+                    break;
+                case SDL_MOUSEBUTTONUP:
                     amount = -1.0f;
-                    input = SDL_GetKeyName( event.key.keysym.sym );
+                    input = "MouseButton" + StringUtil::IntToString(event.button.button);
+                    break;
+                case SDL_MOUSEWHEEL:
+//                    event.wheel.
                     break;
                 default:
                     break;
             }
+            // Regular events
             if ( input.length() )
             {
-                printf("Input: %s\n", input.c_str());
+//                printf("Input: %s\n", input.c_str());
                 if ( InputBindings.find(input) != InputBindings.end() )
                 {
-                    printf("Bound to: %s\n", InputBindings[input].c_str());
-                    if ( eventObserverList.size() )
+//                    printf("Bound to: %s\n", InputBindings[input].c_str());
+                    for ( EventFunctorBase* func : eventObserverList )
                     {
-                        (*eventObserverList[0])( InputBindings[input], amount );
+                        bool swallowed = (*func)( InputBindings[input], amount );
+                        if ( swallowed ) // Event was swallowed, don't propagate
+                        {
+                            break;
+                        }
                     }
                 }
             }
+            
         }
     }
 }
 
-//========================================================================
-// Mouse coordinate translations
-//========================================================================
-void Input::MouseToUI(double *x, double *y) {
-    int scrnWidth, scrnHeight;
-    *y = (scrnHeight-*y) - scrnHeight/2;
-    *x -= scrnWidth/2;
+void Input::SetDefaultBindings()
+{
+    // Bind escape key to "back" action
+    Bind("Escape", "back");
+    // Bind return key to "start" action
+    Bind("Return", "start");
+    // Bind delete and backspace for text input
+    Bind("Delete", "deleteRight");
+    Bind("BackSpace", "deleteLeft");
+    
+    Bind("Up", "lookup");
+    Bind("Down", "lookdown");
+    Bind("Left", "lookleft");
+    Bind("Right", "lookright");
+    Bind("W", "moveforward");
+    Bind("A", "moveleft");
+    Bind("S", "moveback");
+    Bind("D", "moveright");
+    
+    Bind("Left Shift", "run");
+    Bind("Left Option", "sneak");
+
+    // Bind P key to "Pause" action
+    Bind("P", "pause");
+    // Bind ` key to "ShowConsole" action
+    Bind("C", "console");
+    
+    // Mouse bindings
+    Bind("MouseButton1", "shoot");
+}
+
+glm::ivec2 Input::ConvertSDLCoordToScreen( int x, int y )
+{
+    glm::ivec2 windowSize = Locator::getRenderer().GetWindowSize();
+    return glm::ivec2(x - windowSize.x*0.5, y - windowSize.y*0.5);
 }

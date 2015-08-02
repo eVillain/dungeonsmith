@@ -21,13 +21,14 @@ public:
     
     int Run();
     void Stop(const int errorCode=0); // TODO: Add reason for stop as parameter for error handling
+    
 private:
     double timeAtLastFrameStart;
     int errorCode;
     bool quit;
     bool initialized;
     EventFunctor<HyperVisor> eventFunctor;
-    void OnEvent( typeInputEvent event, float amount );
+    bool OnEvent( const typeInputEvent& theEvent, const float& amount );
 };
 
 #endif /* defined(NGN_HYPERVISOR_H) */

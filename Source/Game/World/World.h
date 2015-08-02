@@ -9,12 +9,12 @@
 #ifndef __DungeonSmith__World__
 #define __DungeonSmith__World__
 
-#include "Chunk.h"
-#include "ChunkUtil.h"
 #include "RenderDefines.h"
-#include <unordered_map>
+#include "Light3D.h"
+#include "ChunkManager.h"
 
-
+class Camera;
+class SkyDome;
 
 class World {
 public:
@@ -22,10 +22,14 @@ public:
     void Terminate();
     
     void Update( double deltaTime );
-    
+    void Draw();
+    Camera& GetCamera() { return _camera; };
 private:
-    typedef std::unordered_map<glm::ivec3, Chunk*, ChunkUtil::Hash, ChunkUtil::Equals> ChunkMap;
-    ChunkMap chunks;
+    ChunkManager _chunks;
+    SkyDome* skyDome;
+    Light3D _sunLight;
+    Camera _camera;
+
 };
 
 #endif /* defined(__DungeonSmith__World__) */

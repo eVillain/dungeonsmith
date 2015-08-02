@@ -27,6 +27,8 @@
 #include "Timer.h"
 #include "FileUtil.h"
 
+#include "TextLabel.h"
+
 inline void VarLoadGuard( void ) {
     bool b = true;
     int i = 1;
@@ -212,8 +214,7 @@ void Console::PrintString( std::string text, Color col ) {
     AddMessage( timeS , col );
 }
 void Console::AddMessage( std::string text, Color col ) {
-    int newLabelID = -1;
-    ConsoleLine newLine = { text, newLabelID, col, 0.0 };
+    ConsoleLine newLine = { text, nullptr, col, 0.0 };
     m_textLines.push_back(newLine);
     Refresh();
 }
@@ -227,12 +228,12 @@ void Console::Draw( double delta ) {
     if (!visible) return;
     glm::vec2 windowSize = Locator::getRenderer().GetWindowSize();
     // Draw background box
-    Color gradColTop = COLOR_UI_GRADIENT1; gradColTop.a = 0.5f;
-    Color gradColBottom = COLOR_UI_GRADIENT2; gradColBottom.a = 0.5f;
+    Color gradColTop = COLOR_UI_GRADIENT_TOP; gradColTop.a = 0.5f;
+    Color gradColBottom = COLOR_UI_GRADIENT_BOTTOM; gradColBottom.a = 0.5f;
     Locator::getRenderer().Primitives()->RectangleGradientY(glm::vec2(0, (windowSize.y/4.0f)+CONSOLE_TEXT_HEIGHT),
                                                             glm::vec2(windowSize.x, windowSize.y/2.0f-CONSOLE_TEXT_HEIGHT),
-                                                            gradColBottom,
                                                             gradColTop,
+                                                            gradColBottom,
                                                             CONSOLE_BG_DEPTH);
 }
 void Console::SaveLog( void ) {
@@ -267,31 +268,28 @@ template<typename T> void Console::AddVar( T& newVar, std::string varName ) {
 
 void Console::Refresh() {
     IRenderer* renderer = &Locator::getRenderer();
-    if (renderer != NULL) {
-        IText* tMan = &Locator::getText();
-        if (tMan != NULL) {
-            int msgCount = (int)m_textLines.size();
-            if (visible) {
-                int winWidth = 640; //Locator::getRenderer().GetSettings().viewWidth;
-                double labelPosX = -winWidth / 2 + 8;    // left edge of screen
-                double labelPosY = CONSOLE_TEXT_HEIGHT+(msgCount + 2)*CONSOLE_FONT_SIZE;
-                // Move existing labels up
-                for (int i = 0; i < msgCount; i++) {
-                    if (m_textLines[i].blockID != -1) {  // Move text
-                        tMan->UpdateTextPos( m_textLines[i].blockID,
-                                             glm::vec3(labelPosX, labelPosY, CONSOLE_TEXT_DEPTH));
-                    } else {                            // Add line
-                        m_textLines[i].blockID = tMan->AddText( m_textLines[i].text,
-                                                               glm::vec3(labelPosX, labelPosY, CONSOLE_TEXT_DEPTH),
-                                                               true,
-                                                               CONSOLE_FONT_SIZE,
-                                                               FONT_PIXEL,
-                                                               0.0,
-                                                               m_textLines[i].color );
-                    }
-                    labelPosY -= CONSOLE_FONT_SIZE;
-                }
+    IText* tMan = &Locator::getText();
+    
+    if (renderer != NULL && tMan != NULL && visible)
+    {
+        int msgCount = (int)m_textLines.size();
+        int winWidth = Locator::getRenderer().GetWindowSize().x;
+        double labelPosX = -winWidth / 2 + 8;    // left edge of screen
+        double labelPosY = CONSOLE_TEXT_HEIGHT+(msgCount + 2)*CONSOLE_FONT_SIZE;
+        // Move existing labels up
+        for (int i = 0; i < msgCount; i++) {
+            if (m_textLines[i].label != nullptr) {  // Move text
+                m_textLines[i].label->position =  glm::vec3(labelPosX, labelPosY, CONSOLE_TEXT_DEPTH);
+            } else {                            // Add line
+                m_textLines[i].label = new TextLabel( m_textLines[i].text,
+                                                     glm::vec3(labelPosX, labelPosY, CONSOLE_TEXT_DEPTH),
+                                                     glm::vec3(),
+                                                     m_textLines[i].color,
+                                                     Fonts::FONT_PIXEL,
+                                                     CONSOLE_FONT_SIZE,
+                                                     false );
             }
+            labelPosY -= CONSOLE_FONT_SIZE;
         }
     }
 }
@@ -312,8 +310,8 @@ void Console::Hide() {
     if ( !tMan ) { return; }
     for (size_t i = 0; i < m_textLines.size(); i++)
     {
-        tMan->RemoveText(m_textLines[i].blockID);
-        m_textLines[i].blockID = -1;
+        delete m_textLines[i].label;
+        m_textLines[i].label = nullptr;
     }
     
     visible = false;
