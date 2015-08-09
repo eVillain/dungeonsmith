@@ -8,7 +8,7 @@
 
 #include "PostProcess.h"
 #include "ShaderFactory.h"
-#include "DrawPrimitives.h"
+#include "Primitives2D.h"
 #include "StencilUtils.h"
 
 static const glm::vec4 squareVerts[4] = {

@@ -9,8 +9,7 @@
 #ifndef __DungeonSmith__VertexBuffer_XYZW_RGBA__
 #define __DungeonSmith__VertexBuffer_XYZW_RGBA__
 
-#include "RenderDefines.h"
-#include <GL/glew.h>
+#include "VertexBufferBase.h"
 
 // Structure for simple colored vertex data/impostor sphere
 typedef struct {
@@ -18,24 +17,23 @@ typedef struct {
     GLfloat r,g,b,a;
 } Vertex_XYZW_RGBA;
 
-class VertexBuffer_XYZW_RGBA {
+class VertexBuffer_XYZW_RGBA : public VertexBufferBase<Vertex_XYZW_RGBA>{
 public:
-    
-    VertexBuffer_XYZW_RGBA(uint16_t numVerts);
-    ~VertexBuffer_XYZW_RGBA();
-    void Buffer(Vertex_XYZW_RGBA& vert);
-    void Buffer(Vertex_XYZW_RGBA& verts, uint16_t count);
-    void Bind();
-    void Upload();
-    void Unbind();
-    void Clear();
-    const uint16_t Count() { return bufferCount; };
-private:
-    Vertex_XYZW_RGBA* buffer;
-    GLuint vao;
-    GLuint vbo;
-    uint16_t bufferMax;
-    uint16_t bufferCount;
+    VertexBuffer_XYZW_RGBA(int numVerts) :
+    VertexBufferBase(numVerts)
+    {
+        Bind();
+        
+        glEnableVertexAttribArray(0);
+        glEnableVertexAttribArray(1);
+        glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex_XYZW_RGBA), 0);
+        glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex_XYZW_RGBA), (GLvoid*)(4*sizeof(GLfloat)));
+        
+        glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex_XYZW_RGBA)*_bufferSize, NULL, GL_STATIC_DRAW);
+        
+        Unbind();
+    }
+
 };
 
 #endif /* defined(__DungeonSmith__VertexBuffer_XYZW_RGBA__) */

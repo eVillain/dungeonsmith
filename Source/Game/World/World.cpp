@@ -10,7 +10,7 @@
 #include "Locator.h"
 #include "Renderer.h"
 #include "DrawMesh.h"
-#include "DrawPrimitives.h"
+#include "Primitives2D.h"
 #include "LightSystem3D.h"
 #include "SkyDome.h"
 #include "StencilUtils.h"
@@ -43,7 +43,6 @@ void World::Update(double deltaTime)
 
 void World::Draw()
 {
-
     Color amb = skyDome->GetLightAmbient();
     Color diff = skyDome->GetLightColor();
     Color spec = skyDome->GetSunColor();

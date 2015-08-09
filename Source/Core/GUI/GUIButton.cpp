@@ -8,7 +8,7 @@
 
 #include "GUIButton.h"
 #include "Locator.h"
-#include "DrawPrimitives.h"
+#include "Primitives2D.h"
 
 namespace GUI
 {
@@ -31,7 +31,7 @@ namespace GUI
     void GUIButton::Draw()
     {
         if ( !_visible ) return;
-        DrawPrimitives& primitives = *Locator::getRenderer().Primitives();
+        Primitives2D& primitives = *Locator::getRenderer().DrawPrimitives2D();
         
         glm::ivec2 drawPos = glm::ivec2(x-(w*0.5), y-(h*0.5));
         

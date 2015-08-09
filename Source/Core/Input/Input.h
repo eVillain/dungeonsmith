@@ -35,17 +35,20 @@ public:
     static void Bind( std::string input, std::string event );
 
     static void SetDefaultBindings();
+    
+    // Keyboard text input
+    static void StartTextInput( TextInputFunctorBase* observer );
+    static void StopTextInput( TextInputFunctorBase* observer );
+    static void UpdateTextInput();
+
 private:
     // Map of inputs to events
     static std::map<std::string, typeInputEvent> InputBindings;
+    // Observers of input events
     static std::vector<EventFunctorBase*> eventObserverList;
     static std::vector<MouseFunctorBase*> mouseObserverList;
-
-    // Keyboard text input
-    static void StartTextInput();
-    static void UpdateTextInput();
-    static void CancelTextInput();
-    
+    static TextInputFunctorBase* textInputObserver;
+    // Helper function
     static glm::ivec2 ConvertSDLCoordToScreen( int x, int y );
 };
 

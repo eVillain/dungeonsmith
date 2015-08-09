@@ -29,7 +29,6 @@ private:
     SkyDome* skyDome;
     Light3D _sunLight;
     Camera _camera;
-
 };
 
 #endif /* defined(__DungeonSmith__World__) */

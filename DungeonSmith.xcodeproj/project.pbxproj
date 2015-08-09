@@ -62,15 +62,12 @@
 		D96DB9491B68AFAD008E1DF5 /* GUIButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D96DB9471B68AFAD008E1DF5 /* GUIButton.cpp */; };
 		D96DB94C1B68B6A1008E1DF5 /* MainMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D96DB94A1B68B6A1008E1DF5 /* MainMenu.cpp */; };
 		D96DB9501B68C1CE008E1DF5 /* SkyDome.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D96DB94E1B68C1CE008E1DF5 /* SkyDome.cpp */; };
-		D96DB9531B68C2D5008E1DF5 /* VertexBuffer_XYZW.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D96DB9511B68C2D5008E1DF5 /* VertexBuffer_XYZW.cpp */; };
 		D96DB9561B68C7A2008E1DF5 /* deferred_sky_dome.fsh in CopyFiles */ = {isa = PBXBuildFile; fileRef = D96DB9541B68C79B008E1DF5 /* deferred_sky_dome.fsh */; };
 		D96DB9571B68C7A2008E1DF5 /* deferred_sky_dome.vsh in CopyFiles */ = {isa = PBXBuildFile; fileRef = D96DB9551B68C79B008E1DF5 /* deferred_sky_dome.vsh */; };
-		D96E8BA21B0794F200973D87 /* VertexBuffer_XYZW_DSN.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D96E8BA01B0794F200973D87 /* VertexBuffer_XYZW_DSN.cpp */; };
 		D96E8BA51B07EC7E00973D87 /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D96E8BA31B07EC7E00973D87 /* Camera.cpp */; };
 		D96E8BAA1B07FE6C00973D87 /* MatrixUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D96E8BA81B07FE6C00973D87 /* MatrixUtil.cpp */; };
 		D96E8BAD1B08011A00973D87 /* GBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D96E8BAB1B08011A00973D87 /* GBuffer.cpp */; };
 		D9BC15111AE46089009B7ADE /* Locator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D9BC15081AE46089009B7ADE /* Locator.cpp */; };
-		D9C16FD61AFEC88A00F66B19 /* VertexBuffer_XYZW_RGBA.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D9C16FD41AFEC88A00F66B19 /* VertexBuffer_XYZW_RGBA.cpp */; };
 		D9C16FDA1AFF568200F66B19 /* GUIWidget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D9C16FD81AFF568200F66B19 /* GUIWidget.cpp */; };
 		D9C16FE01AFF5DC900F66B19 /* Sprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D9C16FDC1AFF5DC900F66B19 /* Sprite.cpp */; };
 		D9C16FE11AFF5DC900F66B19 /* SpriteBatch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D9C16FDE1AFF5DC900F66B19 /* SpriteBatch.cpp */; };
@@ -83,7 +80,6 @@
 		D9C16FF71AFFF23000F66B19 /* forward_tex_color.fsh in CopyFiles */ = {isa = PBXBuildFile; fileRef = D9C16FF31AFFF22900F66B19 /* forward_tex_color.fsh */; };
 		D9C16FF81AFFF23000F66B19 /* forward_vColor.vsh in CopyFiles */ = {isa = PBXBuildFile; fileRef = D9C16FF41AFFF22900F66B19 /* forward_vColor.vsh */; };
 		D9C16FF91AFFF23000F66B19 /* forward_vTex_uColor.vsh in CopyFiles */ = {isa = PBXBuildFile; fileRef = D9C16FF51AFFF22900F66B19 /* forward_vTex_uColor.vsh */; };
-		D9C16FFC1AFFF4A900F66B19 /* VertexBuffer_XYZW_UV.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D9C16FFA1AFFF4A900F66B19 /* VertexBuffer_XYZW_UV.cpp */; };
 		D9CBADEF1AF976EF0017917C /* Bentham.ttf in CopyFiles */ = {isa = PBXBuildFile; fileRef = D96C02DD1AEB01B700001936 /* Bentham.ttf */; };
 		D9CBADF01AF976EF0017917C /* ClearSans-Regular.ttf in CopyFiles */ = {isa = PBXBuildFile; fileRef = D96C02DE1AEB01B700001936 /* ClearSans-Regular.ttf */; };
 		D9CBADF11AF976EF0017917C /* Cretino.ttf in CopyFiles */ = {isa = PBXBuildFile; fileRef = D96C02DF1AEB01B700001936 /* Cretino.ttf */; };
@@ -96,7 +92,11 @@
 		D9DA78731AFBF41A007A28AA /* FontAtlas.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D9DA786D1AFBF41A007A28AA /* FontAtlas.cpp */; };
 		D9DA78741AFBF41A007A28AA /* TextManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D9DA78711AFBF41A007A28AA /* TextManager.cpp */; };
 		D9DA787A1AFC0A89007A28AA /* GLErrorUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D9DA78781AFC0A89007A28AA /* GLErrorUtil.cpp */; };
-		D9DA787D1AFC0F77007A28AA /* DrawPrimitives.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D9DA787B1AFC0F77007A28AA /* DrawPrimitives.cpp */; };
+		D9DA787D1AFC0F77007A28AA /* Primitives2D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D9DA787B1AFC0F77007A28AA /* Primitives2D.cpp */; };
+		D9F4DB2D1B763E1D00523231 /* deferred_cube_instanced.fsh in CopyFiles */ = {isa = PBXBuildFile; fileRef = D9F4DB2B1B763E1600523231 /* deferred_cube_instanced.fsh */; };
+		D9F4DB2E1B763E1D00523231 /* deferred_cube_instanced.vsh in CopyFiles */ = {isa = PBXBuildFile; fileRef = D9F4DB2C1B763E1600523231 /* deferred_cube_instanced.vsh */; };
+		D9F4DB331B76544500523231 /* Primitives3D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D9F4DB311B76544500523231 /* Primitives3D.cpp */; };
+		D9F4DB371B77F4CB00523231 /* GUITextInput.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D9F4DB351B77F4CB00523231 /* GUITextInput.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -134,6 +134,8 @@
 			dstPath = Shaders;
 			dstSubfolderSpec = 16;
 			files = (
+				D9F4DB2D1B763E1D00523231 /* deferred_cube_instanced.fsh in CopyFiles */,
+				D9F4DB2E1B763E1D00523231 /* deferred_cube_instanced.vsh in CopyFiles */,
 				D9387BA11B27635400713841 /* deferred_mesh.fsh in CopyFiles */,
 				D9387BA21B27635400713841 /* deferred_mesh.vsh in CopyFiles */,
 				D96DB9561B68C7A2008E1DF5 /* deferred_sky_dome.fsh in CopyFiles */,
@@ -265,13 +267,11 @@
 		D96DB94B1B68B6A1008E1DF5 /* MainMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainMenu.h; sourceTree = "<group>"; };
 		D96DB94E1B68C1CE008E1DF5 /* SkyDome.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SkyDome.cpp; sourceTree = "<group>"; };
 		D96DB94F1B68C1CE008E1DF5 /* SkyDome.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SkyDome.h; sourceTree = "<group>"; };
-		D96DB9511B68C2D5008E1DF5 /* VertexBuffer_XYZW.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VertexBuffer_XYZW.cpp; sourceTree = "<group>"; };
 		D96DB9521B68C2D5008E1DF5 /* VertexBuffer_XYZW.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VertexBuffer_XYZW.h; sourceTree = "<group>"; };
 		D96DB9541B68C79B008E1DF5 /* deferred_sky_dome.fsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = deferred_sky_dome.fsh; sourceTree = "<group>"; };
 		D96DB9551B68C79B008E1DF5 /* deferred_sky_dome.vsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = deferred_sky_dome.vsh; sourceTree = "<group>"; };
 		D96E8B9D1B0770DD00973D87 /* ChunkUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChunkUtil.h; sourceTree = "<group>"; };
 		D96E8B9F1B07764700973D87 /* RenderDefines.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RenderDefines.h; sourceTree = "<group>"; };
-		D96E8BA01B0794F200973D87 /* VertexBuffer_XYZW_DSN.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VertexBuffer_XYZW_DSN.cpp; sourceTree = "<group>"; };
 		D96E8BA11B0794F200973D87 /* VertexBuffer_XYZW_DSN.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VertexBuffer_XYZW_DSN.h; sourceTree = "<group>"; };
 		D96E8BA31B07EC7E00973D87 /* Camera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Camera.cpp; sourceTree = "<group>"; };
 		D96E8BA41B07EC7E00973D87 /* Camera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Camera.h; sourceTree = "<group>"; };
@@ -282,7 +282,6 @@
 		D96E8BAC1B08011A00973D87 /* GBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBuffer.h; sourceTree = "<group>"; };
 		D9BC15081AE46089009B7ADE /* Locator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Locator.cpp; sourceTree = "<group>"; };
 		D9BC15091AE46089009B7ADE /* Locator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Locator.h; sourceTree = "<group>"; };
-		D9C16FD41AFEC88A00F66B19 /* VertexBuffer_XYZW_RGBA.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VertexBuffer_XYZW_RGBA.cpp; sourceTree = "<group>"; };
 		D9C16FD51AFEC88A00F66B19 /* VertexBuffer_XYZW_RGBA.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VertexBuffer_XYZW_RGBA.h; sourceTree = "<group>"; };
 		D9C16FD81AFF568200F66B19 /* GUIWidget.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GUIWidget.cpp; sourceTree = "<group>"; };
 		D9C16FD91AFF568200F66B19 /* GUIWidget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GUIWidget.h; sourceTree = "<group>"; };
@@ -304,7 +303,6 @@
 		D9C16FF31AFFF22900F66B19 /* forward_tex_color.fsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = forward_tex_color.fsh; sourceTree = "<group>"; };
 		D9C16FF41AFFF22900F66B19 /* forward_vColor.vsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = forward_vColor.vsh; sourceTree = "<group>"; };
 		D9C16FF51AFFF22900F66B19 /* forward_vTex_uColor.vsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = forward_vTex_uColor.vsh; sourceTree = "<group>"; };
-		D9C16FFA1AFFF4A900F66B19 /* VertexBuffer_XYZW_UV.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VertexBuffer_XYZW_UV.cpp; sourceTree = "<group>"; };
 		D9C16FFB1AFFF4A900F66B19 /* VertexBuffer_XYZW_UV.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VertexBuffer_XYZW_UV.h; sourceTree = "<group>"; };
 		D9DA786D1AFBF41A007A28AA /* FontAtlas.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FontAtlas.cpp; sourceTree = "<group>"; };
 		D9DA786E1AFBF41A007A28AA /* FontAtlas.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FontAtlas.h; sourceTree = "<group>"; };
@@ -314,9 +312,20 @@
 		D9DA78721AFBF41A007A28AA /* TextManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextManager.h; sourceTree = "<group>"; };
 		D9DA78781AFC0A89007A28AA /* GLErrorUtil.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GLErrorUtil.cpp; sourceTree = "<group>"; };
 		D9DA78791AFC0A89007A28AA /* GLErrorUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLErrorUtil.h; sourceTree = "<group>"; };
-		D9DA787B1AFC0F77007A28AA /* DrawPrimitives.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DrawPrimitives.cpp; sourceTree = "<group>"; };
-		D9DA787C1AFC0F77007A28AA /* DrawPrimitives.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawPrimitives.h; sourceTree = "<group>"; };
+		D9DA787B1AFC0F77007A28AA /* Primitives2D.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Primitives2D.cpp; sourceTree = "<group>"; };
+		D9DA787C1AFC0F77007A28AA /* Primitives2D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Primitives2D.h; sourceTree = "<group>"; };
 		D9DFDC771B24DE7E00A37D4A /* BlockDefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlockDefs.h; sourceTree = "<group>"; };
+		D9F4DB281B76338700523231 /* VertexBufferBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VertexBufferBase.h; sourceTree = "<group>"; };
+		D9F4DB2A1B7639E800523231 /* PrimitiveDefines.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrimitiveDefines.h; sourceTree = "<group>"; };
+		D9F4DB2B1B763E1600523231 /* deferred_cube_instanced.fsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = deferred_cube_instanced.fsh; sourceTree = "<group>"; };
+		D9F4DB2C1B763E1600523231 /* deferred_cube_instanced.vsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = deferred_cube_instanced.vsh; sourceTree = "<group>"; };
+		D9F4DB2F1B76461200523231 /* MeshInstanceBufferBase.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MeshInstanceBufferBase.h; sourceTree = "<group>"; };
+		D9F4DB301B7649CD00523231 /* MeshInstanceColored.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MeshInstanceColored.h; sourceTree = "<group>"; };
+		D9F4DB311B76544500523231 /* Primitives3D.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Primitives3D.cpp; sourceTree = "<group>"; };
+		D9F4DB321B76544500523231 /* Primitives3D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Primitives3D.h; sourceTree = "<group>"; };
+		D9F4DB341B7656D900523231 /* RenderDataDefines.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RenderDataDefines.h; sourceTree = "<group>"; };
+		D9F4DB351B77F4CB00523231 /* GUITextInput.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GUITextInput.cpp; sourceTree = "<group>"; };
+		D9F4DB361B77F4CB00523231 /* GUITextInput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GUITextInput.h; sourceTree = "<group>"; };
 		D9FD024D1B654F5F00B9DDD7 /* TextConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TextConstants.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -449,19 +458,20 @@
 			path = LocalGame;
 			sourceTree = "<group>";
 		};
-		D9150E4A1B6BCD9000415F99 /* VertexBuffers */ = {
+		D9150E4A1B6BCD9000415F99 /* Buffers */ = {
 			isa = PBXGroup;
 			children = (
-				D96E8BA01B0794F200973D87 /* VertexBuffer_XYZW_DSN.cpp */,
+				D96E8BAB1B08011A00973D87 /* GBuffer.cpp */,
+				D96E8BAC1B08011A00973D87 /* GBuffer.h */,
 				D96E8BA11B0794F200973D87 /* VertexBuffer_XYZW_DSN.h */,
-				D9C16FD41AFEC88A00F66B19 /* VertexBuffer_XYZW_RGBA.cpp */,
 				D9C16FD51AFEC88A00F66B19 /* VertexBuffer_XYZW_RGBA.h */,
-				D9C16FFA1AFFF4A900F66B19 /* VertexBuffer_XYZW_UV.cpp */,
 				D9C16FFB1AFFF4A900F66B19 /* VertexBuffer_XYZW_UV.h */,
-				D96DB9511B68C2D5008E1DF5 /* VertexBuffer_XYZW.cpp */,
 				D96DB9521B68C2D5008E1DF5 /* VertexBuffer_XYZW.h */,
+				D9F4DB281B76338700523231 /* VertexBufferBase.h */,
+				D9F4DB2F1B76461200523231 /* MeshInstanceBufferBase.h */,
+				D9F4DB301B7649CD00523231 /* MeshInstanceColored.h */,
 			);
-			name = VertexBuffers;
+			name = Buffers;
 			sourceTree = "<group>";
 		};
 		D9150E4B1B6BCDB500415F99 /* Textures */ = {
@@ -529,10 +539,11 @@
 				D96C02AB1AE84D5600001936 /* Color.h */,
 				D9387BA31B2763A500713841 /* DrawMesh.cpp */,
 				D9387BA41B2763A500713841 /* DrawMesh.h */,
-				D9DA787B1AFC0F77007A28AA /* DrawPrimitives.cpp */,
-				D9DA787C1AFC0F77007A28AA /* DrawPrimitives.h */,
-				D96E8BAB1B08011A00973D87 /* GBuffer.cpp */,
-				D96E8BAC1B08011A00973D87 /* GBuffer.h */,
+				D9DA787B1AFC0F77007A28AA /* Primitives2D.cpp */,
+				D9DA787C1AFC0F77007A28AA /* Primitives2D.h */,
+				D9F4DB2A1B7639E800523231 /* PrimitiveDefines.h */,
+				D9F4DB311B76544500523231 /* Primitives3D.cpp */,
+				D9F4DB321B76544500523231 /* Primitives3D.h */,
 				D9DA78781AFC0A89007A28AA /* GLErrorUtil.cpp */,
 				D9DA78791AFC0A89007A28AA /* GLErrorUtil.h */,
 				D96E8BA81B07FE6C00973D87 /* MatrixUtil.cpp */,
@@ -541,6 +552,7 @@
 				D9C16FE81AFF6E7100F66B19 /* Rect2D.cpp */,
 				D9C16FE91AFF6E7100F66B19 /* Rect2D.h */,
 				D96E8B9F1B07764700973D87 /* RenderDefines.h */,
+				D9F4DB341B7656D900523231 /* RenderDataDefines.h */,
 				D949F3221AE5B2E100318804 /* Renderer.cpp */,
 				D949F3231AE5B2E100318804 /* Renderer.h */,
 				D9150E551B6C2F9C00415F99 /* RenderUtils.h */,
@@ -550,7 +562,7 @@
 				D9150E4D1B6BCDCA00415F99 /* Lighting */,
 				D9150E4C1B6BCDBC00415F99 /* Shaders */,
 				D9150E4B1B6BCDB500415F99 /* Textures */,
-				D9150E4A1B6BCD9000415F99 /* VertexBuffers */,
+				D9150E4A1B6BCD9000415F99 /* Buffers */,
 			);
 			path = Renderer;
 			sourceTree = "<group>";
@@ -662,17 +674,19 @@
 		D9C16FD71AFF568200F66B19 /* GUI */ = {
 			isa = PBXGroup;
 			children = (
-				D93B339C1B028D13004AE04D /* GUIManager.cpp */,
-				D93B339D1B028D13004AE04D /* GUIManager.h */,
-				D9C16FD81AFF568200F66B19 /* GUIWidget.cpp */,
-				D9C16FD91AFF568200F66B19 /* GUIWidget.h */,
-				D96DB9471B68AFAD008E1DF5 /* GUIButton.cpp */,
-				D96DB9481B68AFAD008E1DF5 /* GUIButton.h */,
-				D9150E2D1B6A258400415F99 /* GUIConstants.h */,
 				D9150E2E1B6A786000415F99 /* ButtonBehavior.cpp */,
 				D9150E2F1B6A786000415F99 /* ButtonBehavior.h */,
+				D96DB9471B68AFAD008E1DF5 /* GUIButton.cpp */,
+				D96DB9481B68AFAD008E1DF5 /* GUIButton.h */,
 				D9150E561B6C3DE700415F99 /* GUIButtonLabeled.cpp */,
 				D9150E571B6C3DE700415F99 /* GUIButtonLabeled.h */,
+				D9150E2D1B6A258400415F99 /* GUIConstants.h */,
+				D93B339C1B028D13004AE04D /* GUIManager.cpp */,
+				D93B339D1B028D13004AE04D /* GUIManager.h */,
+				D9F4DB351B77F4CB00523231 /* GUITextInput.cpp */,
+				D9F4DB361B77F4CB00523231 /* GUITextInput.h */,
+				D9C16FD81AFF568200F66B19 /* GUIWidget.cpp */,
+				D9C16FD91AFF568200F66B19 /* GUIWidget.h */,
 			);
 			path = GUI;
 			sourceTree = "<group>";
@@ -717,6 +731,8 @@
 		D9DA787E1AFC14DF007A28AA /* Shaders */ = {
 			isa = PBXGroup;
 			children = (
+				D9F4DB2B1B763E1600523231 /* deferred_cube_instanced.fsh */,
+				D9F4DB2C1B763E1600523231 /* deferred_cube_instanced.vsh */,
 				D9387B9D1B27633100713841 /* deferred_mesh.fsh */,
 				D9387B9E1B27633100713841 /* deferred_mesh.vsh */,
 				D96DB9541B68C79B008E1DF5 /* deferred_sky_dome.fsh */,
@@ -812,7 +828,6 @@
 				D96DB9501B68C1CE008E1DF5 /* SkyDome.cpp in Sources */,
 				D96C02BE1AE850EB00001936 /* StringUtil.cpp in Sources */,
 				D96E8BAA1B07FE6C00973D87 /* MatrixUtil.cpp in Sources */,
-				D96DB9531B68C2D5008E1DF5 /* VertexBuffer_XYZW.cpp in Sources */,
 				D9150E5B1B6CECCC00415F99 /* BlockSet.cpp in Sources */,
 				D9387BA51B2763A500713841 /* DrawMesh.cpp in Sources */,
 				D90D62B21B04BA9F0076B311 /* LocalGame.cpp in Sources */,
@@ -835,24 +850,23 @@
 				D9150E371B6BA14100415F99 /* PostProcess.cpp in Sources */,
 				D96C02AA1AE84BB800001936 /* Console.cpp in Sources */,
 				D9C16FDA1AFF568200F66B19 /* GUIWidget.cpp in Sources */,
-				D9DA787D1AFC0F77007A28AA /* DrawPrimitives.cpp in Sources */,
+				D9DA787D1AFC0F77007A28AA /* Primitives2D.cpp in Sources */,
 				D96C02A91AE84BB800001936 /* CommandProcessor.cpp in Sources */,
 				D9C16FE71AFF68CE00F66B19 /* TextureManager.cpp in Sources */,
 				D96C02BB1AE850EB00001936 /* SceneManager.cpp in Sources */,
 				D96DB9491B68AFAD008E1DF5 /* GUIButton.cpp in Sources */,
 				D9150E431B6BB26100415F99 /* LightSystem3D.cpp in Sources */,
+				D9F4DB331B76544500523231 /* Primitives3D.cpp in Sources */,
+				D9F4DB371B77F4CB00523231 /* GUITextInput.cpp in Sources */,
 				D919A8751B653143008EE9DE /* TextLabel.cpp in Sources */,
 				D949F31F1AE5B2BF00318804 /* Input.cpp in Sources */,
 				D96E8BAD1B08011A00973D87 /* GBuffer.cpp in Sources */,
 				D9DA78741AFBF41A007A28AA /* TextManager.cpp in Sources */,
-				D9C16FFC1AFFF4A900F66B19 /* VertexBuffer_XYZW_UV.cpp in Sources */,
 				D96C02BD1AE850EB00001936 /* Random.cpp in Sources */,
 				D9150E5E1B6D3A5F00415F99 /* ChunkManager.cpp in Sources */,
 				D9150E301B6A786000415F99 /* ButtonBehavior.cpp in Sources */,
 				D96C02BC1AE850EB00001936 /* FileUtil.cpp in Sources */,
-				D96E8BA21B0794F200973D87 /* VertexBuffer_XYZW_DSN.cpp in Sources */,
 				D9DA78731AFBF41A007A28AA /* FontAtlas.cpp in Sources */,
-				D9C16FD61AFEC88A00F66B19 /* VertexBuffer_XYZW_RGBA.cpp in Sources */,
 				D9C16FE61AFF68CE00F66B19 /* Texture.cpp in Sources */,
 				D9150E581B6C3DE700415F99 /* GUIButtonLabeled.cpp in Sources */,
 				D9BC15111AE46089009B7ADE /* Locator.cpp in Sources */,

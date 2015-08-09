@@ -22,7 +22,9 @@
 #define CONSOLE_TEXT_HEIGHT 22
 
 class TextLabel;
-
+namespace GUI{
+    class GUITextInput;
+};
 typedef struct {
     std::string text;
     TextLabel* label;
@@ -31,6 +33,7 @@ typedef struct {
 } ConsoleLine;
 
 class Console {
+    typedef std::map<std::string, ConsoleVar*> ConsoleVarMap;
 public:
     static void Initialize();
     static void Terminate();
@@ -51,10 +54,10 @@ public:
     template<typename T> static void AddVar( T& newVar, std::string varName );
 private:
 
-    static std::map<std::string, ConsoleVar*>  m_cvars;                // Holds cvars by name
-    static std::deque<ConsoleLine>             m_textLines;            // Holds lines of text
-    static bool                                visible;                 // Whether the console is shown on screen
-//   static UITextInputSCB*                     textWidget = NULL;      // Widget which takes text input
+    static ConsoleVarMap            m_cvars;                // Holds cvars by name
+    static std::deque<ConsoleLine>  m_textLines;            // Holds lines of text
+    static bool                     visible;                // Whether the console is shown on screen
+    static GUI::GUITextInput*            textWidget;             // Widget which takes text input
 
     static void Refresh();
     static void Show();

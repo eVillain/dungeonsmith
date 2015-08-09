@@ -10,7 +10,7 @@
 #include "Locator.h"
 #include "Input.h"
 #include "GUIButton.h"
-#include "DrawPrimitives.h"
+//#include "Primitives2D.h"
 #include "LocalGame.h"
 
 MainMenu::MainMenu() : Scene("Main Menu"),
@@ -75,7 +75,7 @@ void MainMenu::Update( double deltaTime )
 
 void MainMenu::Draw()
 {
-    Locator::getRenderer().Primitives()->RectFilled(glm::vec2(0,0), glm::vec2(1000,1000), COLOR_WHITE, 2);
+//    Locator::getRenderer().Primitives()->RectFilled(glm::vec2(0,0), glm::vec2(1000,1000), COLOR_WHITE, 2);
 }
 
 bool MainMenu::OnEvent(const typeInputEvent& event, const float& amount)

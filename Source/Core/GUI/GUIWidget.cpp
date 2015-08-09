@@ -1,7 +1,7 @@
 #include "GUIWidget.h"
 #include "Shader.h"
 #include "Locator.h"
-#include "DrawPrimitives.h"
+#include "Primitives2D.h"
 #include "GUIManager.h"
 
 namespace GUI
@@ -69,7 +69,7 @@ namespace GUI
             lineCol = COLOR_GREY_DARK;
         }
         
-        Locator::getRenderer().Primitives()->RectFilled(glm::vec2(x,y), glm::vec2(w,h), fillCol, z);
-        Locator::getRenderer().Primitives()->RectOutline(glm::vec2(x,y), glm::vec2(w,h), lineCol, z);
+        Locator::getRenderer().DrawPrimitives2D()->RectFilled(glm::vec2(x,y), glm::vec2(w,h), fillCol, z);
+        Locator::getRenderer().DrawPrimitives2D()->RectOutline(glm::vec2(x,y), glm::vec2(w,h), lineCol, z);
     }
 }    /* namespace GUI */

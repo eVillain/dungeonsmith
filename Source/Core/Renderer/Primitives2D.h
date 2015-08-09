@@ -1,13 +1,13 @@
 //
-//  DrawPrimitives.h
+//  Primitives2D.h
 //  DungeonSmith
 //
 //  Created by The Drudgerist on 07/05/15.
 //  Copyright (c) 2015 The Drudgerist. All rights reserved.
 //
 
-#ifndef __DungeonSmith__DrawPrimitives__
-#define __DungeonSmith__DrawPrimitives__
+#ifndef __DungeonSmith__Primitives2D__
+#define __DungeonSmith__Primitives2D__
 
 #include "RenderDefines.h"
 #include "Color.h"
@@ -17,7 +17,7 @@
 
 class Shader;
 
-class DrawPrimitives {
+class Primitives2D {
 public:
     void Initialize();
     void Terminate();
@@ -72,4 +72,4 @@ private:
     Shader* forward_vColor_shader;
     Shader* forward_vTex_uColor_shader;
 };
-#endif /* defined(__DungeonSmith__DrawPrimitives__) */
+#endif /* defined(__DungeonSmith__Primitives2D__) */

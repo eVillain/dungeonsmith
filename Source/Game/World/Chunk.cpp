@@ -38,7 +38,7 @@ void Chunk::SetCoord(const glm::ivec3 coordinate)
 {
     Clear();
     _coord = coordinate;
-    printf("[Chunk] at %i, %i, %i - coord set\n", coordinate.x, coordinate.y, coordinate.z);
+//    printf("[Chunk] at %i, %i, %i - coord set\n", coordinate.x, coordinate.y, coordinate.z);
 }
 
 void Chunk::Clear()
@@ -581,7 +581,7 @@ const void Chunk::GenerateMesh()
         int numVerts = totalOVerts + totalTVerts;
 //        printf("[Chunk] at %i,%i,%i - %i verts cached\n", _coord.x,_coord.y,_coord.z, numVerts);
 
-        if (_buffer->MaxSize() < numVerts ) {
+        if (_buffer->Size() < numVerts ) {
             _buffer->Resize(numVerts);
         }
 

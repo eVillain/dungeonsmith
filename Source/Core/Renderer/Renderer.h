@@ -16,7 +16,8 @@
 
 class SDL_Window;
 class TextureManager;
-class DrawPrimitives;
+class Primitives2D;
+class Primitives3D;
 class DrawMesh;
 class PostProcess;
 class LightSystem3D;
@@ -49,7 +50,9 @@ public:
     Camera* GetCamera() { return _camera; };
     glm::ivec2 GetWindowSize();
     
-    DrawPrimitives* Primitives() { return _primitives; };
+    Primitives2D* DrawPrimitives2D() { return _primitives2D; };
+    Primitives3D* DrawPrimitives3D() { return _primitives3D; };
+
     DrawMesh* Mesh() { return _mesh; };
     TextureManager* Textures() { return _textureManager; };
     LightSystem3D* Lighting() { return _lighting; };
@@ -66,7 +69,8 @@ private:
     
     Camera* _camera;
     
-    DrawPrimitives* _primitives;
+    Primitives2D* _primitives2D;
+    Primitives3D* _primitives3D;
     DrawMesh* _mesh;
     PostProcess* _postProcess;
     LightSystem3D* _lighting;

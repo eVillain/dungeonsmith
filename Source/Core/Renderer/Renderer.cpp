@@ -9,7 +9,8 @@
 #include "Renderer.h"
 #include "Shader.h"
 #include "GLErrorUtil.h"
-#include "DrawPrimitives.h"
+#include "Primitives2D.h"
+#include "Primitives3D.h"
 #include "TextureManager.h"
 #include "DrawMesh.h"
 #include "PostProcess.h"
@@ -142,8 +143,11 @@ bool Renderer::InitializeComponents()
     SDL_GetWindowSize(_window, &windowWidth, &windowHeight);
     _gbuffer.Initialize(windowWidth, windowHeight);
     
-    _primitives = new DrawPrimitives();
-    _primitives->Initialize();
+    _primitives2D = new Primitives2D();
+    _primitives2D->Initialize();
+    
+    _primitives3D = new Primitives3D();
+    _primitives3D->Initialize();
     
     _mesh = new DrawMesh();
     _mesh->Initialize();
@@ -171,9 +175,14 @@ bool Renderer::TerminateComponents()
 {
     bool success = true;
     
-    _primitives->Terminate();
-    delete _primitives;
-    _primitives = nullptr;
+    _primitives2D->Terminate();
+    delete _primitives2D;
+    _primitives2D = nullptr;
+    
+    _primitives3D->Terminate();
+    delete _primitives3D;
+    _primitives3D = nullptr;
+    
     
     _mesh->Terminate();
     delete _mesh;
@@ -264,7 +273,8 @@ void Renderer::BeginDraw()
 
 void Renderer::FinishDeferred()
 {
-    _primitives->Render();
+    if ( _camera ) _primitives3D->Render(_camera->GetMVP());
+    _primitives2D->Render();
     
     // Bind frame buffer
     glBindFramebuffer(GL_FRAMEBUFFER, _fboFinal);
@@ -327,7 +337,7 @@ void Renderer::FinishDeferred()
 
 void Renderer::EndDraw()
 {
-    _primitives->Render();
+    _primitives2D->Render();
     // Swap buffers, brings backbuffer to front and vice-versa
     SDL_GL_SwapWindow(_window);
 }

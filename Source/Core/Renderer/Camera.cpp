@@ -7,6 +7,8 @@
 //
 
 #include "Camera.h"
+#include "Locator.h"
+
 #include <glm/gtx/rotate_vector.hpp>
 
 #include "MathUtils.h"
@@ -14,9 +16,9 @@
 #include "Timer.h"
 
 Camera::Camera() {
-    fieldOfView = 90.0f;
+    fieldOfView = 45.0f;
     nearDepth = 0.01f;
-    farDepth = 50.0f;
+    farDepth = 100.0f;
     focalDepth = 6.0;
     focalLength = 30.0;
     fStop = 10.0f;
@@ -111,7 +113,7 @@ void Camera::Update( double delta ) {
         shakeAmount *= shakeDecay;
         if ( fabsf(shakeAmount) < 0.01f ) { shakeAmount = 0.0f; shakeVect = glm::vec3(); }
     }
-    
+    UpdateMatrices();
 //    printf("Camera: %f,%f,%f - %f,%f,%f\n", position.x, position.y, position.z, rotation.x, rotation.y, rotation.z);
 }
 // Function to deal with mouse position changes, called whenever the mouse cursor moves
@@ -181,3 +183,21 @@ void Camera::MoveCamera( double dt ) {
     position += speed*(float)dt;
 }
 
+void Camera::UpdateMatrices()
+{
+    glm::ivec2 windowSize = Locator::getRenderer().GetWindowSize();
+    GLfloat aspectRatio = (windowSize.x > windowSize.y) ?
+    GLfloat(windowSize.x)/GLfloat(windowSize.y) : GLfloat(windowSize.y)/GLfloat(windowSize.x);
+
+    _model = glm::mat4();
+    _model = glm::rotate(_model, -rotation.x, glm::vec3(1.0, 0.0, 0.0));
+    _model = glm::rotate(_model, -rotation.y, glm::vec3(0.0, 1.0, 0.0));
+    _model = glm::rotate(_model, -rotation.z, glm::vec3(0.0, 0.0, 1.0));
+    _model = glm::translate(_model, glm::vec3(-position.x, -position.y, -position.z));
+    
+    _projection = glm::mat4();
+    _projection = glm::perspective(fieldOfView, aspectRatio, nearDepth, farDepth);
+    _viewport = glm::vec4(0, 0, windowSize.x, windowSize.y);
+    
+    _mvp = _projection*_model;
+}

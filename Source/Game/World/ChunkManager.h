@@ -28,6 +28,7 @@ public:
 private:
     typedef std::unordered_map<glm::ivec3, Chunk*, ChunkUtil::Hash, ChunkUtil::Equals> ChunkMap;
     int _totalChunks;
+    bool _autoGenerate;
     
     ChunkMap _chunks;
     ChunkPool _unusedChunks;

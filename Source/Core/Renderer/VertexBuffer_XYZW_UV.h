@@ -9,7 +9,7 @@
 #ifndef __DungeonSmith__VertexBuffer_XYZW_UV__
 #define __DungeonSmith__VertexBuffer_XYZW_UV__
 
-#include "RenderDefines.h"
+#include "VertexBufferBase.h"
 
 // Structure for simple textured vertex data
 typedef struct {
@@ -17,24 +17,24 @@ typedef struct {
     GLfloat u,v;
 } Vertex_XYZW_UV;
 
-class VertexBuffer_XYZW_UV {
+class VertexBuffer_XYZW_UV : public VertexBufferBase<Vertex_XYZW_UV> {
 public:
-    
-    VertexBuffer_XYZW_UV(uint16_t numVerts);
-    ~VertexBuffer_XYZW_UV();
-    void Buffer(const Vertex_XYZW_UV& vert);
-    void Buffer(const Vertex_XYZW_UV& verts, uint16_t count);
-    void Bind();
-    void Upload();
-    void Unbind();
-    void Clear();
-    const uint16_t Count() { return bufferCount; };
-private:
-    Vertex_XYZW_UV* buffer;
-    GLuint vao;
-    GLuint vbo;
-    uint16_t bufferMax;
-    uint16_t bufferCount;
+    VertexBuffer_XYZW_UV(int numVerts) :
+    VertexBufferBase(numVerts)
+    {
+        Bind();
+        glBindVertexArray(_vao);
+        glBindBuffer(GL_ARRAY_BUFFER, _vbo);
+        
+        glEnableVertexAttribArray(0);
+        glEnableVertexAttribArray(1);
+        glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex_XYZW_UV), 0);
+        glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex_XYZW_UV), (GLvoid*)(4*sizeof(GLfloat)));
+        
+        glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex_XYZW_UV)*_bufferSize, NULL, GL_STATIC_DRAW);
+        
+        Unbind();
+    }
 };
 
 #endif /* defined(__DungeonSmith__VertexBuffer_XYZW_UV__) */

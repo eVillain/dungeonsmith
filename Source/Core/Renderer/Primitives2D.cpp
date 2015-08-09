@@ -1,12 +1,12 @@
 //
-//  DrawPrimitives.cpp
+//  Primitives2D.cpp
 //  DungeonSmith
 //
 //  Created by The Drudgerist on 07/05/15.
 //  Copyright (c) 2015 The Drudgerist. All rights reserved.
 //
 
-#include "DrawPrimitives.h"
+#include "Primitives2D.h"
 #include "Locator.h"
 #include "Renderer.h"
 #include "MatrixUtil.h"
@@ -17,7 +17,7 @@
 
 const glm::mat4 screenMVP = glm::ortho<GLfloat>(-0.5, 0.5, -0.5, 0.5, -1.0, 1.0);
 
-void DrawPrimitives::Initialize()
+void Primitives2D::Initialize()
 {
     lineBuffer = new VertexBuffer_XYZW_RGBA(1024);  // TODO: Define default line buffer size
     polyBuffer = new VertexBuffer_XYZW_RGBA(1024);  // As above, so below
@@ -28,7 +28,7 @@ void DrawPrimitives::Initialize()
     forward_vTex_uColor_shader = ShaderFactory::LoadFromFile("forward_tex_color.fsh", "forward_vTex_uColor.vsh");
 }
 
-void DrawPrimitives::Terminate()
+void Primitives2D::Terminate()
 {
     delete lineBuffer;
     delete polyBuffer;
@@ -40,7 +40,7 @@ void DrawPrimitives::Terminate()
     forward_vTex_uColor_shader = NULL;
 }
 
-void DrawPrimitives::Render()
+void Primitives2D::Render()
 {
     forward_vColor_shader->Begin();
     glm::mat4 mvp;
@@ -66,7 +66,7 @@ void DrawPrimitives::Render()
     forward_vColor_shader->End();
 }
 
-void DrawPrimitives::Line(const glm::vec2& a,
+void Primitives2D::Line(const glm::vec2& a,
                           const glm::vec2& b,
                           const Color& aColor,
                           const Color& bColor,
@@ -83,7 +83,7 @@ void DrawPrimitives::Line(const glm::vec2& a,
     lineBuffer->Buffer( aVert );
     lineBuffer->Buffer( bVert );
 }
-void DrawPrimitives::RectOutline(const glm::vec2 position,
+void Primitives2D::RectOutline(const glm::vec2 position,
                                  const glm::vec2 size,
                                  const Color& color,
                                  const float z)
@@ -111,7 +111,7 @@ void DrawPrimitives::RectOutline(const glm::vec2 position,
     lineBuffer->Buffer( *verts, 8 );
 }
 
-void DrawPrimitives::RectFilled(const glm::vec2 position,
+void Primitives2D::RectFilled(const glm::vec2 position,
                                 const glm::vec2 size,
                                 const Color& color,
                                 const float z)
@@ -135,7 +135,7 @@ void DrawPrimitives::RectFilled(const glm::vec2 position,
     polyBuffer->Buffer( *verts, 6 );
 }
 
-void DrawPrimitives::RectangleGradientX(const glm::vec2 position,
+void Primitives2D::RectangleGradientX(const glm::vec2 position,
                                         const glm::vec2 size,
                                         const Color& colorLeft,
                                         const Color& colorRight,
@@ -160,7 +160,7 @@ void DrawPrimitives::RectangleGradientX(const glm::vec2 position,
     polyBuffer->Buffer( *verts, 6 );
 }
 
-void DrawPrimitives::RectangleGradientY(const glm::vec2 position,
+void Primitives2D::RectangleGradientY(const glm::vec2 position,
                                         const glm::vec2 size,
                                         const Color& colorTop,
                                         const Color& colorBottom,
@@ -185,7 +185,7 @@ void DrawPrimitives::RectangleGradientY(const glm::vec2 position,
     polyBuffer->Buffer( *verts, 6 );
 }
 
-void DrawPrimitives::Circle(const glm::vec2 center,
+void Primitives2D::Circle(const glm::vec2 center,
                             const float angle,
                             const float radius,
                             const Color& color,
@@ -229,7 +229,7 @@ void DrawPrimitives::Circle(const glm::vec2 center,
     }
 }
 
-void DrawPrimitives::Texture(const Rect2D rect,
+void Primitives2D::Texture(const Rect2D rect,
                              const Rect2D texRect,
                              const GLuint tex,
                              const float z,

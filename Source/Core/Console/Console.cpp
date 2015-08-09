@@ -21,13 +21,14 @@
 #include "Locator.h"
 #include "HyperVisor.h"
 #include "IRenderer.h"
-#include "DrawPrimitives.h"
+#include "Primitives2D.h"
 #include "CommandProcessor.h"
 #include "StringUtil.h"
 #include "Timer.h"
 #include "FileUtil.h"
 
 #include "TextLabel.h"
+#include "GUITextInput.h"
 
 inline void VarLoadGuard( void ) {
     bool b = true;
@@ -43,7 +44,7 @@ inline void VarLoadGuard( void ) {
 std::map<std::string, ConsoleVar*>  Console::m_cvars;                // Holds cvars by name
 std::deque<ConsoleLine>             Console::m_textLines;            // Holds lines of text
 bool                                Console::visible = false;        // Whether the console is shown on screen
-
+GUI::GUITextInput*                       Console::textWidget = nullptr;
 //========================================================================
 // 'Public' console functions, available to outside
 //========================================================================
@@ -230,8 +231,8 @@ void Console::Draw( double delta ) {
     // Draw background box
     Color gradColTop = COLOR_UI_GRADIENT_TOP; gradColTop.a = 0.5f;
     Color gradColBottom = COLOR_UI_GRADIENT_BOTTOM; gradColBottom.a = 0.5f;
-    Locator::getRenderer().Primitives()->RectangleGradientY(glm::vec2(0, (windowSize.y/4.0f)+CONSOLE_TEXT_HEIGHT),
-                                                            glm::vec2(windowSize.x, windowSize.y/2.0f-CONSOLE_TEXT_HEIGHT),
+    Locator::getRenderer().DrawPrimitives2D()->RectangleGradientY(glm::vec2(0, (windowSize.y/4.0f)),
+                                                            glm::vec2(windowSize.x, windowSize.y/2.0f),
                                                             gradColTop,
                                                             gradColBottom,
                                                             CONSOLE_BG_DEPTH);
@@ -297,14 +298,19 @@ void Console::Refresh() {
 void Console::Show() {
     IText* tMan = &Locator::getText();
     if ( !tMan || visible ) { return; }
-//        int winWidth = Locator::getRenderer().GetSettings().viewWidth;
-//        std::string consoleInfo = "Console:  DungeonSmith v.";
+        int winWidth = Locator::getRenderer().GetWindowSize().x;
+        std::string consoleInfo = "Console:  DungeonSmith v.";
 //        consoleInfo.append(Locator::getHyperVisor().GetVersion());
+    textWidget = new GUI::GUITextInput(0, 1,
+                                  winWidth-1, CONSOLE_TEXT_HEIGHT,
+                                  CONSOLE_TEXT_DEPTH,
+                                  consoleInfo);
 //        textWidget = new UITextInputSCB(-winWidth/2, 1.0, winWidth-1, CONSOLE_TEXT_HEIGHT, CONSOLE_TEXT_DEPTH,consoleInfo, &Process );
 //        textWidget->StartTextInput();
     visible = true;
     Refresh();
 }
+
 void Console::Hide() {
     IText* tMan = &Locator::getText();
     if ( !tMan ) { return; }
@@ -315,6 +321,6 @@ void Console::Hide() {
     }
     
     visible = false;
-//        delete textWidget;
-//        textWidget = NULL;
+    delete textWidget;
+    textWidget = nullptr;
 }

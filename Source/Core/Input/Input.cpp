@@ -15,6 +15,7 @@
 std::map<std::string, typeInputEvent> Input::InputBindings;
 std::vector<EventFunctorBase*> Input::eventObserverList;
 std::vector<MouseFunctorBase*> Input::mouseObserverList;
+TextInputFunctorBase* Input::textInputObserver = nullptr;
 
 void Input::Initialize() {
     // Add our binding mechanic to our console commands
@@ -27,6 +28,7 @@ void Input::Terminate() {
     // Clear up all bindings
     InputBindings.clear();
     eventObserverList.clear();
+    textInputObserver = nullptr;
 }
 
 void Input::RegisterEventObserver( EventFunctorBase* observer ) {
@@ -129,6 +131,10 @@ void Input::ProcessInput() {
             Locator::getHyperVisor().Stop();
             return;
         }
+        else if ( textInputObserver )
+        {
+            (*textInputObserver)(event);
+        }
         else
         {
             // Amount variable depends on press/release or axis status
@@ -193,7 +199,6 @@ void Input::ProcessInput() {
                     }
                 }
             }
-            
         }
     }
 }
@@ -228,6 +233,28 @@ void Input::SetDefaultBindings()
     // Mouse bindings
     Bind("MouseButton1", "shoot");
 }
+
+// Text input
+void Input::StartTextInput( TextInputFunctorBase* observer )
+{
+    //Enable text input
+    SDL_StartTextInput();
+    textInputObserver = observer;
+}
+
+void Input::UpdateTextInput()
+{
+    
+
+}
+
+void Input::StopTextInput( TextInputFunctorBase* observer )
+{
+    textInputObserver = nullptr;
+    // Disable text input
+    SDL_StopTextInput();
+}
+
 
 glm::ivec2 Input::ConvertSDLCoordToScreen( int x, int y )
 {

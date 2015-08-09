@@ -9,13 +9,14 @@
 #include "Locator.h"
 #include "Timer.h"
 #include "Input.h"
-#include "DrawMesh.h"
-#include "DrawPrimitives.h"
+#include "Primitives3D.h"
 #include "World.h"
 #include "Camera.h"
 #include "CommandProcessor.h"
 #include "TextLabel.h"
 #include "StringUtil.h"
+
+
 
 LocalGame::LocalGame() : Scene("Game"),
 eventFunctor(this, &LocalGame::OnEvent)
@@ -37,6 +38,11 @@ void LocalGame::Initialize()
     
     Locator::getRenderer().SetCamera(&world.GetCamera());
     _labelFPS = nullptr;
+
+    for (int i=0; i< 10; i++) {
+        Locator::getRenderer().DrawPrimitives3D()->Cube(glm::vec3(i*2,0.0,0), 1.0, glm::quat(), COLOR_PURPLE, COLOR_GREEN);
+    }
+    
 }
 
 void LocalGame::ReInitialize()
@@ -95,7 +101,6 @@ void LocalGame::Update( double deltaTime )
 
 void LocalGame::Draw()
 {
-
     world.Draw();
 //    glm::vec2 windowSize = Locator::getRenderer().GetWindowSize();
     // Test drawing

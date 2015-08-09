@@ -12,9 +12,7 @@
 #include "RenderDefines.h"
 
 class Camera {
-private:
     typedef void (*PhysicsCallback)(Camera& cam);
-    PhysicsCallback physicsFunc;               // Pointer to a static callback function
 public:
     Camera();
     ~Camera();
@@ -65,6 +63,20 @@ public:
     GLboolean debugLens;            // Show debug focal point and range
     bool autoFocus;                 // Automatically focus to center
 
+    const glm::mat4& GetModel() { return _model; };
+    const glm::vec4& GetViewport() { return _viewport; };
+    const glm::mat4& GetProjection() { return _projection; };
+    const glm::mat4& GetMVP() { return _mvp; };
+  
+private:
+    void UpdateMatrices();
+    
+    PhysicsCallback physicsFunc;               // Pointer to a static callback function
+    
+    glm::mat4 _model;
+    glm::vec4 _viewport;
+    glm::mat4 _projection;
+    glm::mat4 _mvp;
 };
 
 #endif
