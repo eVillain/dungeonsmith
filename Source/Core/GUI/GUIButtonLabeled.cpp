@@ -15,7 +15,7 @@ namespace GUI
                                        const int width, const int height,
                                        const int depth) :
     GUIButton(posX, posY, width, height, depth),
-    _label(text, glm::vec3(posX,posY,depth+1))
+    _label(text, glm::vec3(posX - (width/2) + 4,posY,depth+1))
     { }
     
     GUIButtonLabeled::~GUIButtonLabeled()

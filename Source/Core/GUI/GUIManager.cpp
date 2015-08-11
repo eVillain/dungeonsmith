@@ -99,11 +99,11 @@ namespace GUI
         {
             if ( amount == -1 )
             {
-                OnCursorRelease(currentMouseCoord.x, currentMouseCoord.y);
+                return OnCursorRelease(currentMouseCoord.x, currentMouseCoord.y);
             }
             else if ( amount == 1 )
             {
-                OnCursorPress(currentMouseCoord.x, currentMouseCoord.y);
+                return OnCursorPress(currentMouseCoord.x, currentMouseCoord.y);
             }
         }
         return false;

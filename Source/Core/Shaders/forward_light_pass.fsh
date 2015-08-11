@@ -30,10 +30,10 @@ uniform float seed;
 in vec2 texCoord;
 in vec3 viewRay;
 
-uniform float fogDensity = 1.0;          // Global fog density
+uniform float fogDensity = 0.2;          // Global fog density
 uniform float fogHeightFalloff = 0.5;   // Fog height falloff parameter
-uniform float fogExtinctionFalloff = 20.0;
-uniform float fogInscatteringFalloff = 20.0;
+uniform float fogExtinctionFalloff = 0.002;
+uniform float fogInscatteringFalloff = 0.0004;
 
 uniform vec3 fogColor = vec3(0.5,0.6,0.8);
 
@@ -51,13 +51,14 @@ highp float rand(vec2 co)
 float VolumetricFog(float dist,         // camera to point distance
                     float camHeight,    // camera heigth
                     vec3  rayDir) {     // camera to point vector {
-    float fogDistAmount = exp( -dist * fogExtinctionFalloff);    // Extinction by distance
+//    float fogDistAmount = exp( -dist * fogExtinctionFalloff);    // Extinction by distance
+//
+//    float fogHeightAmount = exp(camHeight*fogHeightFalloff) * (1.0-exp(dist*rayDir.y*fogInscatteringFalloff ))/rayDir.y;
+//    fogHeightAmount = max(fogHeightAmount, 0.0);
+//    float fogAmount = max(min(fogDensity * (fogDistAmount + fogHeightAmount), 1.0), 0.0);
+    float fogAmount = fogDensity * (exp( -dist * fogExtinctionFalloff));
 
-    float fogHeightAmount = exp(camHeight*fogHeightFalloff) * (1.0-exp(dist*rayDir.y*fogInscatteringFalloff ))/rayDir.y;
-    fogHeightAmount = max(fogHeightAmount, 0.0);
-    float fogAmount = max(min(fogDensity * (fogDistAmount + fogHeightAmount), 1.0), 0.0);
     return fogAmount;
-
 }
 
 void main(void)

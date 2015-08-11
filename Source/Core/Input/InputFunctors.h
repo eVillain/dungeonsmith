@@ -14,7 +14,6 @@
 //  Copyright (c) 2013 The Drudgerist. All rights reserved.
 //
 
-#include <SDL2/SDL_events.h>
 #include <string>
 // InputEvent typedef which is used for identifying input events
 typedef std::string typeInputEvent;
@@ -68,22 +67,22 @@ private:
 // Functor derived template class for text input events
 class TextInputFunctorBase {
 public:
-    virtual void operator()( const SDL_Event& event ) = 0;
+    virtual void operator()( const std::string& inputText ) = 0;
 };
 // Functor derived template class for any text input event callbacks
 template <class UnknownClass> class TextInputFunctor : public TextInputFunctorBase {
 public:
     // Constructor - takes a pointer to an object and a pointer to a member function
     // and stores them in two private variables
-    TextInputFunctor( UnknownClass* objectPtr, void( UnknownClass::*func )( const SDL_Event& event ) )
+    TextInputFunctor( UnknownClass* objectPtr, void( UnknownClass::*func )( const std::string& inputText ) )
     { object = objectPtr; function = func; };
 
     // Override operator "()"
-    void operator()( const SDL_Event& event )
-    { (*object.*function)(event); };    // Execute member function
+    void operator()( const std::string& inputText )
+    { (*object.*function)(inputText); };    // Execute member function
 private:
     // Pointer to a member function
-    void ( UnknownClass::*function )( const SDL_Event& event );
+    void ( UnknownClass::*function )( const std::string& inputText );
     // Pointer to an object instance
     UnknownClass* object;
 };

@@ -8,9 +8,11 @@
 
 #ifndef DungeonSmith_TextConstants_h
 #define DungeonSmith_TextConstants_h
+#include <string>
 
-namespace Fonts
+class Fonts
 {
+public:
     // Supported fonts: Hard-wired for now, must make these configurable later
     enum FontID {
         FONT_DEFAULT,
@@ -24,32 +26,7 @@ namespace Fonts
         FONT_BENTHAM,
     };
     
-    static const std::string GetFileName( const FontID& theFont ) {
-        std::string fontFile;
-        if ( theFont == FONT_DEFAULT ) {
-            fontFile = ("ClearSans-Regular.ttf");
-        } else if ( theFont == FONT_MENU ) {
-            fontFile = ("HiLoDeco.ttf");
-        } else if ( theFont == FONT_PIXEL ) {
-            fontFile = ("ORANGEKI.ttf");
-        } else if ( theFont == FONT_FANCY ) {
-            fontFile = ("CRETINO.ttf");
-        } else if ( theFont == FONT_JURA ) {
-            fontFile = ("Jura-Book.ttf");
-        } else if ( theFont == FONT_SEGMENT ) {
-            fontFile = ("Segment14.otf");
-        } else if ( theFont == FONT_FELL_NORMAL ) {
-            fontFile = ("IMFeENrm29P.ttf");
-        } else if ( theFont == FONT_FELL_CAPS ) {
-            fontFile = ("IMFeNsc29P.ttf");
-        } else if ( theFont == FONT_BENTHAM ) {
-            fontFile = ("Bentham.ttf");
-        } else {
-            fontFile = "NO_SUCH_FONT";
-        }
-        return fontFile;
-    }
-
-}
+    static const std::string GetFileName( const FontID& theFont );
+};   /* class Fonts */
 
 #endif

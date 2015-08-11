@@ -12,11 +12,11 @@
 #ifndef NGN_INPUT_MANAGER_H
 #define NGN_INPUT_MANAGER_H
 
+#include "InputFunctors.h"
+#include "glm/glm.hpp"
+#include <SDL2/SDL_events.h>
 #include <map>
 #include <vector>
-#include "glm/glm.hpp"
-
-#include "InputFunctors.h"
 
 class Input {
 public:
@@ -42,12 +42,16 @@ public:
     static void UpdateTextInput();
 
 private:
+    static bool ProcessTextInput( const SDL_Event& event );
     // Map of inputs to events
     static std::map<std::string, typeInputEvent> InputBindings;
     // Observers of input events
     static std::vector<EventFunctorBase*> eventObserverList;
     static std::vector<MouseFunctorBase*> mouseObserverList;
+    // Text input observer
     static TextInputFunctorBase* textInputObserver;
+    // Current text input
+    static std::string _inputText;
     // Helper function
     static glm::ivec2 ConvertSDLCoordToScreen( int x, int y );
 };

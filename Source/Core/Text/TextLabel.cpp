@@ -68,35 +68,6 @@ void TextLabel::SetFontSize(const int newFontSize)
 
 glm::vec2 TextLabel::GetSize()
 {
-    // Re-calculate size if dirty, otherwise we already know it
-    if ( _dirty )
-    {
-        float height = 0;
-        float width = 0;
-        float widthMax = 0;
-        std::string fontFile = Fonts::GetFileName( _font );
-        FontAtlas* a = Locator::getText().GetAtlas(fontFile, _fontSize);
-        GlyphInfo* g = a->GetGlyphInfo();
-        const uint8_t *p;
-        
-        // TODO: check for longest width line
-        for (p = (const uint8_t *)_text.c_str(); *p; p++) {
-            /* Newline character - move cursor to beginning(left) and down one row */
-            if ( strncmp((const char*)p, "\n", 1) == 0)
-            {
-                height += _fontSize;
-                if ( width > widthMax ) { widthMax = width; }
-                width = 0;
-                continue;
-            }
-            width += g[*p].ax;
-            float h = g[*p].bh;
-            if ( height < h ) height = h;
-        }
-        if ( width > widthMax ) { widthMax = width; }
-        _size = glm::vec2(widthMax, height);
-    }
-
     return _size;
 }
 
@@ -184,7 +155,7 @@ void TextLabel::BufferVertexData(FontAtlas& atlas)
 		coords[_bufferedVerts++] = glm::vec4( x2+w, -y2-h, z, 1.0f );
         
         /* Size calculation */
-        width += x;
+        width += g[*p].ax;
         if ( height < h ) height = h;
     }
     if ( width > widthMax ) { widthMax = width; }

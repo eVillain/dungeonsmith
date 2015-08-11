@@ -17,10 +17,10 @@ void GBuffer::Initialize(GLuint width, GLuint height)
     _height = height;
     
     /* --- Generate our frame buffer textures --- */
-    _diffuse = GenerateTextureRGBAF(_width, _height);
-    _specular = GenerateTextureRGBAF(_width, _height);
-    _depth = GenerateTextureDepth(_width, _height);
-    _normal = GenerateTextureNormal(_width, _height);
+    _diffuse = RenderUtils::GenerateTextureRGBAF(_width, _height);
+    _specular = RenderUtils::GenerateTextureRGBAF(_width, _height);
+    _depth = RenderUtils::GenerateTextureDepth(_width, _height);
+    _normal = RenderUtils::GenerateTextureNormal(_width, _height);
     
     // Generate main rendering frame buffer
     glGenFramebuffers(1, &_fbo);

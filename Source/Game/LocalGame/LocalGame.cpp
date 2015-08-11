@@ -102,33 +102,28 @@ void LocalGame::Update( double deltaTime )
 void LocalGame::Draw()
 {
     world.Draw();
-//    glm::vec2 windowSize = Locator::getRenderer().GetWindowSize();
-    // Test drawing
-//    Locator::getRenderer().Primitives()->Line(glm::vec2(-windowSize.x*0.5,0), glm::vec2(windowSize.x*0.5 - 1,0), COLOR_RED, COLOR_BLUE);
-//        Locator::getRenderer().Primitives()->Circle(glm::vec2(-20,-20), 0.0, 20.0, COLOR_YELLOW);
-//        Locator::getRenderer().Primitives()->RectFilled(glm::vec2(100,100), glm::vec2(40,30), COLOR_GREEN, 1.0);
 }
 
 bool LocalGame::OnEvent(const typeInputEvent& event, const float& amount)
 {
-    if ( event == "lookleft" ) { inputLook.x -= amount; }
-    else if ( event == "lookright" ) { inputLook.x += amount; }
-    else if ( event == "lookup" ) { inputLook.y -= amount; }
-    else if ( event == "lookdown" ) { inputLook.y += amount; }
-    else if ( event == "moveleft" ) { inputMove.x -= amount; }
-    else if ( event == "moveright" ) { inputMove.x += amount; }
-    else if ( event == "moveback" ) { inputMove.y += amount; }
-    else if ( event == "moveforward" ) { inputMove.y -= amount; }
+    if ( event == "lookleft" ) { inputLook.x -= amount; return true; }
+    else if ( event == "lookright" ) { inputLook.x += amount; return true; }
+    else if ( event == "lookup" ) { inputLook.y -= amount; return true; }
+    else if ( event == "lookdown" ) { inputLook.y += amount; return true; }
+    else if ( event == "moveleft" ) { inputMove.x -= amount; return true; }
+    else if ( event == "moveright" ) { inputMove.x += amount; return true; }
+    else if ( event == "moveback" ) { inputMove.y += amount; return true; }
+    else if ( event == "moveforward" ) { inputMove.y -= amount; return true; }
     else if ( amount == 1 )
     {
-        if ( event == "run" ) { world.GetCamera().movementSpeedFactor = 20.0; }
-        if ( event == "sneak" ) { world.GetCamera().movementSpeedFactor = 5.0; }
-        if ( event == "shoot" ) { CommandProcessor::ExecuteCommand("lighting"); }
+        if ( event == "run" ) { world.GetCamera().movementSpeedFactor = 20.0; return true; }
+        if ( event == "sneak" ) { world.GetCamera().movementSpeedFactor = 5.0; return true; }
+//        if ( event == "shoot" ) { CommandProcessor::ExecuteCommand("lighting"); return true; }
     }
     else if ( amount == -1 )
     {
-        if ( event == "run" ) { world.GetCamera().movementSpeedFactor = 10.0; }
-        if ( event == "sneak" ) { world.GetCamera().movementSpeedFactor = 10.0; }
+        if ( event == "run" ) { world.GetCamera().movementSpeedFactor = 10.0; return true; }
+        if ( event == "sneak" ) { world.GetCamera().movementSpeedFactor = 10.0; return true; }
     }
     return false;
 }

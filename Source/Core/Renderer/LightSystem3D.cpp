@@ -82,10 +82,10 @@ void LightSystem3D::GetLightsForArea(glm::vec3 pos, glm::vec3 radius, std::vecto
 
 void LightSystem3D::RenderLighting( const Camera& camera, const GBuffer& gBuffer ) {
     Color fogColor = COLOR_FOG_DEFAULT;
-    bool fogDensity = 0.75f;
-    bool fogHeightFalloff = 0.25f;
-    bool fogExtinctionFalloff = 20.0f;
-    bool fogInscatteringFalloff = 20.0f;
+    float fogDensity = 1.0;
+    float fogHeightFalloff = 0.000000000025;
+    float fogExtinctionFalloff = 25.0;
+    float fogInscatteringFalloff = 0.000000000025;
     
     glm::ivec2 windowSize = Locator::getRenderer().GetWindowSize();
     float noiseSeed = Timer::Milliseconds();
@@ -110,7 +110,7 @@ void LightSystem3D::RenderLighting( const Camera& camera, const GBuffer& gBuffer
     viewVerts[3] = glm::unProject(glm::vec3(0.0f, windowSize.y, cz), model, proj, viewport);
     
     // Parameters for linearizing depth value
-    glm::vec2 depthParameter = glm::vec2( camera.farDepth / ( camera.farDepth - camera.nearDepth ),
+    glm::vec2 depthParameter = glm::vec2(camera.farDepth / ( camera.farDepth - camera.nearDepth ),
                                          camera.farDepth * camera.nearDepth / ( camera.nearDepth - camera.farDepth ) );
 
     // Prepare VAO for light render
@@ -153,7 +153,7 @@ void LightSystem3D::RenderLighting( const Camera& camera, const GBuffer& gBuffer
     _shaderLight->setUniform3fv("camPos", camera.position);
     _shaderLight->setUniform1iv("renderSSAO", false );
     _shaderLight->setUniform1iv("ssaoMap", 4 );
-    _shaderLight->setUniform1iv("renderFog", false);
+    _shaderLight->setUniform1iv("renderFog", true);
     _shaderLight->setUniform1fv("fogDensity", fogDensity);
     _shaderLight->setUniform1fv("fogHeightFalloff", fogHeightFalloff);
     _shaderLight->setUniform1fv("fogExtinctionFalloff", fogExtinctionFalloff);

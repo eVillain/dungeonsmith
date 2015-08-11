@@ -31,7 +31,7 @@ SkyDome::SkyDome() {
     
     timeOfDay = 8.0f;                // Start off in morning
     timeFactor = float(M_PI/12.0f);  // 24 hour full cycle equals 2*pi radians
-    timeScale = 0.75;                     // 1 = 1 hour per second
+    timeScale = 1.0;                     // 1 = 1 hour per second
     sunTilt = 0.05f;                 // Alignment along North-South axis
     
     buffer = NULL;

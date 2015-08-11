@@ -42,7 +42,6 @@
 #include <map>
 #include <deque>
 #include <future>
-#include "Command.h"
 
 // Base command class for common inheritance
 class CommandBase
@@ -79,7 +78,7 @@ public:
     void operator()(ArgTypes... args) { if(functionPtr) instancePtr->functionPtr(args...); };
 };
 
-#define INCLUDE_CONSOLE 0
+#define INCLUDE_CONSOLE 1
 
 #if INCLUDE_CONSOLE
 #include "Console.h"

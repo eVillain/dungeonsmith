@@ -576,7 +576,7 @@ const void Chunk::GenerateMesh()
     _buffer->Clear();
     if ( totalOVerts == 0 && totalTVerts == 0 ) {
         _empty = true;
-        printf("[Chunk] at %i,%i,%i - had no vertices to cache\n", _coord.x,_coord.y,_coord.z);
+//        printf("[Chunk] at %i,%i,%i - had no vertices to cache\n", _coord.x,_coord.y,_coord.z);
     } else {
         int numVerts = totalOVerts + totalTVerts;
 //        printf("[Chunk] at %i,%i,%i - %i verts cached\n", _coord.x,_coord.y,_coord.z, numVerts);

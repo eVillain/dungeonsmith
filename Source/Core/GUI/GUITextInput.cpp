@@ -18,9 +18,13 @@ namespace GUI
     _label(defaultText, glm::vec3(posX-(width/2)+8,posY-(height/4),depth+1)),
     _inputText(defaultText),
     _defaultText(defaultText),
-    _textInputFunctor(this,&GUITextInput::OnTextInputEvent)
+    _textInputFunctor(this,&GUITextInput::OnTextInputEvent),
+    _eventFunctor(this, &GUITextInput::OnEvent)
     {
-        _lastCursorBlink = Timer::Seconds();
+        _textInputActive = false;
+        _behavior = nullptr;
+        
+        _lastCursorBlink = 0;
     }
     
     GUITextInput::~GUITextInput()
@@ -28,47 +32,35 @@ namespace GUI
         
     }
     
-    void GUITextInput::OnTextInputEvent( const SDL_Event& event )
+    void GUITextInput::OnTextInputEvent( const std::string& inputText )
     {
-        bool renderText = false;
-        if( event.type == SDL_KEYDOWN )
+        _inputText = inputText;
+        _label.SetText(_inputText);
+    }
+    
+    bool GUITextInput::OnEvent( const typeInputEvent& theEvent, const float& amount )
+    {
+        if ( theEvent == "back" && _textInputActive )
         {
-            //Handle backspace
-            if( event.key.keysym.sym == SDLK_BACKSPACE && _inputText.length() > 0 )
+            if ( amount == 1 )
             {
-                //lop off character
-                _inputText.pop_back();
-                renderText = true;
+                StopTextInput();
             }
-            //Handle copy
-            else if( event.key.keysym.sym == SDLK_c && SDL_GetModState() & KMOD_CTRL )
-            {
-                SDL_SetClipboardText( _inputText.c_str() );
-            }
-            //Handle paste
-            else if( event.key.keysym.sym == SDLK_v && SDL_GetModState() & KMOD_CTRL )
-            {
-                _inputText = SDL_GetClipboardText();
-                renderText = true;
-            }
+            return true;
         }
-        //Special text input event
-        else if( event.type == SDL_TEXTINPUT )
+        else if ( theEvent == "start" && _textInputActive )
         {
-            //Not copy or pasting
-            if( !( (event.text.text[ 0 ] == 'c' || event.text.text[ 0 ] == 'C' ) &&
-                  ( event.text.text[ 0 ] == 'v' || event.text.text[ 0 ] == 'V' ) && SDL_GetModState() & KMOD_CTRL ) )
+            if ( amount == 1 )
             {
-                //Append character
-                _inputText += event.text.text;
-                renderText = true;
+                if ( _behavior )
+                {
+                    _behavior->Trigger(_inputText);
+                }
+                StopTextInput();
             }
+            return true;
         }
-        
-        if ( renderText )
-        {
-            _label.SetText(_inputText);
-        }
+        return false;
     }
     
     void GUITextInput::Draw()
@@ -120,16 +112,45 @@ namespace GUI
             {
                 // Draw cursor
                 glm::vec2 textSize = _label.GetSize();
-                Locator::getRenderer().DrawPrimitives2D()->Line(glm::vec2(x+TEXTSIZE+textSize.x+4, y-8+(h-TEXTSIZE)*0.6f),
-                                       glm::vec2(x+TEXTSIZE+textSize.x+4 , y-8+h-(h-TEXTSIZE)*0.6f),
-                                       COLOR_WHITE, COLOR_WHITE);
+                Primitives2D& primitives = *Locator::getRenderer().DrawPrimitives2D();
+                float cursorX = _label.position.x+textSize.x + 4;
+                primitives.Line(glm::vec2(cursorX, y-8+(h-TEXTSIZE)*0.6f),
+                                glm::vec2(cursorX , y-8+h-(h-TEXTSIZE)*0.6f),
+                                COLOR_WHITE, COLOR_WHITE, z);
             }
         }
     }
     
     void GUITextInput::Update()
     {
-        
+        /* Unused for now */
+    }
+    
+    void GUITextInput::SetFocus( const bool focus)
+    {
+        _focus = focus;
+    }
+    
+    void GUITextInput::SetActive( const bool active )
+    {
+        if ( active != _textInputActive ) {
+            if ( _active && _textInputActive ) // Widget made inactive with input active
+            {
+                StopTextInput();
+            }
+        }
+        _active = active;
+    }
+    
+    void GUITextInput::SetVisible( const bool visible )
+    {
+        if ( _visible != visible ) {
+            if ( _visible && _textInputActive ) // Widget made invisible with input active
+            {
+                StopTextInput();
+            }
+        }
+        _visible = visible;
     }
     
     // When clicked/pressed
@@ -146,6 +167,8 @@ namespace GUI
     {
         if ( _textInputActive ) return;
         Input::StartTextInput(&_textInputFunctor);
+        Input::RegisterEventObserver(&_eventFunctor);
+
         _textInputActive = true;
         if ( _inputText == _defaultText )
         {
@@ -159,174 +182,6 @@ namespace GUI
         if ( !_textInputActive ) return;
         _textInputActive = false;
         Input::StopTextInput(&_textInputFunctor);
-        if ( _inputText.empty() )
-        {
-            _inputText = _defaultText;
-            _label.SetText(_inputText);
-        }
+        Input::UnRegisterEventObserver(&_eventFunctor);
     }
-    
-    
-
 }   /* namespace GUI */
-
-//void GUITextInput::UpdatePos( int posX, int posY ) {
-//    x = posX; y = posY;
-//    g_uiMan->GetTextManager()->UpdateTextPos(labelID, glm::vec3(x+TEXTSIZE, y-contentHeight+TEXTSIZE+8, 0.0f));
-//    g_uiMan->GetTextManager()->UpdateTextPos(inputLabelID, glm::vec3(x+TEXTSIZE, y+TEXTSIZE/2, 0.0f));
-//}
-//void GUITextInput::CursorPress( int x, int y ) {
-//    active = true;
-//}
-//void GUITextInput::CursorRelease( int x, int y ) {
-//    if ( active ) {
-//        StartTextInput();
-//    } else if ( !highlighted ) {
-//        
-//    }
-//}
-//void GUITextInput::CursorHover( bool highlight, int x, int y ) {
-//    highlighted = highlight;
-//}
-//
-//void GUITextInput::Draw( RendererBase* renderer ) {
-//    // Pixel perfect outer border (should render with 1px shaved off corners)
-//    renderer->Buffer2DLine(glm::vec2(x,y+1), glm::vec2(x,y+h), COLOR_UI_BORDER1, COLOR_UI_BORDER1);       // L
-//    renderer->Buffer2DLine(glm::vec2(x,y+h), glm::vec2(x+w-1,y+h), COLOR_UI_BORDER1, COLOR_UI_BORDER1);   // T
-//    renderer->Buffer2DLine(glm::vec2(x+w,y+h), glm::vec2(x+w,y+1), COLOR_UI_BORDER1, COLOR_UI_BORDER1);   // R
-//    renderer->Buffer2DLine(glm::vec2(x+w-1,y), glm::vec2(x,y), COLOR_UI_BORDER1, COLOR_UI_BORDER1);       // B
-//    renderer->Buffer2DLine(glm::vec2(x+w-1,y+TEXTSIZE+4), glm::vec2(x,y+TEXTSIZE+4), COLOR_UI_BORDER1, COLOR_UI_BORDER1);       // B
-//    // Inner gradient fill
-//    renderer->DrawGradientY(Rect2D((float)x, (float)y+1, (float)w-1, (float)h-1), COLOR_UI_GRADIENT1, COLOR_UI_GRADIENT2);
-//    // Inside border
-//    glEnable(GL_BLEND);
-//    renderer->Draw2DRect(Rect2D(x+1,y+1,w-2,h-2), COLOR_UI_BORDER2, COLOR_NONE);
-//    
-//    // Render blinking cursor
-//    if ( grabKeyboardInput ) {
-//        double timeNow = SysCore::GetSeconds();
-//        double cursorBlinkDelta = timeNow - lastCursorBlink;
-//        if (cursorBlinkDelta > CURSOR_BLINK_RATE) {
-//            cursorBlink = !cursorBlink;
-//            lastCursorBlink = timeNow;
-//        }
-//        if (cursorBlink) {
-//            float textWidth, textHeight;
-//            g_uiMan->GetTextManager()->GetTextSize(inputLabelID, textWidth, textHeight);
-//            renderer->Buffer2DLine(glm::vec2(x+TEXTSIZE+textWidth+4, y-8+(h-TEXTSIZE)*0.6f),
-//                                   glm::vec2(x+TEXTSIZE+textWidth+4 , y-8+h-(h-TEXTSIZE)*0.6f),
-//                                   COLOR_WHITE, COLOR_WHITE);       // Cursor
-//        }
-//    }
-//    renderer->Render2DLines();
-//    
-//    if ( active ) {
-//        g_uiMan->GetTextManager()->UpdateTextColor(labelID, COLOR_UI_TEXT_ACTIVE);
-//    } else {
-//        if ( highlighted ) {
-//            g_uiMan->GetTextManager()->UpdateTextColor(labelID, COLOR_UI_TEXT_HIGHLIGHT);
-//        } else {
-//            g_uiMan->GetTextManager()->UpdateTextColor(labelID, COLOR_UI_TEXT);
-//        }
-//    }
-//}
-//
-////========================================================================
-//// Text input functions
-////========================================================================
-//void GUITextInput::StartTextInput() {
-//    if ( !grabKeyboardInput ) {
-//        // Register for keyboard input
-//        
-//        g_uiMan->GetInputManager()->RegisterCharObserver(&charReceiverFunc);
-//        g_uiMan->GetInputManager()->RegisterKeyObserver(&keyReceiverFunc);
-//        g_uiMan->GetTextManager()->UpdateText( inputLabelID, keyboardBuffer );
-//        active = true;
-//        grabKeyboardInput = true;
-//    } else {
-//        printf("[UITextInput] WARNING: trying to grab input twice!");
-//    }
-//}
-//void GUITextInput::StopTextInput() {
-//    if ( grabKeyboardInput ) {
-//        // Unregister keyboard input
-//        g_uiMan->GetInputManager()->UnRegisterCharObserver(&charReceiverFunc);
-//        g_uiMan->GetInputManager()->UnRegisterKeyObserver(&keyReceiverFunc);
-//        grabKeyboardInput = false;
-//        active = false;
-//    }
-//}
-//void GUITextInput::CancelTextInput() {
-//    if ( grabKeyboardInput ) {
-//        grabKeyboardInput = false;
-//        Clear();
-//        g_uiMan->GetTextManager()->UpdateText( inputLabelID, "<enter text>" );
-//        active = false;
-//        // Unregister keyboard input
-//        g_uiMan->GetInputManager()->UnRegisterCharObserver(&charReceiverFunc);
-//        g_uiMan->GetInputManager()->UnRegisterKeyObserver(&keyReceiverFunc);
-//        printf("TextInput cancelled\n");
-//    }
-//}
-//void GUITextInput::Clear() {
-//    keyboardBuffer[0] = '\0';
-//    if ( keyboardIndex != 0 ) {
-//        keyboardIndex = 0;
-//        UpdateTextInput();
-//    }
-//}
-//void GUITextInput::UpdateTextInput() {
-//    std::string newLabel =  ( keyboardBuffer );
-//    g_uiMan->GetTextManager()->UpdateText( inputLabelID, newLabel );
-//}
-//
-//void GUITextInput::ReceiveChar(int key, int action)
-//{
-//    if (grabKeyboardInput && keyboardIndex < 64)
-//    {
-//        keyboardBuffer[keyboardIndex] = key;
-//        keyboardIndex++;
-//        keyboardBuffer[keyboardIndex] = '\0';
-//        UpdateTextInput();
-//    }
-//}
-//void GUITextInput::ReceiveKey(int key, int action)
-//{
-//    if ( action == GLFW_PRESS ) {
-//        if ( key == GLFW_KEY_BACKSPACE ) {
-//            if ( grabKeyboardInput && keyboardIndex > 0 ) {
-//                double timeNow = SysCore::GetSeconds();
-//                if ( timeNow - lastBackSpace > 0.05 ) {
-//                    lastBackSpace = timeNow;
-//                    keyboardIndex--;
-//                    keyboardBuffer[keyboardIndex] = '\0';
-//                    UpdateTextInput();
-//                }
-//            }
-//        }
-//    } else if ( action == GLFW_RELEASE ) {
-//        if ( key == GLFW_KEY_ESCAPE ) {
-//            StopTextInput();
-//        } else if ( key == GLFW_KEY_ENTER ) {
-////            StopTextInput();
-//            DoCallBack();
-//        } else if ( key == GLFW_KEY_BACKSPACE ) {
-//            lastBackSpace = 0;
-//        }
-//    }
-//}
-//
-//std::string GUITextInput::GetText() {
-//    return std::string(keyboardBuffer, keyboardIndex);
-//}
-//void GUITextInput::SetText( std::string newText ) {
-//    if ( newText.length() < 64 ) {
-//#ifdef _WIN32
-//        strcpy_s(keyboardBuffer, newText.c_str());
-//#else
-//        strcpy(keyboardBuffer, newText.c_str());
-//#endif
-//        keyboardIndex = (int)newText.length();
-//        UpdateTextInput();
-//    }
-//}

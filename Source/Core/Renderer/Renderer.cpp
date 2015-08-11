@@ -161,7 +161,7 @@ bool Renderer::InitializeComponents()
     _textureManager = new TextureManager();
     
     // Generate final image framebuffer
-    _textureFinal = GenerateTextureRGBAF(windowWidth, windowHeight);
+    _textureFinal = RenderUtils::GenerateTextureRGBAF(windowWidth, windowHeight);
     glGenFramebuffers(1, &_fboFinal);
     glBindFramebuffer(GL_FRAMEBUFFER, _fboFinal);
     glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, _textureFinal, 0);
@@ -204,8 +204,8 @@ bool Renderer::TerminateComponents()
 
 void Renderer::AddCommands()
 {
-    CommandProcessor::AddCommand("lighting", Command<>([&](){ _enableLighting = !_enableLighting; }));
-    CommandProcessor::AddCommand("wireframe", Command<>([&](){ _enableWireFrame = !_enableWireFrame; }));
+    CommandProcessor::AddCommand("lights", Command<>([&](){ _enableLighting = !_enableLighting; }));
+    CommandProcessor::AddCommand("wires", Command<>([&](){ _enableWireFrame = !_enableWireFrame; }));
     CommandProcessor::AddCommand("aa", Command<>([&](){ _enableAA = !_enableAA; }));
     CommandProcessor::AddCommand("debugdiffuse", Command<>([&](){
         if ( _debugMode == Debug_Render_Diffuse ) { _debugMode = Debug_Render_Off; }
@@ -311,9 +311,13 @@ void Renderer::FinishDeferred()
                 if ( _enableLighting && _camera )
                 {
                     _lighting->RenderLighting(*_camera, _gbuffer);
+                    glDisable( GL_BLEND );
                     Stencil::Enable();
                     Stencil::SetKeepEqual(Stencil::Layer_Sky);
                     _postProcess->TextureFullScreen(_gbuffer.GetDiffuse());
+                    Stencil::SetReplaceEqual(Stencil::Layer_Clear);
+                    _primitives2D->RectFilled(glm::vec2(), GetWindowSize(), COLOR_FOG_DEFAULT, 1.0);
+                    _primitives2D->Render();
                     Stencil::Disable();
                 }
                 else    // Copy from G-buffer diffuse texture

@@ -11,11 +11,13 @@
 #include "Locator.h"
 #include "CommandProcessor.h"
 #include "StringUtil.h"
+#include "RangeReverseAdapter.h"
 
 std::map<std::string, typeInputEvent> Input::InputBindings;
 std::vector<EventFunctorBase*> Input::eventObserverList;
 std::vector<MouseFunctorBase*> Input::mouseObserverList;
 TextInputFunctorBase* Input::textInputObserver = nullptr;
+std::string Input::_inputText = "";
 
 void Input::Initialize() {
     // Add our binding mechanic to our console commands
@@ -101,7 +103,8 @@ void PrintModifiers( Uint32 mod ){
 }
 
 /* Print all information about a key event */
-void PrintKeyInfo( SDL_KeyboardEvent *key ){
+void PrintKeyInfo( SDL_KeyboardEvent *key )
+{
     /* Is it a release or a press? */
     if( key->type == SDL_KEYUP )
         printf( "Release:- " );
@@ -124,83 +127,126 @@ void Input::ProcessInput() {
     /* Poll for events. SDL_PollEvent() returns 0 when there are no  */
     /* more events on the event queue, our while loop will exit when */
     /* that occurs.                                                  */
-    while( SDL_PollEvent( &event ) ){
+    while( SDL_PollEvent( &event ) )
+    {
         //User requests quit, terminate gracefully
         if( event.type == SDL_QUIT )
         {
             Locator::getHyperVisor().Stop();
             return;
         }
-        else if ( textInputObserver )
+        
+        // Amount variable depends on press/release or axis status
+        // Range -1.0 ~ 1.0
+        float amount = 0.0f;
+        std::string input;
+        
+        // Check for text input, that takes precedence over regular events
+        if (event.type == SDL_KEYDOWN)
         {
-            (*textInputObserver)(event);
+            if ( event.key.repeat == 0 )
+            {
+                amount = 1.0f;
+                input = SDL_GetKeyName( event.key.keysym.sym );
+            }
         }
-        else
+        else if (event.type == SDL_KEYUP)
         {
-            // Amount variable depends on press/release or axis status
-            // Range -1.0 ~ 1.0
-            float amount = 0.0f;
-            std::string input;
-            /* -- SDL EVENT TYPES ARE IMPLEMENTED HERE -- */
-            switch( event.type ){
-                case SDL_KEYDOWN:
-                    if ( event.key.repeat == 0 ) {
-                        amount = 1.0f;
-                        input = SDL_GetKeyName( event.key.keysym.sym );
-                    }
-                    break;                    
-                case SDL_KEYUP:
-                    if ( event.key.repeat == 0 ) {
-                        amount = -1.0f;
-                        input = SDL_GetKeyName( event.key.keysym.sym );
-                    }
-                    break;
-                case SDL_MOUSEMOTION:
+            if ( event.key.repeat == 0 )
+            {
+                amount = -1.0f;
+                input = SDL_GetKeyName( event.key.keysym.sym );
+            }
+        }
+        else if (event.type == SDL_MOUSEMOTION)
+        {
+            glm::ivec2 adjustedCoords = ConvertSDLCoordToScreen(event.motion.x, event.motion.y);
+            for ( MouseFunctorBase* func : mouseObserverList )
+            {
+                bool swallowed = (*func)( adjustedCoords.x, adjustedCoords.y );
+                if ( swallowed ) // Event was swallowed, don't propagate
                 {
-                    glm::ivec2 adjustedCoords = ConvertSDLCoordToScreen(event.motion.x, event.motion.y);
-                    for ( MouseFunctorBase* func : mouseObserverList )
-                    {
-                        bool swallowed = (*func)( adjustedCoords.x, adjustedCoords.y );
-                        if ( swallowed ) // Event was swallowed, don't propagate
-                        {
-                            break;
-                        }
-                    }
                     break;
                 }
-                case SDL_MOUSEBUTTONDOWN:
-                    amount = 1.0f;
-                    input = "MouseButton" + StringUtil::IntToString(event.button.button);
-                    break;
-                case SDL_MOUSEBUTTONUP:
-                    amount = -1.0f;
-                    input = "MouseButton" + StringUtil::IntToString(event.button.button);
-                    break;
-                case SDL_MOUSEWHEEL:
-//                    event.wheel.
-                    break;
-                default:
-                    break;
             }
-            // Regular events
-            if ( input.length() )
+        }
+        else if (event.type == SDL_MOUSEBUTTONDOWN)
+        {
+            amount = 1.0f;
+            input = "MouseButton" + StringUtil::IntToString(event.button.button);
+        }
+        else if (event.type == SDL_MOUSEBUTTONUP)
+        {
+            amount = -1.0f;
+            input = "MouseButton" + StringUtil::IntToString(event.button.button);
+        }
+        else if (event.type == SDL_MOUSEWHEEL)
+        { /* TODO: Implement mousewheel :) */}
+        
+        // We have to check for input events first, blocking the regular events
+        if ( textInputObserver && ProcessTextInput(event))
+        {
+            // Call the registered observer
+            (*textInputObserver)(_inputText);
+        }
+        else if ( input.length() )   // Regular events
+        {
+//          printf("Input: %s\n", input.c_str());
+            if ( InputBindings.find(input) != InputBindings.end() )
             {
-//                printf("Input: %s\n", input.c_str());
-                if ( InputBindings.find(input) != InputBindings.end() )
+                if (textInputObserver && input != "Escape" && input != "Return")
                 {
-//                    printf("Bound to: %s\n", InputBindings[input].c_str());
-                    for ( EventFunctorBase* func : eventObserverList )
-                    {
-                        bool swallowed = (*func)( InputBindings[input], amount );
-                        if ( swallowed ) // Event was swallowed, don't propagate
-                        {
-                            break;
-                        }
-                    }
+                    return;
+                }
+//           printf("Bound to: %s\n", InputBindings[input].c_str());
+                for ( EventFunctorBase* func : eventObserverList )
+                {
+                    bool swallowed = (*func)( InputBindings[input], amount );
+                    if ( swallowed )
+                    { break; }  // Event was swallowed, don't propagate
                 }
             }
         }
     }
+}
+
+bool Input::ProcessTextInput(const SDL_Event &event)
+{
+    if( event.type == SDL_KEYDOWN )
+    {
+        //Handle backspace
+        if( event.key.keysym.sym == SDLK_BACKSPACE && _inputText.length() > 0 )
+        {
+            //lop off character
+            _inputText.pop_back();
+            return true;
+        }
+        //Handle copy
+        else if( event.key.keysym.sym == SDLK_c && SDL_GetModState() & KMOD_CTRL )
+        {
+            SDL_SetClipboardText( _inputText.c_str() );
+            return false;
+        }
+        //Handle paste
+        else if( event.key.keysym.sym == SDLK_v && SDL_GetModState() & KMOD_CTRL )
+        {
+            _inputText = SDL_GetClipboardText();
+            return true;
+        }
+    }
+    //Special text input event
+    else if( event.type == SDL_TEXTINPUT )
+    {
+        //Not copy or pasting
+        if( !( (event.text.text[ 0 ] == 'c' || event.text.text[ 0 ] == 'C' ) &&
+              ( event.text.text[ 0 ] == 'v' || event.text.text[ 0 ] == 'V' ) && SDL_GetModState() & KMOD_CTRL ) )
+        {
+            //Append character
+            _inputText += event.text.text;
+            return true;
+        }
+    }
+    return false;
 }
 
 void Input::SetDefaultBindings()
@@ -240,6 +286,7 @@ void Input::StartTextInput( TextInputFunctorBase* observer )
     //Enable text input
     SDL_StartTextInput();
     textInputObserver = observer;
+    _inputText.clear();
 }
 
 void Input::UpdateTextInput()

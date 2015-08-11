@@ -64,6 +64,7 @@ void CommandProcessor::RemoveCommand(std::string cmdName) {
 //
 void CommandProcessor::Process( std::string command )
 {
+    CONSOLE_COLORED("Command: " + command, COLOR_GREEN);
     // Try to tokenize input text
     std::deque<std::string> tokens;
     StringUtil::Tokenize(command, tokens);

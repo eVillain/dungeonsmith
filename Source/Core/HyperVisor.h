@@ -13,6 +13,7 @@
 
 class HyperVisor {
 public:
+    static const std::string VERSION() { return "0.1a"; };
     HyperVisor();
     ~HyperVisor();
     

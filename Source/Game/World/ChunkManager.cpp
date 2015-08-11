@@ -12,11 +12,11 @@
 #include <memory>
 
 ChunkManager::ChunkManager() :
-_totalChunks(512),
+_totalChunks(1024),
 _autoGenerate(false)
 {
     for (int i=0; i < _totalChunks; i++) {
-        _unusedChunks.Add(new Chunk());
+        _unusedChunks.Enqueue(new Chunk());
     }
 }
 
@@ -32,13 +32,18 @@ void ChunkManager::Update(const glm::vec3& position, const float radius)
         while (chunkPair != std::end(_chunks))
         {
             Chunk* chunk = chunkPair->second;
+            if ( chunk == nullptr )
+            {
+                ++chunkPair;
+                continue;
+            }
             glm::vec3 chunkCenter = ChunkUtil::GetChunkCenter(chunkPair->first);
             glm::vec3 distance = chunkCenter - position;
             float dist = glm::length(distance);
             // Check if it's outside of the radius
             if ( dist > radius+CHUNK_RADIUS ) {
                 chunkPair = _chunks.erase(chunkPair);
-                _unusedChunks.Add(chunk);
+                _unusedChunks.Enqueue(chunk);
             } else {
                 if ( chunk->IsDirty() )
                 {
@@ -48,6 +53,12 @@ void ChunkManager::Update(const glm::vec3& position, const float radius)
                     const int priority = 100.0*(1.0-((float)distChunks/radiusChunks));
                     auto result = threadPool.AddJob(priority, [=](){
                         chunk->GenerateMesh();
+                        
+                        if ( chunk->IsEmpty() )
+                        {
+                            chunkPair->second = nullptr;
+                            _unusedChunks.Enqueue(chunk);
+                        }
                     } );
                 }
                 
@@ -74,7 +85,7 @@ void ChunkManager::Update(const glm::vec3& position, const float radius)
                         printf("Chunk pool was empty, need more chunks!\n");
                         return;
                     }
-                    Chunk* chunk = _unusedChunks.Acquire();
+                    Chunk* chunk = _unusedChunks.Dequeue();
                     // Store chunk
                     _chunks[chunkCoord] = chunk;
                     
@@ -104,7 +115,7 @@ void ChunkManager::Draw(Camera& camera)
     for (it = _chunks.begin(); it != _chunks.end(); it++)
     {
         Chunk& chunk = *it->second;
-        if (chunk.IsEmpty()) continue;
+        if ( it->second == nullptr || chunk.IsEmpty()) continue;
         if ( chunk.NeedsUpload() )
         {
             numUploaded++;
@@ -121,7 +132,7 @@ void ChunkManager::Clear()
     for ( std::pair<glm::ivec3, Chunk*> chunkPair : _chunks )
     {
         // Move all our chunks back to the pool :)
-        _unusedChunks.Add(chunkPair.second);
+        _unusedChunks.Enqueue(chunkPair.second);
         chunkPair.second = nullptr;
     }
     _chunks.clear();

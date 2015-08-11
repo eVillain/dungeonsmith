@@ -14,7 +14,7 @@
 #include "RenderDefines.h"
 #include "Camera.h"
 #include "ChunkPool.h"
-
+#include "ThreadSafeQueue.h"
 #include <unordered_map>
 #include <queue>
 
@@ -24,14 +24,17 @@ public:
     
     void Update(const glm::vec3& position, const float radius);
     void Draw(Camera& camera);
-    void Clear();    
+    void Clear();
+    
+    bool AutoGenerate() { return _autoGenerate; }
+    void SetAutoGenerate( bool value ) { _autoGenerate = value; }
 private:
     typedef std::unordered_map<glm::ivec3, Chunk*, ChunkUtil::Hash, ChunkUtil::Equals> ChunkMap;
     int _totalChunks;
     bool _autoGenerate;
     
     ChunkMap _chunks;
-    ChunkPool _unusedChunks;
+    ThreadSafeQueue<Chunk*> _unusedChunks;
 };
 
 #endif /* defined(__DungeonSmith__ChunkManager__) */

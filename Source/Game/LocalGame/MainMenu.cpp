@@ -85,7 +85,7 @@ bool MainMenu::OnEvent(const typeInputEvent& event, const float& amount)
 
 void MainMenu::CreateButtons()
 {
-    _buttonStartGame = new GUI::GUIButtonLabeled("Start Game", 0,0,200,200,0);
+    _buttonStartGame = new GUI::GUIButtonLabeled("Start Game", 0,0,200,40,0);
     GUI::ButtonBehaviorLambda* startGameBehavior = new GUI::ButtonBehaviorLambda([](){
         Locator::getSceneManager().AddActiveScene( new LocalGame());
     });

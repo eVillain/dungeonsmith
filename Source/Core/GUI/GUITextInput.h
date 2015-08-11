@@ -9,8 +9,10 @@
 //
 
 #include "GUIWidget.h"
+#include "TextInputBehavior.h"
 #include "InputFunctors.h"
 #include "TextLabel.h"
+
 #include <SDL2/SDL_events.h>
 
 namespace GUI
@@ -27,105 +29,37 @@ namespace GUI
         // Overriden from UIWidget
         virtual void Draw();
         virtual void Update();
+        virtual void SetFocus( const bool focus);
+        virtual void SetActive( const bool active );
+        virtual void SetVisible( const bool visible );
         // When clicked/pressed
         virtual void OnInteract( const bool interact );
 
         // Text input operations
         void StartTextInput();
         void StopTextInput();
+        void ClearText() { _inputText.clear(); }
         
-        //    virtual void UpdatePos( int posX, int posY );
-        //    void CursorRelease( int x, int y );
-        //    void CursorPress( int x, int y  );
-        //    void CursorHover( bool highlight, int x, int y  );
-        //    void Draw( RendererBase* renderer );
-        //
-        //    // Keyboard key and character callbacks
-        //    void ReceiveChar(int key, int action);
-        //    void ReceiveKey(int key, int action);
-
-        //    void CancelTextInput( void );
-        //    void UpdateTextInput( void );
-        //    void Update( void ) {};
-        //    void Clear( void );
-        //    
-        //    std::string GetText( void );
-        //    void SetText( std::string newText );
-        //    virtual void DoCallBack() {};   // Override this in subclasses to actually perform callback
+        // Attach a behavior to pass the input text somewhere
+        void SetBehavior( TextInputBehavior* behavior ) { _behavior = behavior; };
     private:
+        TextInputBehavior* _behavior;
+        // Regular events, we need them to accept/cancel text input
+        EventFunctor<GUITextInput> _eventFunctor;
+        bool OnEvent( const typeInputEvent& theEvent, const float& amount );
         // Text input parameters
         TextInputFunctor<GUITextInput> _textInputFunctor;
-        void OnTextInputEvent( const SDL_Event& event );
+        void OnTextInputEvent( const std::string& inputText );
         bool _textInputActive;
 
         // Text input attributes
         TextLabel _label;
         std::string _inputText;
         std::string _defaultText;
-        
-        //    InputFunctor<UITextInputBase> charReceiverFunc;
-        //    InputFunctor<UITextInputBase> keyReceiverFunc;
-        //    bool grabKeyboardInput;
-        //    int keyboardIndex;
-        //    char keyboardBuffer[64];
-        //    int inputLabelID;
-        
+
         double _lastCursorBlink;
         bool _cursorBlink;
-//        double _lastBackSpace;
-        
-
     };
 }   /* namespace GUI */
 
-// Text input widget with member callback function
-//template <class UnknownClass>
-//class UITextInput : public UITextInputBase {
-//private:
-//    // Text input callback attributes
-//    void ( UnknownClass::*function )( std::string );    // Pointer to a member function
-//    UnknownClass* object;                               // Pointer to an object instance
-//public:
-//    UITextInput( int posX, int posY,
-//                int width,int height,
-//                int depth,
-//                std::string description,
-//                std::string defaultVal="<enter text>",
-//                UnknownClass* objectPtr = NULL,
-//                void( UnknownClass::*func )( std::string ) = NULL ) :
-//    UITextInputBase( posX, posY, width, height, depth, description, defaultVal ),
-//    function(func),
-//    object(objectPtr)
-//    { };
-//    
-//    // Execute member callback function, sending text
-//    void DoCallBack() {
-//        if ( object && function ) {
-//            (*object.*function)( GetText() );
-//        }
-//    };
-//};
-//
-//// Text input widget with static callback
-//class UITextInputSCB : public UITextInputBase {
-//private:
-//    // Pointer to text input callback function
-//    void ( *function )( std::string );
-//public:
-//    UITextInputSCB( int posX, int posY,
-//                int width,int height,
-//                   int depth,
-//                std::string description,
-//                void( *func )( std::string ) = NULL ) :
-//    UITextInputBase( posX, posY, width, height, depth, description ),
-//    function(func)
-//    { };
-//    
-//    // Execute static callback function, sending text
-//    void DoCallBack() {
-//        if ( function ) {
-//            (*function)( GetText() );
-//        }
-//    };
-//};
 #endif

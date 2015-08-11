@@ -298,15 +298,23 @@ void Console::Refresh() {
 void Console::Show() {
     IText* tMan = &Locator::getText();
     if ( !tMan || visible ) { return; }
-        int winWidth = Locator::getRenderer().GetWindowSize().x;
-        std::string consoleInfo = "Console:  DungeonSmith v.";
-//        consoleInfo.append(Locator::getHyperVisor().GetVersion());
+    
+    std::string consoleInfo = "Console: DungeonSmith v." + HyperVisor::VERSION();
+    
+    int winWidth = Locator::getRenderer().GetWindowSize().x;
     textWidget = new GUI::GUITextInput(0, 1,
                                   winWidth-1, CONSOLE_TEXT_HEIGHT,
                                   CONSOLE_TEXT_DEPTH,
                                   consoleInfo);
-//        textWidget = new UITextInputSCB(-winWidth/2, 1.0, winWidth-1, CONSOLE_TEXT_HEIGHT, CONSOLE_TEXT_DEPTH,consoleInfo, &Process );
-//        textWidget->StartTextInput();
+    
+    GUI::TextInputBehaviorLambda* behavior = new GUI::TextInputBehaviorLambda(
+        [](const std::string& inputText)
+        {
+            CommandProcessor::Buffer(inputText);
+            
+        } );
+    textWidget->SetBehavior(behavior);
+    textWidget->StartTextInput();
     visible = true;
     Refresh();
 }

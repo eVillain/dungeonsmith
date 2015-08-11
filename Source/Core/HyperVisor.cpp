@@ -156,7 +156,8 @@ bool HyperVisor::OnEvent( const typeInputEvent& event, const float& amount )
     
     if ( event == "console" )
     {
-        if ( !Console::isVisible() ) Console::ToggleVisibility();
+//        if ( !Console::isVisible() )
+            Console::ToggleVisibility();
         return true;
     }
     else if ( event == "back" )
