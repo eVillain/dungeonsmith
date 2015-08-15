@@ -2,7 +2,7 @@
 //  DrawMesh.h
 //  DungeonSmith
 //
-//  Created by eVillain on 08/06/15.
+//  Created by The Drudgerist on 08/06/15.
 //  Copyright (c) 2015 The Drudgerist. All rights reserved.
 //
 

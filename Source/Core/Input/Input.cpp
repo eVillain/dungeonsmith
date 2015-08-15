@@ -12,6 +12,7 @@
 #include "CommandProcessor.h"
 #include "StringUtil.h"
 #include "RangeReverseAdapter.h"
+#include "Renderer.h"
 
 std::map<std::string, typeInputEvent> Input::InputBindings;
 std::vector<EventFunctorBase*> Input::eventObserverList;
@@ -132,7 +133,7 @@ void Input::ProcessInput() {
         //User requests quit, terminate gracefully
         if( event.type == SDL_QUIT )
         {
-            Locator::getHyperVisor().Stop();
+            CommandProcessor::ExecuteCommand("quit");
             return;
         }
         
@@ -306,5 +307,5 @@ void Input::StopTextInput( TextInputFunctorBase* observer )
 glm::ivec2 Input::ConvertSDLCoordToScreen( int x, int y )
 {
     glm::ivec2 windowSize = Locator::getRenderer().GetWindowSize();
-    return glm::ivec2(x - windowSize.x*0.5, y - windowSize.y*0.5);
+    return glm::ivec2(x - windowSize.x*0.5, windowSize.y*0.5 - y);
 }

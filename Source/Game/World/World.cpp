@@ -27,6 +27,9 @@ void World::Initialize()
 
 void World::Terminate()
 {
+    delete skyDome;
+    skyDome = nullptr;
+    
     _chunks.Clear();
     Locator::getRenderer().Lighting()->Remove(&_sunLight);
     Locator::getRenderer().SetCamera(nullptr);

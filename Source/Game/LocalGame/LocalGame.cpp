@@ -7,6 +7,7 @@
 //
 #include "LocalGame.h"
 #include "Locator.h"
+#include "Renderer.h"
 #include "Timer.h"
 #include "Input.h"
 #include "Primitives3D.h"
@@ -15,7 +16,6 @@
 #include "CommandProcessor.h"
 #include "TextLabel.h"
 #include "StringUtil.h"
-
 
 
 LocalGame::LocalGame() : Scene("Game"),
@@ -39,7 +39,7 @@ void LocalGame::Initialize()
     Locator::getRenderer().SetCamera(&world.GetCamera());
     _labelFPS = nullptr;
 
-    for (int i=0; i< 10; i++) {
+    for (int i=0; i< 20; i++) {
         Locator::getRenderer().DrawPrimitives3D()->Cube(glm::vec3(i*2,0.0,0), 1.0, glm::quat(), COLOR_PURPLE, COLOR_GREEN);
     }
     

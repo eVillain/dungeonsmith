@@ -10,8 +10,8 @@
 //  Copyright (c) 2012 The Drudgerist. All rights reserved.
 //
 
-#ifndef BWO_LOCAL_GAME_H
-#define BWO_LOCAL_GAME_H
+#ifndef DNG_LOCAL_GAME_H
+#define DNG_LOCAL_GAME_H
 
 #include "Scene.h"
 #include "World.h"

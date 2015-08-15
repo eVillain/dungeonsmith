@@ -9,6 +9,7 @@
 #include "SkyDome.h"
 #include "Console.h"
 #include "RenderDefines.h"
+#include "Renderer.h"
 #include "StencilUtils.h"
 
 #include "Shader.h"

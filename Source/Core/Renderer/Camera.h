@@ -10,9 +10,9 @@
 #define NGN_CAMERA_H
 
 #include "RenderDefines.h"
+#include "Physics.h"
 
 class Camera {
-    typedef void (*PhysicsCallback)(Camera& cam);
 public:
     Camera();
     ~Camera();
@@ -24,9 +24,7 @@ public:
     void CalculateCameraMovement(const glm::vec3& movement);
     // Function to move the camera the amount we've calculated in the calculateCameraMovement function
     void MoveCamera( double dela );
-    
-    void SetPhysicsCallback( PhysicsCallback cb ) { physicsFunc = cb; };
-    
+        
     // Direct manipulation:
     glm::vec3 position;
     glm::vec3 rotation;
@@ -70,8 +68,6 @@ public:
   
 private:
     void UpdateMatrices();
-    
-    PhysicsCallback physicsFunc;               // Pointer to a static callback function
     
     glm::mat4 _model;
     glm::vec4 _viewport;

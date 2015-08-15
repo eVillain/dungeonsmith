@@ -14,7 +14,7 @@
 
 class StringUtil {
 public:
-    static void SplitIntoLines( const std::string &input, std::deque <std::string> &lines );
+    static void SplitIntoLines( const std::string &input, std::deque <const std::string> &lines );
     static void Tokenize( const std::string &input, std::deque<std::string> &tokens );
     static bool IsNumber( const std::string& string );
     static std::string BoolToString(bool number);

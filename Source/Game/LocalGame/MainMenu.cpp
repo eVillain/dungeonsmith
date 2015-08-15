@@ -2,21 +2,24 @@
 //  MainMenu.cpp
 //  DungeonSmith
 //
-//  Created by eVillain on 29/07/15.
+//  Created by The Drudgerist on 29/07/15.
 //  Copyright (c) 2015 The Drudgerist. All rights reserved.
 //
 
 #include "MainMenu.h"
 #include "Locator.h"
+#include "SceneManager.h"
 #include "Input.h"
 #include "GUIButton.h"
-//#include "Primitives2D.h"
+#include "Planetoid.h"
 #include "LocalGame.h"
 
 MainMenu::MainMenu() : Scene("Main Menu"),
 eventFunctor(this, &MainMenu::OnEvent)
 {
     _buttonStartGame = nullptr;
+    _buttonPlanetoid = nullptr;
+
 }
 
 
@@ -90,6 +93,13 @@ void MainMenu::CreateButtons()
         Locator::getSceneManager().AddActiveScene( new LocalGame());
     });
     _buttonStartGame->SetBehavior(startGameBehavior);
+    
+    _buttonPlanetoid = new GUI::GUIButtonLabeled("Planetoid", 0,40,200,40,0);
+    GUI::ButtonBehaviorLambda* startPlanetoidBehavior = new GUI::ButtonBehaviorLambda([](){
+        Locator::getSceneManager().AddActiveScene( new Planetoid());
+    });
+    _buttonPlanetoid->SetBehavior(startPlanetoidBehavior);
+
 }
 
 void MainMenu::RemoveButtons()
@@ -98,5 +108,10 @@ void MainMenu::RemoveButtons()
     {
         delete _buttonStartGame;
         _buttonStartGame = nullptr;
+    }
+    if ( _buttonPlanetoid )
+    {
+        delete _buttonPlanetoid;
+        _buttonPlanetoid = nullptr;
     }
 }

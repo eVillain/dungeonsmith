@@ -1,5 +1,6 @@
 #include "GUITextInput.h"
 #include "Locator.h"
+#include "Renderer.h"
 #include "Input.h"
 #include "Primitives2D.h"
 #include "Timer.h"

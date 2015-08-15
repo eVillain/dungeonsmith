@@ -11,7 +11,7 @@
 Light3D::Light3D() {
     active = true;
     lightType = Light3D_None;
-    position = glm::vec4();
+    position = glm::vec4(0,0,0,1);
     attenuation = glm::vec3(1.0f);
     
     ambient = COLOR_NONE;

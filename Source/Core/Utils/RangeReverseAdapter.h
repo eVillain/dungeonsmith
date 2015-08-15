@@ -2,7 +2,7 @@
 //  RangeReverseAdapter.h
 //  DungeonSmith
 //
-//  Created by eVillain on 11/08/15.
+//  Created by The Drudgerist on 11/08/15.
 //  Copyright (c) 2015 The Drudgerist. All rights reserved.
 //
 
@@ -46,4 +46,5 @@ template<typename Type> reverse_adapter<Type> reverse_adapt_container(const Type
 {
     return const_reverse_adapter<Type>(c);
 }
+
 #endif

@@ -8,6 +8,7 @@
 
 #include "Camera.h"
 #include "Locator.h"
+#include "Renderer.h"
 
 #include <glm/gtx/rotate_vector.hpp>
 
@@ -89,8 +90,8 @@ void Camera::Update( double delta ) {
             }
             speed = move*(elasticity*0.1f)*float(delta);
             
-            if ( physicsClip && physicsFunc ) {
-                physicsFunc(*this);
+            if ( physicsClip ) {
+                Locator::getPhysics().CameraCollisions(*this);
             } else {
                 position = position+speed;
             }

@@ -12,12 +12,17 @@
 #define NGN_LOCATOR_H
 
 #include "IRenderer.h"
-#include "HyperVisor.h"
 #include "IText.h"
-#include "SceneManager.h"
-#include "Camera.h"
-#include "GUIManager.h"
-#include "ThreadPool.h"
+
+class HyperVisor;
+class SceneManager;
+class Camera;
+class ThreadPool;
+class Physics;
+
+namespace GUI {
+    class GUIManager;
+}
 
 class Locator {
 public:
@@ -29,20 +34,21 @@ public:
     
     static GUI::GUIManager& getGUI() { return _guiManager; };
     static ThreadPool& getThreadPool() { return *_threadPool; };
+    static Physics& getPhysics() { return _physics; };
     
     // Setters for configuring services
     static void provideRenderer(IRenderer* service)
     {
-        if (service == NULL) {
-            _renderService = &_nullRenderService;
+        if (service == nullptr) {
+            _renderService = (IRenderer*)&_nullRenderService;
         } else {
             _renderService = service;
         }
     }
     static void provideText(IText* service)
     {
-        if (service == NULL) {
-            _textService = &_nullTextService;
+        if (service == nullptr) {
+            _textService = (IText*)&_nullTextService;
         } else {
             _textService = service;
         }
@@ -64,14 +70,16 @@ private:
     static IText* _textService;
     static NullText _nullTextService;
     
-    // Scene manager, should always be available
-    static SceneManager _sceneManager;
     // Hypervisor, should be removed for release build
     static HyperVisor* _hv;
     // Thread pool
     static ThreadPool* _threadPool;
-    
+    // Graphical User Interface, should always be available
     static GUI::GUIManager _guiManager;
+    // Physics engine, should always be available
+    static Physics _physics;
+    // Scene manager, should always be available
+    static SceneManager _sceneManager;
 };
 
 #endif /* defined(NGN_LOCATOR_H) */

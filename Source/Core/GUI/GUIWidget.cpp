@@ -1,4 +1,5 @@
 #include "GUIWidget.h"
+#include "Renderer.h"
 #include "Shader.h"
 #include "Locator.h"
 #include "Primitives2D.h"

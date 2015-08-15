@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D902AC7A1B7BF426005685BD /* Planetoid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D902AC781B7BF426005685BD /* Planetoid.cpp */; };
+		D9047B231B7FBCC6001AA1CA /* DynaCube.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D9047B211B7FBCC6001AA1CA /* DynaCube.cpp */; };
 		D90CE5E61AE3DD5B009F05EB /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D90CE5E51AE3DD5B009F05EB /* Cocoa.framework */; };
 		D90CE5F01AE3DD5C009F05EB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D90CE5EE1AE3DD5C009F05EB /* InfoPlist.strings */; };
 		D90CE5F61AE3DD5C009F05EB /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = D90CE5F41AE3DD5C009F05EB /* Credits.rtf */; };
@@ -68,6 +70,11 @@
 		D96E8BA51B07EC7E00973D87 /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D96E8BA31B07EC7E00973D87 /* Camera.cpp */; };
 		D96E8BAA1B07FE6C00973D87 /* MatrixUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D96E8BA81B07FE6C00973D87 /* MatrixUtil.cpp */; };
 		D96E8BAD1B08011A00973D87 /* GBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D96E8BAB1B08011A00973D87 /* GBuffer.cpp */; };
+		D972473E1B7BB3BD009A40D1 /* btFractureBody.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D97247321B7BB3BD009A40D1 /* btFractureBody.cpp */; };
+		D972473F1B7BB3BD009A40D1 /* btFractureDynamicsWorld.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D97247341B7BB3BD009A40D1 /* btFractureDynamicsWorld.cpp */; };
+		D97247401B7BB3BD009A40D1 /* CollisionDispatcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D97247361B7BB3BD009A40D1 /* CollisionDispatcher.cpp */; };
+		D97247421B7BB3BD009A40D1 /* Physics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D972473A1B7BB3BD009A40D1 /* Physics.cpp */; };
+		D97247431B7BB3BD009A40D1 /* PhysicsDebugDraw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D972473C1B7BB3BD009A40D1 /* PhysicsDebugDraw.cpp */; };
 		D9BC15111AE46089009B7ADE /* Locator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D9BC15081AE46089009B7ADE /* Locator.cpp */; };
 		D9C16FDA1AFF568200F66B19 /* GUIWidget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D9C16FD81AFF568200F66B19 /* GUIWidget.cpp */; };
 		D9C16FE01AFF5DC900F66B19 /* Sprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D9C16FDC1AFF5DC900F66B19 /* Sprite.cpp */; };
@@ -102,6 +109,18 @@
 		D9FAFBB71B7AA8FB005AA42B /* libBulletCollision.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D9FAFBB41B7AA8FB005AA42B /* libBulletCollision.a */; };
 		D9FAFBB81B7AA8FB005AA42B /* libBulletDynamics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D9FAFBB51B7AA8FB005AA42B /* libBulletDynamics.a */; };
 		D9FAFBB91B7AA8FB005AA42B /* libLinearMath.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D9FAFBB61B7AA8FB005AA42B /* libLinearMath.a */; };
+		D9FAFBBF1B7AABE4005AA42B /* Entity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D9FAFBBC1B7AABE4005AA42B /* Entity.cpp */; };
+		D9FAFBD81B7AAE64005AA42B /* ActorComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D9FAFBC21B7AAE64005AA42B /* ActorComponent.cpp */; };
+		D9FAFBD91B7AAE64005AA42B /* CubeComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D9FAFBC41B7AAE64005AA42B /* CubeComponent.cpp */; };
+		D9FAFBDA1B7AAE64005AA42B /* EntityManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D9FAFBC61B7AAE64005AA42B /* EntityManager.cpp */; };
+		D9FAFBDB1B7AAE64005AA42B /* ExplosiveComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D9FAFBC81B7AAE64005AA42B /* ExplosiveComponent.cpp */; };
+		D9FAFBDC1B7AAE64005AA42B /* HealthComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D9FAFBCA1B7AAE64005AA42B /* HealthComponent.cpp */; };
+		D9FAFBDD1B7AAE64005AA42B /* HumanoidComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D9FAFBCC1B7AAE64005AA42B /* HumanoidComponent.cpp */; };
+		D9FAFBDE1B7AAE64005AA42B /* InventoryComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D9FAFBCE1B7AAE64005AA42B /* InventoryComponent.cpp */; };
+		D9FAFBDF1B7AAE64005AA42B /* ItemComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D9FAFBD01B7AAE64005AA42B /* ItemComponent.cpp */; };
+		D9FAFBE01B7AAE64005AA42B /* Light3DComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D9FAFBD21B7AAE64005AA42B /* Light3DComponent.cpp */; };
+		D9FAFBE11B7AAE64005AA42B /* ParticleComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D9FAFBD41B7AAE64005AA42B /* ParticleComponent.cpp */; };
+		D9FAFBE21B7AAE64005AA42B /* PhysicsComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D9FAFBD61B7AAE64005AA42B /* PhysicsComponent.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -165,6 +184,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		D902AC781B7BF426005685BD /* Planetoid.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Planetoid.cpp; sourceTree = "<group>"; };
+		D902AC791B7BF426005685BD /* Planetoid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Planetoid.h; sourceTree = "<group>"; };
+		D9047B211B7FBCC6001AA1CA /* DynaCube.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DynaCube.cpp; sourceTree = "<group>"; };
+		D9047B221B7FBCC6001AA1CA /* DynaCube.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DynaCube.h; sourceTree = "<group>"; };
+		D9047B241B7FC490001AA1CA /* PhysicsDefines.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PhysicsDefines.h; sourceTree = "<group>"; };
 		D90CE5E21AE3DD5B009F05EB /* DungeonSmith.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DungeonSmith.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D90CE5E51AE3DD5B009F05EB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		D90CE5E81AE3DD5B009F05EB /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -286,6 +310,17 @@
 		D96E8BA91B07FE6C00973D87 /* MatrixUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MatrixUtil.h; sourceTree = "<group>"; };
 		D96E8BAB1B08011A00973D87 /* GBuffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GBuffer.cpp; sourceTree = "<group>"; };
 		D96E8BAC1B08011A00973D87 /* GBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBuffer.h; sourceTree = "<group>"; };
+		D97247321B7BB3BD009A40D1 /* btFractureBody.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = btFractureBody.cpp; sourceTree = "<group>"; };
+		D97247331B7BB3BD009A40D1 /* btFractureBody.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = btFractureBody.h; sourceTree = "<group>"; };
+		D97247341B7BB3BD009A40D1 /* btFractureDynamicsWorld.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = btFractureDynamicsWorld.cpp; sourceTree = "<group>"; };
+		D97247351B7BB3BD009A40D1 /* btFractureDynamicsWorld.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = btFractureDynamicsWorld.h; sourceTree = "<group>"; };
+		D97247361B7BB3BD009A40D1 /* CollisionDispatcher.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CollisionDispatcher.cpp; sourceTree = "<group>"; };
+		D97247371B7BB3BD009A40D1 /* CollisionDispatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollisionDispatcher.h; sourceTree = "<group>"; };
+		D972473A1B7BB3BD009A40D1 /* Physics.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Physics.cpp; sourceTree = "<group>"; };
+		D972473B1B7BB3BD009A40D1 /* Physics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Physics.h; sourceTree = "<group>"; };
+		D972473C1B7BB3BD009A40D1 /* PhysicsDebugDraw.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PhysicsDebugDraw.cpp; sourceTree = "<group>"; };
+		D972473D1B7BB3BD009A40D1 /* PhysicsDebugDraw.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhysicsDebugDraw.h; sourceTree = "<group>"; };
+		D97247441B7BBFB0009A40D1 /* ItemDefines.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ItemDefines.h; sourceTree = "<group>"; };
 		D9BC15081AE46089009B7ADE /* Locator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Locator.cpp; sourceTree = "<group>"; };
 		D9BC15091AE46089009B7ADE /* Locator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Locator.h; sourceTree = "<group>"; };
 		D9C16FD51AFEC88A00F66B19 /* VertexBuffer_XYZW_RGBA.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VertexBuffer_XYZW_RGBA.h; sourceTree = "<group>"; };
@@ -339,6 +374,33 @@
 		D9FAFBB41B7AA8FB005AA42B /* libBulletCollision.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libBulletCollision.a; sourceTree = "<group>"; };
 		D9FAFBB51B7AA8FB005AA42B /* libBulletDynamics.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libBulletDynamics.a; sourceTree = "<group>"; };
 		D9FAFBB61B7AA8FB005AA42B /* libLinearMath.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libLinearMath.a; sourceTree = "<group>"; };
+		D9FAFBBB1B7AABE4005AA42B /* Attribute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Attribute.h; sourceTree = "<group>"; };
+		D9FAFBBC1B7AABE4005AA42B /* Entity.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Entity.cpp; sourceTree = "<group>"; };
+		D9FAFBBD1B7AABE4005AA42B /* Entity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Entity.h; sourceTree = "<group>"; };
+		D9FAFBBE1B7AABE4005AA42B /* EntityComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EntityComponent.h; sourceTree = "<group>"; };
+		D9FAFBC01B7AAD54005AA42B /* EntityDefines.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EntityDefines.h; sourceTree = "<group>"; };
+		D9FAFBC21B7AAE64005AA42B /* ActorComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ActorComponent.cpp; sourceTree = "<group>"; };
+		D9FAFBC31B7AAE64005AA42B /* ActorComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActorComponent.h; sourceTree = "<group>"; };
+		D9FAFBC41B7AAE64005AA42B /* CubeComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CubeComponent.cpp; sourceTree = "<group>"; };
+		D9FAFBC51B7AAE64005AA42B /* CubeComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CubeComponent.h; sourceTree = "<group>"; };
+		D9FAFBC61B7AAE64005AA42B /* EntityManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EntityManager.cpp; sourceTree = "<group>"; };
+		D9FAFBC71B7AAE64005AA42B /* EntityManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EntityManager.h; sourceTree = "<group>"; };
+		D9FAFBC81B7AAE64005AA42B /* ExplosiveComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ExplosiveComponent.cpp; sourceTree = "<group>"; };
+		D9FAFBC91B7AAE64005AA42B /* ExplosiveComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExplosiveComponent.h; sourceTree = "<group>"; };
+		D9FAFBCA1B7AAE64005AA42B /* HealthComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HealthComponent.cpp; sourceTree = "<group>"; };
+		D9FAFBCB1B7AAE64005AA42B /* HealthComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HealthComponent.h; sourceTree = "<group>"; };
+		D9FAFBCC1B7AAE64005AA42B /* HumanoidComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HumanoidComponent.cpp; sourceTree = "<group>"; };
+		D9FAFBCD1B7AAE64005AA42B /* HumanoidComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HumanoidComponent.h; sourceTree = "<group>"; };
+		D9FAFBCE1B7AAE64005AA42B /* InventoryComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InventoryComponent.cpp; sourceTree = "<group>"; };
+		D9FAFBCF1B7AAE64005AA42B /* InventoryComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InventoryComponent.h; sourceTree = "<group>"; };
+		D9FAFBD01B7AAE64005AA42B /* ItemComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ItemComponent.cpp; sourceTree = "<group>"; };
+		D9FAFBD11B7AAE64005AA42B /* ItemComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemComponent.h; sourceTree = "<group>"; };
+		D9FAFBD21B7AAE64005AA42B /* Light3DComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Light3DComponent.cpp; sourceTree = "<group>"; };
+		D9FAFBD31B7AAE64005AA42B /* Light3DComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Light3DComponent.h; sourceTree = "<group>"; };
+		D9FAFBD41B7AAE64005AA42B /* ParticleComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ParticleComponent.cpp; sourceTree = "<group>"; };
+		D9FAFBD51B7AAE64005AA42B /* ParticleComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParticleComponent.h; sourceTree = "<group>"; };
+		D9FAFBD61B7AAE64005AA42B /* PhysicsComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PhysicsComponent.cpp; sourceTree = "<group>"; };
+		D9FAFBD71B7AAE64005AA42B /* PhysicsComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhysicsComponent.h; sourceTree = "<group>"; };
 		D9FD024D1B654F5F00B9DDD7 /* TextConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TextConstants.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -430,8 +492,8 @@
 			isa = PBXGroup;
 			children = (
 				D9BC15051AE46089009B7ADE /* Core */,
-				D90CE61A1AE3DEE5009F05EB /* main.cpp */,
 				D90D62AA1B04BA3C0076B311 /* Game */,
+				D90CE61A1AE3DEE5009F05EB /* main.cpp */,
 			);
 			path = Source;
 			sourceTree = SOURCE_ROOT;
@@ -439,6 +501,7 @@
 		D90D62AA1B04BA3C0076B311 /* Game */ = {
 			isa = PBXGroup;
 			children = (
+				D9FAFBC11B7AAE64005AA42B /* Entities */,
 				D90D62AF1B04BA6B0076B311 /* LocalGame */,
 				D90D62AB1B04BA3C0076B311 /* World */,
 			);
@@ -448,6 +511,8 @@
 		D90D62AB1B04BA3C0076B311 /* World */ = {
 			isa = PBXGroup;
 			children = (
+				D9047B211B7FBCC6001AA1CA /* DynaCube.cpp */,
+				D9047B221B7FBCC6001AA1CA /* DynaCube.h */,
 				D9DFDC771B24DE7E00A37D4A /* BlockDefs.h */,
 				D9150E591B6CECCC00415F99 /* BlockSet.cpp */,
 				D9150E5A1B6CECCC00415F99 /* BlockSet.h */,
@@ -470,6 +535,8 @@
 				D90D62B11B04BA9F0076B311 /* LocalGame.h */,
 				D96DB94A1B68B6A1008E1DF5 /* MainMenu.cpp */,
 				D96DB94B1B68B6A1008E1DF5 /* MainMenu.h */,
+				D902AC781B7BF426005685BD /* Planetoid.cpp */,
+				D902AC791B7BF426005685BD /* Planetoid.h */,
 			);
 			path = LocalGame;
 			sourceTree = "<group>";
@@ -668,12 +735,32 @@
 			path = SkyDome;
 			sourceTree = "<group>";
 		};
+		D97247311B7BB3BD009A40D1 /* Physics */ = {
+			isa = PBXGroup;
+			children = (
+				D97247321B7BB3BD009A40D1 /* btFractureBody.cpp */,
+				D97247331B7BB3BD009A40D1 /* btFractureBody.h */,
+				D97247341B7BB3BD009A40D1 /* btFractureDynamicsWorld.cpp */,
+				D97247351B7BB3BD009A40D1 /* btFractureDynamicsWorld.h */,
+				D97247361B7BB3BD009A40D1 /* CollisionDispatcher.cpp */,
+				D97247371B7BB3BD009A40D1 /* CollisionDispatcher.h */,
+				D972473A1B7BB3BD009A40D1 /* Physics.cpp */,
+				D972473B1B7BB3BD009A40D1 /* Physics.h */,
+				D972473C1B7BB3BD009A40D1 /* PhysicsDebugDraw.cpp */,
+				D972473D1B7BB3BD009A40D1 /* PhysicsDebugDraw.h */,
+				D9047B241B7FC490001AA1CA /* PhysicsDefines.h */,
+			);
+			path = Physics;
+			sourceTree = "<group>";
+		};
 		D9BC15051AE46089009B7ADE /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				D97247311B7BB3BD009A40D1 /* Physics */,
 				D96C02A11AE84BB800001936 /* CommandProcessor */,
 				D96C02A51AE84BB800001936 /* Console */,
 				D9C16FEB1AFF6F4700F66B19 /* Dictionary */,
+				D9FAFBBA1B7AABE4005AA42B /* Entities */,
 				D9C16FD71AFF568200F66B19 /* GUI */,
 				D949F3191AE5B2BF00318804 /* Input */,
 				D949F3201AE5B2E100318804 /* Renderer */,
@@ -779,6 +866,48 @@
 			path = Shaders;
 			sourceTree = "<group>";
 		};
+		D9FAFBBA1B7AABE4005AA42B /* Entities */ = {
+			isa = PBXGroup;
+			children = (
+				D9FAFBBB1B7AABE4005AA42B /* Attribute.h */,
+				D9FAFBBC1B7AABE4005AA42B /* Entity.cpp */,
+				D9FAFBBD1B7AABE4005AA42B /* Entity.h */,
+				D9FAFBBE1B7AABE4005AA42B /* EntityComponent.h */,
+				D9FAFBC01B7AAD54005AA42B /* EntityDefines.h */,
+			);
+			path = Entities;
+			sourceTree = "<group>";
+		};
+		D9FAFBC11B7AAE64005AA42B /* Entities */ = {
+			isa = PBXGroup;
+			children = (
+				D9FAFBC21B7AAE64005AA42B /* ActorComponent.cpp */,
+				D9FAFBC31B7AAE64005AA42B /* ActorComponent.h */,
+				D9FAFBC41B7AAE64005AA42B /* CubeComponent.cpp */,
+				D9FAFBC51B7AAE64005AA42B /* CubeComponent.h */,
+				D9FAFBC61B7AAE64005AA42B /* EntityManager.cpp */,
+				D9FAFBC71B7AAE64005AA42B /* EntityManager.h */,
+				D9FAFBC81B7AAE64005AA42B /* ExplosiveComponent.cpp */,
+				D9FAFBC91B7AAE64005AA42B /* ExplosiveComponent.h */,
+				D9FAFBCA1B7AAE64005AA42B /* HealthComponent.cpp */,
+				D9FAFBCB1B7AAE64005AA42B /* HealthComponent.h */,
+				D9FAFBCC1B7AAE64005AA42B /* HumanoidComponent.cpp */,
+				D9FAFBCD1B7AAE64005AA42B /* HumanoidComponent.h */,
+				D9FAFBCE1B7AAE64005AA42B /* InventoryComponent.cpp */,
+				D9FAFBCF1B7AAE64005AA42B /* InventoryComponent.h */,
+				D9FAFBD01B7AAE64005AA42B /* ItemComponent.cpp */,
+				D9FAFBD11B7AAE64005AA42B /* ItemComponent.h */,
+				D9FAFBD21B7AAE64005AA42B /* Light3DComponent.cpp */,
+				D9FAFBD31B7AAE64005AA42B /* Light3DComponent.h */,
+				D9FAFBD41B7AAE64005AA42B /* ParticleComponent.cpp */,
+				D9FAFBD51B7AAE64005AA42B /* ParticleComponent.h */,
+				D9FAFBD61B7AAE64005AA42B /* PhysicsComponent.cpp */,
+				D9FAFBD71B7AAE64005AA42B /* PhysicsComponent.h */,
+				D97247441B7BBFB0009A40D1 /* ItemDefines.h */,
+			);
+			path = Entities;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -849,11 +978,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D9047B231B7FBCC6001AA1CA /* DynaCube.cpp in Sources */,
 				D96DB9501B68C1CE008E1DF5 /* SkyDome.cpp in Sources */,
+				D972473E1B7BB3BD009A40D1 /* btFractureBody.cpp in Sources */,
 				D96C02BE1AE850EB00001936 /* StringUtil.cpp in Sources */,
 				D96E8BAA1B07FE6C00973D87 /* MatrixUtil.cpp in Sources */,
+				D972473F1B7BB3BD009A40D1 /* btFractureDynamicsWorld.cpp in Sources */,
 				D9150E5B1B6CECCC00415F99 /* BlockSet.cpp in Sources */,
+				D9FAFBDF1B7AAE64005AA42B /* ItemComponent.cpp in Sources */,
 				D9387BA51B2763A500713841 /* DrawMesh.cpp in Sources */,
+				D9FAFBDC1B7AAE64005AA42B /* HealthComponent.cpp in Sources */,
+				D97247431B7BB3BD009A40D1 /* PhysicsDebugDraw.cpp in Sources */,
+				D9FAFBDA1B7AAE64005AA42B /* EntityManager.cpp in Sources */,
 				D90D62B21B04BA9F0076B311 /* LocalGame.cpp in Sources */,
 				D90D62B51B04E08B0076B311 /* World.cpp in Sources */,
 				D90D62AE1B04BA3C0076B311 /* Chunk.cpp in Sources */,
@@ -867,8 +1003,11 @@
 				D96C02D01AEAE49900001936 /* ShaderFactory.cpp in Sources */,
 				D9150E421B6BB26100415F99 /* Light3D.cpp in Sources */,
 				D9C16FEF1AFF6F4700F66B19 /* Dictionary.cpp in Sources */,
+				D9FAFBBF1B7AABE4005AA42B /* Entity.cpp in Sources */,
 				D96E8BA51B07EC7E00973D87 /* Camera.cpp in Sources */,
+				D9FAFBD91B7AAE64005AA42B /* CubeComponent.cpp in Sources */,
 				D93B339E1B028D13004AE04D /* GUIManager.cpp in Sources */,
+				D9FAFBD81B7AAE64005AA42B /* ActorComponent.cpp in Sources */,
 				D9C16FE01AFF5DC900F66B19 /* Sprite.cpp in Sources */,
 				D96C02CF1AEAE49900001936 /* Shader.cpp in Sources */,
 				D94BE2851AE464B20004EC98 /* HyperVisor.cpp in Sources */,
@@ -888,15 +1027,24 @@
 				D949F31F1AE5B2BF00318804 /* Input.cpp in Sources */,
 				D96E8BAD1B08011A00973D87 /* GBuffer.cpp in Sources */,
 				D9DA78741AFBF41A007A28AA /* TextManager.cpp in Sources */,
+				D9FAFBDB1B7AAE64005AA42B /* ExplosiveComponent.cpp in Sources */,
+				D9FAFBE21B7AAE64005AA42B /* PhysicsComponent.cpp in Sources */,
+				D9FAFBE01B7AAE64005AA42B /* Light3DComponent.cpp in Sources */,
+				D97247421B7BB3BD009A40D1 /* Physics.cpp in Sources */,
 				D96C02BD1AE850EB00001936 /* Random.cpp in Sources */,
+				D9FAFBDD1B7AAE64005AA42B /* HumanoidComponent.cpp in Sources */,
+				D9FAFBE11B7AAE64005AA42B /* ParticleComponent.cpp in Sources */,
 				D9150E5E1B6D3A5F00415F99 /* ChunkManager.cpp in Sources */,
+				D9FAFBDE1B7AAE64005AA42B /* InventoryComponent.cpp in Sources */,
 				D9150E301B6A786000415F99 /* ButtonBehavior.cpp in Sources */,
 				D96C02BC1AE850EB00001936 /* FileUtil.cpp in Sources */,
 				D9DA78731AFBF41A007A28AA /* FontAtlas.cpp in Sources */,
 				D9C16FE61AFF68CE00F66B19 /* Texture.cpp in Sources */,
+				D97247401B7BB3BD009A40D1 /* CollisionDispatcher.cpp in Sources */,
 				D9150E581B6C3DE700415F99 /* GUIButtonLabeled.cpp in Sources */,
 				D9BC15111AE46089009B7ADE /* Locator.cpp in Sources */,
 				D90CE61B1AE3DEE5009F05EB /* main.cpp in Sources */,
+				D902AC7A1B7BF426005685BD /* Planetoid.cpp in Sources */,
 				D96DB94C1B68B6A1008E1DF5 /* MainMenu.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1011,7 +1159,7 @@
 					"$(PROJECT_DIR)/OSX/Frameworks",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/Include";
+				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/Include/**";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1034,7 +1182,7 @@
 					"$(PROJECT_DIR)/OSX/Frameworks",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/Include";
+				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/Include/**";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

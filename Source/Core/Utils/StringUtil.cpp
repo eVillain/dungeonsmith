@@ -11,7 +11,7 @@
 #include "StringUtil.h"
 
 // Split up an input string into separate lines
-void StringUtil::SplitIntoLines( const std::string& input, std::deque <std::string>& result )
+void StringUtil::SplitIntoLines( const std::string& input, std::deque <const std::string>& result )
 {
     std::istringstream ss( input );
     std::string line;

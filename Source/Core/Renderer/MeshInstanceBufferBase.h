@@ -2,7 +2,7 @@
 //  MeshInstanceBufferBase.h
 //  DungeonSmith
 //
-//  Created by eVillain on 08/08/15.
+//  Created by The Drudgerist on 08/08/15.
 //  Copyright (c) 2015 The Drudgerist. All rights reserved.
 //
 
@@ -68,11 +68,12 @@ public:
         _bufferCount += count;
     }
     
-    void BufferInstance(const InstanceDataType& instance)
+    InstanceDataType& BufferInstance(const InstanceDataType& instance)
     {
-        if ( _instanceBufferCount == _instanceBufferSize ) return;
+        if ( _instanceBufferCount == _instanceBufferSize ) return _instanceBuffer[_instanceBufferCount-1];
         _instanceBuffer[_instanceBufferCount] = instance;
         _instanceBufferCount++;
+        return _instanceBuffer[_instanceBufferCount-1];
     }
     
     void BufferInstances(const InstanceDataType& instances, int count)

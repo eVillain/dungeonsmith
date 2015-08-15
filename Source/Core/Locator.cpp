@@ -7,9 +7,13 @@
 //
 
 #include "Locator.h"
-
+#include "HyperVisor.h"
+#include "SceneManager.h"
+#include "Camera.h"
 #include "GUIManager.h"
-
+#include "ThreadPool.h"
+#include "GUIManager.h"
+#include "Physics.h"
 
 NullRenderer Locator::_nullRenderService;
 NullText Locator::_nullTextService;
@@ -17,8 +21,9 @@ NullText Locator::_nullTextService;
 // Set all services to be null services first
 IRenderer* Locator::_renderService = &_nullRenderService;
 IText* Locator::_textService = &_nullTextService;
-SceneManager Locator::_sceneManager;
 HyperVisor* Locator::_hv = nullptr;
 
 ThreadPool* Locator::_threadPool = nullptr;
 GUI::GUIManager Locator::_guiManager;
+Physics Locator::_physics;
+SceneManager Locator::_sceneManager;

@@ -19,7 +19,7 @@
 //  Usage for member functions (where std::string is the input for those functions):
 // CommandProcessor::AddCommand("commandName2", Command<ClassName*,std::string>(&ClassName::MemberFunction));
 // CommandProcessor::Execute("commandName2", instancePtr, std::string("This string gets passed to the function"));
-//  Note: THIS SHIT IS USELESS, WE WONT HAVE THE INSTANCE POINTER IN OUR CONSOLE
+//  Note: THIS THING IS USELESS, WE WONT HAVE THE INSTANCE POINTER IN OUR CONSOLE
 //
 //  Usage for lambda functions / calling a particular instance member function
 // CommandProcessor::AddCommand("commandName3", Command<>([&](){ this->MemberFunction(); }));
@@ -104,14 +104,14 @@ public:
     
     // Adds a new command to the map
     template <class T>
-    static void AddCommand(std::string cmdName, const T& cmd)
+    static void AddCommand(const std::string& cmdName, const T& cmd)
     {
         commandMap.insert(std::pair<std::string, CommandBasePtr>(cmdName, CommandBasePtr(new T(cmd))));
     }
     
     // Executes a command with arguments
     template <class... ArgTypes>
-    static void ExecuteCommand( std::string cmdName, ArgTypes... args )
+    static void ExecuteCommand( const std::string& cmdName, ArgTypes... args )
     {
         typedef Command<ArgTypes...> CommandType;
         CommandMap::const_iterator it = commandMap.find(cmdName);
@@ -133,24 +133,24 @@ public:
         }
     }
     // Removes a command from the map
-    static void RemoveCommand(std::string cmdName);
+    static void RemoveCommand(const std::string& cmdName);
     
     // Process and execute the given command
-    static void Process( std::string command );
+    static void Process( const std::string& command );
     // Buffer raw text into the buffer
-    static void Buffer( const std::string input );
+    static void Buffer( const std::string& input );
     // Buffer command-line arguments into buffer
     static void Buffer( int argc, char * arg[] );
     
     static size_t GetBufferCount() { return commandBuffer.size(); };
     
     typedef std::shared_ptr<CommandBase> CommandBasePtr;
-    typedef std::map<std::string, CommandBasePtr> CommandMap;
+    typedef std::map<const std::string, CommandBasePtr> CommandMap;
 private:
     // The command map (string holds the name of the command)
     static CommandMap commandMap;
     // The command buffer, contains next command to execute at front
-    static std::deque<std::string> commandBuffer;
+    static std::deque<const std::string> commandBuffer;
 };
 
 #endif /* defined(NGN_CMD_PROCESSOR_H) */

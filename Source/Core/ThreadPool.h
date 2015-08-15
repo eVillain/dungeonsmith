@@ -4,7 +4,7 @@
 //  ThreadPool.h
 //  Ingenium
 //
-//  Created by Ville-Veikko Urrila on 8/6/13.
+//  Created by The Drudgerist on 8/6/13.
 //  Copyright (c) 2013 The Drudgerist. All rights reserved.
 //
 //  This class creates a pool of worker threads

@@ -14,7 +14,7 @@
 // The command map (string holds the name of the command)
 CommandProcessor::CommandMap CommandProcessor::commandMap;
 // The command buffer, contains next command to execute at front
-std::deque<std::string> CommandProcessor::commandBuffer;
+std::deque<const std::string> CommandProcessor::commandBuffer;
 
 void CommandProcessor::Initialize()
 {
@@ -24,7 +24,7 @@ void CommandProcessor::Initialize()
             CONSOLE_COLORED( it->first, COLOR_GREEN );
         }
     }));
-    AddCommand("print", Command<std::string>([&](std::string text) {
+    AddCommand("print", Command<const std::string>([&](const std::string& text) {
         CONSOLE_COLORED( text, COLOR_GREEN );
     }));
     CONSOLE_COLORED("[CommandProcessor] initialized", COLOR_GREEN);
@@ -51,7 +51,7 @@ void CommandProcessor::Update(double delta)
 // COMMAND OPERATIONS
 //
 
-void CommandProcessor::RemoveCommand(std::string cmdName) {
+void CommandProcessor::RemoveCommand(const std::string& cmdName) {
     CommandMap::const_iterator it = commandMap.find(cmdName);
     if(it != commandMap.end())
     {
@@ -62,7 +62,7 @@ void CommandProcessor::RemoveCommand(std::string cmdName) {
 //
 // BUFFER OPERATIONS
 //
-void CommandProcessor::Process( std::string command )
+void CommandProcessor::Process( const std::string& command )
 {
     CONSOLE_COLORED("Command: " + command, COLOR_GREEN);
     // Try to tokenize input text
@@ -127,7 +127,7 @@ void CommandProcessor::Process( std::string command )
     }
 }
 
-void CommandProcessor::Buffer( const std::string input )
+void CommandProcessor::Buffer( const std::string& input )
 {
     // Add lines to end of our queue
     StringUtil::SplitIntoLines(input, commandBuffer);

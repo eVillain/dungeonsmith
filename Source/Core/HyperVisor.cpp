@@ -18,6 +18,7 @@
 #include "Scene.h"
 #include "GUIManager.h"
 #include "ThreadPool.h"
+#include "SceneManager.h"
 
 HyperVisor::HyperVisor() :
 quit(false),
@@ -40,6 +41,9 @@ void HyperVisor::Initialize(int argc, char * arg[])
         // Start up our command processor - needs to be done first so that
         // the engine subsystems can register commands in their initializers.
         CommandProcessor::Initialize();
+        CommandProcessor::AddCommand("quit", Command<int>([=](int reason){ Stop(reason); } ));
+        // TODO: Figure out why the below does not compile
+//        CommandProcessor::AddCommand("quit", InstanceCommand<HyperVisor, int>(&HyperVisor::Stop, this));
 
         const int hwThreads = std::thread::hardware_concurrency();
 		const int numThreads = (2*hwThreads)-1;
@@ -100,8 +104,8 @@ void HyperVisor::Terminate()
 
 int HyperVisor::Run()
 {
-    double timeAtThisFrameStart = 0.0;
     timeAtLastFrameStart = Timer::Seconds();
+    double timeAtThisFrameStart = timeAtLastFrameStart;
     double deltaTime = 0.0;
     while (!quit)
     {
@@ -156,7 +160,6 @@ bool HyperVisor::OnEvent( const typeInputEvent& event, const float& amount )
     
     if ( event == "console" )
     {
-//        if ( !Console::isVisible() )
             Console::ToggleVisibility();
         return true;
     }
