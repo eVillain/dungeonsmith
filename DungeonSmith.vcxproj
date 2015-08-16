@@ -1,0 +1,314 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{C4AFB78F-4380-4807-8A8E-350DA8885958}</ProjectGuid>
+    <RootNamespace>DungeonSmith</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)Build\$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(SolutionDir)\$(Platform)\$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>Include;Include\Bullet\src;Include\freetype2;Include\GL;Include\glm;Include\PNG;Source;Source\Core;Source\Core\CommandProcessor;Source\Core\Console;Source\Core\Dictionary;Source\Core\Entities;Source\Core\GUI;Source\Core\Input;Source\Core\Physics;Source\Core\Renderer;Source\Core\SceneManager;Source\Core\Shaders;Source\Core\SkyDome;Source\Core\Sprites;Source\Core\Text;Source\Core\Utils;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>Include;Include\Bullet\src;Include\freetype2;Include\GL;Include\glm;Include\PNG;Source;Source\Core;Source\Core\CommandProcessor;Source\Core\Console;Source\Core\Dictionary;Source\Core\Entities;Source\Core\GUI;Source\Core\Input;Source\Core\Physics;Source\Core\Renderer;Source\Core\SceneManager;Source\Core\Shaders;Source\Core\SkyDome;Source\Core\Sprites;Source\Core\Text;Source\Core\Utils;Source\Game\Entities;Source\Game\LocalGame;Source\Game\World</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>GLEW_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>opengl32.lib;SDL2.lib;BulletCollision_debug.lib;BulletDynamics_debug.lib;freetype26d.lib;glew32sd.lib;libpng16d.lib;LinearMath_debug.lib;pugixmlsd.lib;zlibd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>Windows\Libs</AdditionalLibraryDirectories>
+    </Link>
+    <PostBuildEvent>
+      <Command>xcopy /y /d  "$(ProjectDir)Windows\Libs\*.dll" "$(OutDir)"
+xcopy /y /d  /S "$(ProjectDir)Resources\*.*" "$(OutDir)Data\"
+xcopy /y /d  /S "$(ProjectDir)Source\Core\Shaders\*.*" "$(OutDir)Shaders\"</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>Include;Include\Bullet\src;Include\freetype2;Include\GL;Include\glm;Include\PNG;Source;Source\Core;Source\Core\CommandProcessor;Source\Core\Console;Source\Core\Dictionary;Source\Core\Entities;Source\Core\GUI;Source\Core\Input;Source\Core\Physics;Source\Core\Renderer;Source\Core\SceneManager;Source\Core\Shaders;Source\Core\SkyDome;Source\Core\Sprites;Source\Core\Text;Source\Core\Utils;</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>Include;Include\Bullet\src;Include\freetype2;Include\GL;Include\PNG;Source;Source\Core;Source\Core\CommandProcessor;Source\Core\Console;Source\Core\Dictionary;Source\Core\Entities;Source\Core\GUI;Source\Core\Input;Source\Core\Physics;Source\Core\Renderer;Source\Core\SceneManager;Source\Core\Shaders;Source\Core\SkyDome;Source\Core\Sprites;Source\Core\Text;Source\Core\Utils;Source\Game\Entities;Source\Game\LocalGame;Source\Game\World</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <PreprocessorDefinitions>GLEW_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>opengl32.lib;SDL2.lib;BulletCollision.lib;BulletDynamics.lib;freetype26.lib;glew32s.lib;libpng16.lib;LinearMath.lib;pugixmls.lib;zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>Windows\Libs</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="Source\Core\CommandProcessor\CommandProcessor.cpp" />
+    <ClCompile Include="Source\Core\Console\Console.cpp" />
+    <ClCompile Include="Source\Core\Dictionary\Dictionary.cpp" />
+    <ClCompile Include="Source\Core\Entities\Entity.cpp" />
+    <ClCompile Include="Source\Core\GUI\ButtonBehavior.cpp" />
+    <ClCompile Include="Source\Core\GUI\GUIButton.cpp" />
+    <ClCompile Include="Source\Core\GUI\GUIButtonLabeled.cpp" />
+    <ClCompile Include="Source\Core\GUI\GUIManager.cpp" />
+    <ClCompile Include="Source\Core\GUI\GUITextInput.cpp" />
+    <ClCompile Include="Source\Core\GUI\GUIWidget.cpp" />
+    <ClCompile Include="Source\Core\GUI\TextInputBehavior.cpp" />
+    <ClCompile Include="Source\Core\HyperVisor.cpp" />
+    <ClCompile Include="Source\Core\Input\Input.cpp" />
+    <ClCompile Include="Source\Core\Locator.cpp" />
+    <ClCompile Include="Source\Core\Physics\btFractureBody.cpp" />
+    <ClCompile Include="Source\Core\Physics\btFractureDynamicsWorld.cpp" />
+    <ClCompile Include="Source\Core\Physics\CollisionDispatcher.cpp" />
+    <ClCompile Include="Source\Core\Physics\Physics.cpp" />
+    <ClCompile Include="Source\Core\Physics\PhysicsDebugDraw.cpp" />
+    <ClCompile Include="Source\Core\Renderer\Camera.cpp" />
+    <ClCompile Include="Source\Core\Renderer\DrawMesh.cpp" />
+    <ClCompile Include="Source\Core\Renderer\GBuffer.cpp" />
+    <ClCompile Include="Source\Core\Renderer\GLErrorUtil.cpp" />
+    <ClCompile Include="Source\Core\Renderer\Light3D.cpp" />
+    <ClCompile Include="Source\Core\Renderer\LightSystem3D.cpp" />
+    <ClCompile Include="Source\Core\Renderer\MatrixUtil.cpp" />
+    <ClCompile Include="Source\Core\Renderer\PostProcess.cpp" />
+    <ClCompile Include="Source\Core\Renderer\Primitives2D.cpp" />
+    <ClCompile Include="Source\Core\Renderer\Primitives3D.cpp" />
+    <ClCompile Include="Source\Core\Renderer\Rect2D.cpp" />
+    <ClCompile Include="Source\Core\Renderer\Renderer.cpp" />
+    <ClCompile Include="Source\Core\Renderer\Shader.cpp" />
+    <ClCompile Include="Source\Core\Renderer\ShaderFactory.cpp" />
+    <ClCompile Include="Source\Core\Renderer\Texture.cpp" />
+    <ClCompile Include="Source\Core\Renderer\TextureManager.cpp" />
+    <ClCompile Include="Source\Core\SceneManager\Scene.cpp" />
+    <ClCompile Include="Source\Core\SceneManager\SceneManager.cpp" />
+    <ClCompile Include="Source\Core\SkyDome\SkyDome.cpp" />
+    <ClCompile Include="Source\Core\Sprites\Sprite.cpp" />
+    <ClCompile Include="Source\Core\Sprites\SpriteBatch.cpp" />
+    <ClCompile Include="Source\Core\Text\FontAtlas.cpp" />
+    <ClCompile Include="Source\Core\Text\TextConstants.cpp" />
+    <ClCompile Include="Source\Core\Text\TextLabel.cpp" />
+    <ClCompile Include="Source\Core\Text\TextManager.cpp" />
+    <ClCompile Include="Source\Core\Utils\FileUtil.cpp" />
+    <ClCompile Include="Source\Core\Utils\Random.cpp" />
+    <ClCompile Include="Source\Core\Utils\StringUtil.cpp" />
+    <ClCompile Include="Source\Core\Utils\Timer.cpp" />
+    <ClCompile Include="Source\Game\Entities\ActorComponent.cpp" />
+    <ClCompile Include="Source\Game\Entities\CubeComponent.cpp" />
+    <ClCompile Include="Source\Game\Entities\EntityManager.cpp" />
+    <ClCompile Include="Source\Game\Entities\ExplosiveComponent.cpp" />
+    <ClCompile Include="Source\Game\Entities\HealthComponent.cpp" />
+    <ClCompile Include="Source\Game\Entities\HumanoidComponent.cpp" />
+    <ClCompile Include="Source\Game\Entities\InventoryComponent.cpp" />
+    <ClCompile Include="Source\Game\Entities\ItemComponent.cpp" />
+    <ClCompile Include="Source\Game\Entities\Light3DComponent.cpp" />
+    <ClCompile Include="Source\Game\Entities\ParticleComponent.cpp" />
+    <ClCompile Include="Source\Game\Entities\PhysicsComponent.cpp" />
+    <ClCompile Include="Source\Game\LocalGame\LocalGame.cpp" />
+    <ClCompile Include="Source\Game\LocalGame\MainMenu.cpp" />
+    <ClCompile Include="Source\Game\LocalGame\Planetoid.cpp" />
+    <ClCompile Include="Source\Game\World\BlockSet.cpp" />
+    <ClCompile Include="Source\Game\World\Chunk.cpp" />
+    <ClCompile Include="Source\Game\World\ChunkManager.cpp" />
+    <ClCompile Include="Source\Game\World\DynaCube.cpp" />
+    <ClCompile Include="Source\Game\World\World.cpp" />
+    <ClCompile Include="Source\main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Source\Core\CommandProcessor\CommandProcessor.h" />
+    <ClInclude Include="Source\Core\Console\Console.h" />
+    <ClInclude Include="Source\Core\Console\ConsoleVar.h" />
+    <ClInclude Include="Source\Core\Dictionary\Dictionary.h" />
+    <ClInclude Include="Source\Core\Dictionary\DictionaryHelpers.h" />
+    <ClInclude Include="Source\Core\Entities\Attribute.h" />
+    <ClInclude Include="Source\Core\Entities\Entity.h" />
+    <ClInclude Include="Source\Core\Entities\EntityComponent.h" />
+    <ClInclude Include="Source\Core\Entities\EntityDefines.h" />
+    <ClInclude Include="Source\Core\GUI\ButtonBehavior.h" />
+    <ClInclude Include="Source\Core\GUI\GUIButton.h" />
+    <ClInclude Include="Source\Core\GUI\GUIButtonLabeled.h" />
+    <ClInclude Include="Source\Core\GUI\GUIConstants.h" />
+    <ClInclude Include="Source\Core\GUI\GUIManager.h" />
+    <ClInclude Include="Source\Core\GUI\GUITextInput.h" />
+    <ClInclude Include="Source\Core\GUI\GUIWidget.h" />
+    <ClInclude Include="Source\Core\GUI\TextInputBehavior.h" />
+    <ClInclude Include="Source\Core\HyperVisor.h" />
+    <ClInclude Include="Source\Core\Input\Input.h" />
+    <ClInclude Include="Source\Core\Input\InputFunctors.h" />
+    <ClInclude Include="Source\Core\Locator.h" />
+    <ClInclude Include="Source\Core\Physics\btFractureBody.h" />
+    <ClInclude Include="Source\Core\Physics\btFractureDynamicsWorld.h" />
+    <ClInclude Include="Source\Core\Physics\CollisionDispatcher.h" />
+    <ClInclude Include="Source\Core\Physics\Physics.h" />
+    <ClInclude Include="Source\Core\Physics\PhysicsDebugDraw.h" />
+    <ClInclude Include="Source\Core\Physics\PhysicsDefines.h" />
+    <ClInclude Include="Source\Core\Renderer\Camera.h" />
+    <ClInclude Include="Source\Core\Renderer\Color.h" />
+    <ClInclude Include="Source\Core\Renderer\DrawMesh.h" />
+    <ClInclude Include="Source\Core\Renderer\GBuffer.h" />
+    <ClInclude Include="Source\Core\Renderer\GLErrorUtil.h" />
+    <ClInclude Include="Source\Core\Renderer\IRenderer.h" />
+    <ClInclude Include="Source\Core\Renderer\Light3D.h" />
+    <ClInclude Include="Source\Core\Renderer\LightSystem3D.h" />
+    <ClInclude Include="Source\Core\Renderer\MatrixUtil.h" />
+    <ClInclude Include="Source\Core\Renderer\MeshInstanceBufferBase.h" />
+    <ClInclude Include="Source\Core\Renderer\MeshInstanceColored.h" />
+    <ClInclude Include="Source\Core\Renderer\PostProcess.h" />
+    <ClInclude Include="Source\Core\Renderer\PrimitiveDefines.h" />
+    <ClInclude Include="Source\Core\Renderer\Primitives2D.h" />
+    <ClInclude Include="Source\Core\Renderer\Primitives3D.h" />
+    <ClInclude Include="Source\Core\Renderer\Rect2D.h" />
+    <ClInclude Include="Source\Core\Renderer\RenderDataDefines.h" />
+    <ClInclude Include="Source\Core\Renderer\RenderDefines.h" />
+    <ClInclude Include="Source\Core\Renderer\Renderer.h" />
+    <ClInclude Include="Source\Core\Renderer\RenderUtils.h" />
+    <ClInclude Include="Source\Core\Renderer\Shader.h" />
+    <ClInclude Include="Source\Core\Renderer\ShaderDefaults.h" />
+    <ClInclude Include="Source\Core\Renderer\ShaderFactory.h" />
+    <ClInclude Include="Source\Core\Renderer\StencilUtils.h" />
+    <ClInclude Include="Source\Core\Renderer\Texture.h" />
+    <ClInclude Include="Source\Core\Renderer\TextureManager.h" />
+    <ClInclude Include="Source\Core\Renderer\VertexBufferBase.h" />
+    <ClInclude Include="Source\Core\Renderer\VertexBuffer_XYZW.h" />
+    <ClInclude Include="Source\Core\Renderer\VertexBuffer_XYZW_DSN.h" />
+    <ClInclude Include="Source\Core\Renderer\VertexBuffer_XYZW_RGBA.h" />
+    <ClInclude Include="Source\Core\Renderer\VertexBuffer_XYZW_UV.h" />
+    <ClInclude Include="Source\Core\SceneManager\Scene.h" />
+    <ClInclude Include="Source\Core\SceneManager\SceneManager.h" />
+    <ClInclude Include="Source\Core\SkyDome\SkyDome.h" />
+    <ClInclude Include="Source\Core\Sprites\Sprite.h" />
+    <ClInclude Include="Source\Core\Sprites\SpriteBatch.h" />
+    <ClInclude Include="Source\Core\Text\FontAtlas.h" />
+    <ClInclude Include="Source\Core\Text\IText.h" />
+    <ClInclude Include="Source\Core\Text\TextConstants.h" />
+    <ClInclude Include="Source\Core\Text\TextDefaults.h" />
+    <ClInclude Include="Source\Core\Text\TextLabel.h" />
+    <ClInclude Include="Source\Core\Text\TextManager.h" />
+    <ClInclude Include="Source\Core\ThreadPool.h" />
+    <ClInclude Include="Source\Core\Utils\FileUtil.h" />
+    <ClInclude Include="Source\Core\Utils\MathUtils.h" />
+    <ClInclude Include="Source\Core\Utils\Random.h" />
+    <ClInclude Include="Source\Core\Utils\RangeReverseAdapter.h" />
+    <ClInclude Include="Source\Core\Utils\StringUtil.h" />
+    <ClInclude Include="Source\Core\Utils\ThreadSafeMap.h" />
+    <ClInclude Include="Source\Core\Utils\ThreadSafeQueue.h" />
+    <ClInclude Include="Source\Core\Utils\Timer.h" />
+    <ClInclude Include="Source\Game\Entities\ActorComponent.h" />
+    <ClInclude Include="Source\Game\Entities\CubeComponent.h" />
+    <ClInclude Include="Source\Game\Entities\EntityManager.h" />
+    <ClInclude Include="Source\Game\Entities\ExplosiveComponent.h" />
+    <ClInclude Include="Source\Game\Entities\HealthComponent.h" />
+    <ClInclude Include="Source\Game\Entities\HumanoidComponent.h" />
+    <ClInclude Include="Source\Game\Entities\InventoryComponent.h" />
+    <ClInclude Include="Source\Game\Entities\ItemComponent.h" />
+    <ClInclude Include="Source\Game\Entities\ItemDefines.h" />
+    <ClInclude Include="Source\Game\Entities\Light3DComponent.h" />
+    <ClInclude Include="Source\Game\Entities\ParticleComponent.h" />
+    <ClInclude Include="Source\Game\Entities\PhysicsComponent.h" />
+    <ClInclude Include="Source\Game\LocalGame\LocalGame.h" />
+    <ClInclude Include="Source\Game\LocalGame\MainMenu.h" />
+    <ClInclude Include="Source\Game\LocalGame\Planetoid.h" />
+    <ClInclude Include="Source\Game\World\BlockDefs.h" />
+    <ClInclude Include="Source\Game\World\BlockSet.h" />
+    <ClInclude Include="Source\Game\World\Chunk.h" />
+    <ClInclude Include="Source\Game\World\ChunkManager.h" />
+    <ClInclude Include="Source\Game\World\ChunkPool.h" />
+    <ClInclude Include="Source\Game\World\ChunkUtil.h" />
+    <ClInclude Include="Source\Game\World\DynaCube.h" />
+    <ClInclude Include="Source\Game\World\World.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

@@ -83,11 +83,11 @@
 		D9C16FE71AFF68CE00F66B19 /* TextureManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D9C16FE41AFF68CE00F66B19 /* TextureManager.cpp */; };
 		D9C16FEA1AFF6E7100F66B19 /* Rect2D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D9C16FE81AFF6E7100F66B19 /* Rect2D.cpp */; };
 		D9C16FEF1AFF6F4700F66B19 /* Dictionary.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D9C16FEC1AFF6F4700F66B19 /* Dictionary.cpp */; };
-		D9C16FF11AFF6F8800F66B19 /* libpugixmld.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D9C16FF01AFF6F8800F66B19 /* libpugixmld.a */; };
 		D9C16FF61AFFF23000F66B19 /* forward_color.fsh in CopyFiles */ = {isa = PBXBuildFile; fileRef = D9C16FF21AFFF22900F66B19 /* forward_color.fsh */; };
 		D9C16FF71AFFF23000F66B19 /* forward_tex_color.fsh in CopyFiles */ = {isa = PBXBuildFile; fileRef = D9C16FF31AFFF22900F66B19 /* forward_tex_color.fsh */; };
 		D9C16FF81AFFF23000F66B19 /* forward_vColor.vsh in CopyFiles */ = {isa = PBXBuildFile; fileRef = D9C16FF41AFFF22900F66B19 /* forward_vColor.vsh */; };
 		D9C16FF91AFFF23000F66B19 /* forward_vTex_uColor.vsh in CopyFiles */ = {isa = PBXBuildFile; fileRef = D9C16FF51AFFF22900F66B19 /* forward_vTex_uColor.vsh */; };
+		D9C259251B808DDC00A221C6 /* libpugixml.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D9C259241B808DDC00A221C6 /* libpugixml.a */; };
 		D9CBADEF1AF976EF0017917C /* Bentham.ttf in CopyFiles */ = {isa = PBXBuildFile; fileRef = D96C02DD1AEB01B700001936 /* Bentham.ttf */; };
 		D9CBADF01AF976EF0017917C /* ClearSans-Regular.ttf in CopyFiles */ = {isa = PBXBuildFile; fileRef = D96C02DE1AEB01B700001936 /* ClearSans-Regular.ttf */; };
 		D9CBADF11AF976EF0017917C /* Cretino.ttf in CopyFiles */ = {isa = PBXBuildFile; fileRef = D96C02DF1AEB01B700001936 /* Cretino.ttf */; };
@@ -339,12 +339,12 @@
 		D9C16FEC1AFF6F4700F66B19 /* Dictionary.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Dictionary.cpp; sourceTree = "<group>"; };
 		D9C16FED1AFF6F4700F66B19 /* Dictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Dictionary.h; sourceTree = "<group>"; };
 		D9C16FEE1AFF6F4700F66B19 /* DictionaryHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DictionaryHelpers.h; sourceTree = "<group>"; };
-		D9C16FF01AFF6F8800F66B19 /* libpugixmld.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libpugixmld.a; sourceTree = "<group>"; };
 		D9C16FF21AFFF22900F66B19 /* forward_color.fsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = forward_color.fsh; sourceTree = "<group>"; };
 		D9C16FF31AFFF22900F66B19 /* forward_tex_color.fsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = forward_tex_color.fsh; sourceTree = "<group>"; };
 		D9C16FF41AFFF22900F66B19 /* forward_vColor.vsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = forward_vColor.vsh; sourceTree = "<group>"; };
 		D9C16FF51AFFF22900F66B19 /* forward_vTex_uColor.vsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = forward_vTex_uColor.vsh; sourceTree = "<group>"; };
 		D9C16FFB1AFFF4A900F66B19 /* VertexBuffer_XYZW_UV.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VertexBuffer_XYZW_UV.h; sourceTree = "<group>"; };
+		D9C259241B808DDC00A221C6 /* libpugixml.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libpugixml.a; sourceTree = "<group>"; };
 		D9DA786D1AFBF41A007A28AA /* FontAtlas.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FontAtlas.cpp; sourceTree = "<group>"; };
 		D9DA786E1AFBF41A007A28AA /* FontAtlas.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FontAtlas.h; sourceTree = "<group>"; };
 		D9DA786F1AFBF41A007A28AA /* IText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IText.h; sourceTree = "<group>"; };
@@ -416,8 +416,8 @@
 				D96C02F21AEB01DD00001936 /* libfreetype.a in Frameworks */,
 				D90CE61D1AE3DF81009F05EB /* SDL2.framework in Frameworks */,
 				D9FAFBB71B7AA8FB005AA42B /* libBulletCollision.a in Frameworks */,
-				D9C16FF11AFF6F8800F66B19 /* libpugixmld.a in Frameworks */,
 				D9FAFBB81B7AA8FB005AA42B /* libBulletDynamics.a in Frameworks */,
+				D9C259251B808DDC00A221C6 /* libpugixml.a in Frameworks */,
 				D96C02F41AEB01DD00001936 /* libz.a in Frameworks */,
 				D92C60F81AE3E69D00FE2C33 /* libGLEW.a in Frameworks */,
 			);
@@ -600,7 +600,7 @@
 				D96C02EF1AEB01DD00001936 /* libfreetype.a */,
 				D92C60F71AE3E69D00FE2C33 /* libGLEW.a */,
 				D96C02F01AEB01DD00001936 /* libpng16.a */,
-				D9C16FF01AFF6F8800F66B19 /* libpugixmld.a */,
+				D9C259241B808DDC00A221C6 /* libpugixml.a */,
 				D96C02F11AEB01DD00001936 /* libz.a */,
 			);
 			name = Libs;

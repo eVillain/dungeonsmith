@@ -10,7 +10,7 @@
 #include <string>
 #include "GLErrorUtil.h"
 
-#ifdef WIN32
+#if defined	(_WIN32) || defined (_WIN64)
 #  include <GL/glew.h>
 #elif __APPLE__
 #  include <OpenGL/gl3.h>

@@ -9,11 +9,13 @@
 #ifndef DungeonSmith_RenderDefines_h
 #define DungeonSmith_RenderDefines_h
 
-#define GLM_PRECISION_HIGHP_FLOAT
-#define GLM_PRECISION_HIGHP_DOUBLE
-#define GLM_PRECISION_HIGHP_INT
-#define GLM_PRECISION_HIGHP_UINT
-#define GLM_FORCE_CXX11
+//#define GLM_PRECISION_HIGHP_FLOAT
+//#define GLM_PRECISION_HIGHP_DOUBLE
+//#define GLM_PRECISION_HIGHP_INT
+//#define GLM_PRECISION_HIGHP_UINT
+//#define GLM_FORCE_CXX11
+
+#define _USE_MATH_DEFINES
 
 #include <glm/glm.hpp>
 #include <GL/glew.h>

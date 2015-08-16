@@ -11,7 +11,7 @@
 #include "EntityManager.h"
 #include <glm/gtx/rotate_vector.hpp>
 #include <glm/gtc/quaternion.hpp>
-#include "btShapeHull.h"
+#include "BulletCollision/CollisionShapes/btShapeHull.h"
 #include "Physics.h"
 //#include "Cubeject.h"
 

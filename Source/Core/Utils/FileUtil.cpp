@@ -35,14 +35,14 @@ std::string FileUtil::GetPath() { return relativePath; };
 // SetRelativePath()
 // Puts the path for the .app (OSX) or .exe (Windows) into a string
 //========================================================================
-void FileUtil::SetRelativePath()
+void FileUtil::UpdateRelativePath()
 {
     TCHAR path[MAX_PATH];
     HINSTANCE hInstance = GetModuleHandle(NULL);
     int pathLength = GetModuleFileName(hInstance, path, MAX_PATH);
     if (pathLength != 0) {
         std::wstring widePath( path, pathLength );
-        std::string utf8Path = utf8_encode( widePath );
+        std::string utf8Path = StringUtil::utf8_encode( widePath );
         // Cull executable name from path
         int found=utf8Path.find_last_of("/\\") + 1; //leave last forwardslash
         relativePath = utf8Path.substr(0,found);
@@ -56,21 +56,21 @@ void FileUtil::SetRelativePath()
 // GetFiles()
 // retrieves list of files in dir
 //========================================================================
-bool FileUtil::GetFiles(const std::string dir, std::vector<std::string> &fileNames)
+bool GetFiles(const std::string dir, std::vector<std::string> &fileNames)
 {
     WIN32_FIND_DATA FindFileData;
     wchar_t FileName[260];
-    string2wchar_t(dir, FileName);
+	StringUtil::string2wchar_t(dir, FileName);
     HANDLE hFind = FindFirstFile(FileName, &FindFileData);
     
     if (hFind == INVALID_HANDLE_VALUE) {
         return false;
     }
     
-    fileNames.push_back(wchar_t2string(FindFileData.cFileName));
+	fileNames.push_back(StringUtil::wchar_t2string(FindFileData.cFileName));
     
     while (FindNextFile(hFind, &FindFileData))
-        fileNames.push_back(wchar_t2string(FindFileData.cFileName));
+		fileNames.push_back(StringUtil::wchar_t2string(FindFileData.cFileName));
     
     return true;
 }
@@ -112,7 +112,7 @@ bool FileUtil::CreateFolder(const std::string dir) {
     if (DoesFolderExist(dir)) return false;
     
     wchar_t FileName[260];
-    string2wchar_t(dir, FileName);
+	StringUtil::string2wchar_t(dir, FileName);
     
     CreateDirectory(FileName, NULL);
     return true;
@@ -129,7 +129,7 @@ bool FileUtil::DoesFileExist( const std::string dir, const std::string fileName 
     WIN32_FIND_DATA FindFileData;
     //wchar_t * FilePath = string2wchar_t(dirAndName);
     wchar_t FilePath[260];
-    string2wchar_t(dirAndName, FilePath);
+	StringUtil::string2wchar_t(dirAndName, FilePath);
     HANDLE hFind = FindFirstFile(FilePath, &FindFileData);
     
     if (hFind == INVALID_HANDLE_VALUE) {

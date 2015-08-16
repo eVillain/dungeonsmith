@@ -70,11 +70,8 @@ bool Renderer::Initialize()
         printf( "[Renderer] OpenGL context could not be created! SDL Error: %s\n", SDL_GetError() );
         success = false;
     }
-    else
-    {
-        const GLubyte * version = glGetString(GL_VERSION);
-        printf("[Renderer] OpenGL Version:%s\n", version);
-
+	else
+	{
         //Initialize GLEW
         glewExperimental = GL_TRUE;
         GLenum glewError = glewInit();
@@ -83,6 +80,20 @@ bool Renderer::Initialize()
             printf( "[Renderer] Error initializing GLEW! %s\n", glewGetErrorString( glewError ) );
         }
         glGetError();   // Ignore one bad ENUM in GLEW initialization
+
+		const GLubyte * version = glGetString(GL_VERSION);
+		printf("[Renderer] OpenGL Version:%s\n", version);
+
+		GLint major = 0;
+		GLint minor = 0;
+		glGetIntegerv(GL_MAJOR_VERSION, &major);
+		glGetIntegerv(GL_MINOR_VERSION, &minor);
+		if (major < 3 ||
+			(major == 3 && minor < 2))
+		{
+			printf("[Renderer] Error could not get a modern OpenGL context!\n");
+			return false;
+		}
 
         //Use Vsync
         if( SDL_GL_SetSwapInterval( 1 ) < 0 )

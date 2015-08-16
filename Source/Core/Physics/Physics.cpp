@@ -13,7 +13,7 @@
 
 #include "btFractureBody.h"
 #include "btFractureDynamicsWorld.h"
-#include "btGhostObject.h"
+#include "BulletCollision/CollisionDispatch/btGhostObject.h"
 
 const bool Physics::fracturePhysics=false;
 bool Physics::physicsCCD=false;

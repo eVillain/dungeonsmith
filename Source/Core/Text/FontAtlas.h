@@ -18,7 +18,7 @@
 #define NGN_FONT_ATLAS_H
 
 #include <GL/glew.h>
-#include <ft2build.h>
+#include <freetype2/ft2build.h>
 #include FT_FREETYPE_H
 #include <string>
 #include <map>
@@ -45,8 +45,8 @@ private:
     
 	GLuint texID;       // texture object
     
-	int w;              // width of texture in pixels
-	int h;              // height of texture in pixels
+	unsigned int w;              // width of texture in pixels
+	unsigned int h;              // height of texture in pixels
     
 	GlyphInfo gInfo[128];    // character information
 

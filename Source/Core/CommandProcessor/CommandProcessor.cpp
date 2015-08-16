@@ -7,7 +7,12 @@
 //
 
 #include <deque>
+
+#ifdef _WIN32
+#include <io.h>
+#else
 #include <unistd.h> // needed for getopt
+#endif
 #include "CommandProcessor.h"
 #include "StringUtil.h"
 

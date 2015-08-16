@@ -12,8 +12,8 @@ FontAtlas::FontAtlas(FT_Face face, int height) {
     FT_Set_Pixel_Sizes(face, 0, height);
     FT_GlyphSlot g = face->glyph;
     
-    int roww = 0;
-    int rowh = 0;
+    unsigned int roww = 0;
+    unsigned int rowh = 0;
     w = 0;
     h = 0;
     

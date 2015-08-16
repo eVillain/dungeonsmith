@@ -10,7 +10,7 @@
 #include "EntityManager.h"
 #include "ParticleComponent.h"
 #include "PhysicsComponent.h"
-#include "btRigidBody.h"
+#include "BulletDynamics/Dynamics/btRigidBody.h"
 
 namespace Entities {
 

@@ -56,7 +56,10 @@ void HyperVisor::Initialize(int argc, char * arg[])
         
         // Create and initialize all of our engine subsystems
         Renderer* renderer = new Renderer();
-        renderer->Initialize();
+		if (!renderer->Initialize())
+		{
+			return; // TODO: Gracefully handle exit in systems with crap OpenGL support :)
+		}
         
         TextManager* textMan = new TextManager();
         textMan->Initialize();

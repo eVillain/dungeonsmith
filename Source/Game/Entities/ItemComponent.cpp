@@ -15,7 +15,7 @@
 #include "TextLabel.h"
 //#include "ParticleManager.h"
 #include "PhysicsComponent.h"
-#include "btRigidBody.h"
+#include "BulletDynamics/Dynamics/btRigidBody.h"
 #include "StringUtil.h"
 #include "ItemDefines.h"
 namespace Entities {

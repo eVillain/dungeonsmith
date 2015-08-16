@@ -16,6 +16,7 @@
 #ifdef _WIN32
 #include <windows.h>
 #include <iostream>
+#include <time.h>
 #endif
 
 #include <sys/stat.h>       // Creating folders
@@ -50,8 +51,16 @@ double Timer::Seconds()
 }
 std::string Timer::TimeStamp()
 {
-    time_t tTime = time(NULL);
-    std::string output(strftime(localtime(&tTime)));
+	time_t rawTime;
+	time(&rawTime);
+	char buffer[80];
+
+	struct tm timeInfo;
+	localtime_s(&timeInfo,&rawTime);
+
+	strftime(buffer, 80, "%A, %B, %d, %Y, %I:%M:%S %p", &timeInfo);
+
+    std::string output(buffer);
     return output;
 }
 #elif defined __APPLE__

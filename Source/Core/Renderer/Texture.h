@@ -31,7 +31,7 @@ private:
     GLint mipLevel;         // Texture mipmapping level
     std::string filePath;   // Path to folder containing texture
     
-    uint16_t refCount;  // How many sprites are using texture
+    unsigned int refCount;  // How many sprites are using texture
 public:
     Texture( std::string fileName,
             GLint wrap = GL_REPEAT,
@@ -49,7 +49,7 @@ public:
     
     void Retain();
     void Release();
-    uint16_t RefCount() { return refCount; };
+    unsigned int RefCount() { return refCount; };
     
     void DrawAt(int posX, int posY);
     

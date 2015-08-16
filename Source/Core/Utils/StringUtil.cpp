@@ -6,9 +6,12 @@
 //  Copyright (c) 2015 The Drudgerist. All rights reserved.
 //
 
-#include <sstream>
-
 #include "StringUtil.h"
+#ifdef _WIN32
+#include <windows.h>
+#endif
+#include <sstream>
+#include <cctype>
 
 // Split up an input string into separate lines
 void StringUtil::SplitIntoLines( const std::string& input, std::deque <const std::string>& result )
