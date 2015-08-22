@@ -299,7 +299,7 @@ void Console::Show() {
     IText* tMan = &Locator::getText();
     if ( !tMan || visible ) { return; }
     
-    std::string consoleInfo = "Console: DungeonSmith v." + HyperVisor::VERSION();
+    std::string consoleInfo = "DungeonSmith v." + HyperVisor::VERSION();
     
     int winWidth = Locator::getRenderer().GetWindowSize().x;
     textWidget = new GUI::GUITextInput(0, 1,
@@ -311,6 +311,8 @@ void Console::Show() {
         [](const std::string& inputText)
         {
             CommandProcessor::Buffer(inputText);
+            textWidget->ClearText();
+            textWidget->StartTextInput();
             
         } );
     textWidget->SetBehavior(behavior);

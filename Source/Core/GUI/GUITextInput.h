@@ -38,7 +38,7 @@ namespace GUI
         // Text input operations
         void StartTextInput();
         void StopTextInput();
-        void ClearText() { _inputText.clear(); }
+        void ClearText();
         
         // Attach a behavior to pass the input text somewhere
         void SetBehavior( TextInputBehavior* behavior ) { _behavior = behavior; };

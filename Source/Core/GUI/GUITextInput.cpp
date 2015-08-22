@@ -53,11 +53,11 @@ namespace GUI
         {
             if ( amount == 1 )
             {
+                StopTextInput();
                 if ( _behavior )
                 {
                     _behavior->Trigger(_inputText);
                 }
-                StopTextInput();
             }
             return true;
         }
@@ -173,8 +173,7 @@ namespace GUI
         _textInputActive = true;
         if ( _inputText == _defaultText )
         {
-            _inputText.clear();
-            _label.SetText(_inputText);
+            ClearText();
         }
     }
     
@@ -184,5 +183,11 @@ namespace GUI
         _textInputActive = false;
         Input::StopTextInput(&_textInputFunctor);
         Input::UnRegisterEventObserver(&_eventFunctor);
+    }
+    
+    void GUITextInput::ClearText()
+    {
+        _inputText.clear();
+        _label.SetText(_inputText);
     }
 }   /* namespace GUI */
