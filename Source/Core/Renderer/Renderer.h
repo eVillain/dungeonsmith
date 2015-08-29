@@ -11,14 +11,17 @@
 
 #include "RenderDefines.h"
 #include "IRenderer.h"
+#include "IRenderComponent.h"
 #include "Color.h"
 #include "GBuffer.h"
+#include <vector>
 
 class SDL_Window;
 class TextureManager;
+class Instanced;
 class Primitives2D;
 class Primitives3D;
-class DrawMesh;
+class Mesh;
 class PostProcess;
 class LightSystem3D;
 
@@ -50,14 +53,16 @@ public:
     Camera* GetCamera() { return _camera; };
     glm::ivec2 GetWindowSize();
     
+    Instanced* DrawInstanced() { return _instanced; };
     Primitives2D* DrawPrimitives2D() { return _primitives2D; };
     Primitives3D* DrawPrimitives3D() { return _primitives3D; };
 
-    DrawMesh* Mesh() { return _mesh; };
+    Mesh* DrawMesh() { return _mesh; };
     TextureManager* Textures() { return _textureManager; };
     LightSystem3D* Lighting() { return _lighting; };
     
 private:
+    std::vector<IRenderComponent*> _components;
     bool InitializeComponents();
     bool TerminateComponents();
     
@@ -69,9 +74,10 @@ private:
     
     Camera* _camera;
     
+    Instanced* _instanced;
     Primitives2D* _primitives2D;
     Primitives3D* _primitives3D;
-    DrawMesh* _mesh;
+    class Mesh* _mesh;
     PostProcess* _postProcess;
     LightSystem3D* _lighting;
     

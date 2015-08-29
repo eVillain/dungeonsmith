@@ -21,24 +21,18 @@
 #include "LightSystem3D.h"
 #include "SkyDome.h"
 #include "StencilUtils.h"
-#include "DynaCube.h"
 #include "Random.h"
-Instance_Position_Rotation_Color instances[10];
-btRigidBody* cubes[10];
+#include <glm/gtc/random.hpp>
 
 Planetoid::Planetoid() : Scene("Game"),
 eventFunctor(this, &Planetoid::OnEvent),
-_numPlanetCubes(1024),
-_planetCubes(nullptr)
+_numPlanetCubes(4096)
 {
-    _planetCubes = new DynaCube[_numPlanetCubes];
 }
 
 
 Planetoid::~Planetoid()
 {
-    delete [] _planetCubes;
-    _planetCubes = nullptr;
 }
 
 void Planetoid::Initialize()
@@ -48,7 +42,7 @@ void Planetoid::Initialize()
     Input::RegisterEventObserver(&eventFunctor);
     
     Locator::getRenderer().SetCamera(&_camera);
-    _camera.position.z = 10;
+    _camera.position.z = 150;
 
     _labelFPS = nullptr;
     _sunLight.lightType = Light3D_Sun;
@@ -57,6 +51,8 @@ void Planetoid::Initialize()
     _skyDome = new SkyDome();
     
     _camera.physicsClip = true;
+    
+    _planetSphere = Locator::getPhysics().AddStaticSphere(btVector3(), 100.0);
 }
 
 void Planetoid::ReInitialize()
@@ -65,6 +61,8 @@ void Planetoid::ReInitialize()
 
 void Planetoid::Release()
 {
+    Locator::getPhysics().Remove(_planetSphere);
+
     delete _skyDome;
     Scene::Release();
 }
@@ -95,9 +93,14 @@ void Planetoid::Resume()
 
 void Planetoid::Update( double deltaTime )
 {
+    Locator::getPhysics().Update(deltaTime);
+    Locator::getPhysics().AddExplosion(btVector3(), 1000.0, -0.980);
+
     std::string fpsText =
     "FPS: " + StringUtil::IntToString(1.0/deltaTime) +
-    "\nFrameTime: " + StringUtil::DoubleToString(deltaTime*1000.0,3) + "ms";
+    "\nFrameTime: " + StringUtil::DoubleToString(deltaTime*1000.0,3) + "ms" +
+    "\nDynamic Cubes: " + StringUtil::LongToString(_planetCubes.Count());
+    
     if ( !_labelFPS )
     {
         _labelFPS = new TextLabel(fpsText,
@@ -112,21 +115,15 @@ void Planetoid::Update( double deltaTime )
     }
     UpdateMovement();
     
-    Locator::getPhysics().AddExplosion(btVector3(), 100.0, -0.980);
-    Locator::getPhysics().Update(deltaTime);
     _camera.Update(deltaTime);
-    
-    bool activatedACube = false;
-    for (int i=0; i< _numPlanetCubes; i++) {
-        if (!_planetCubes[i].IsActive() && !activatedACube) {
-            Random::RandomSeed(i);
-            _planetCubes[i].Activate(btVector3(0,0,0),
-                                     0.15+(Random::RandomDouble()*CHUNK_BLOCK_WIDTH),
-                                     COLOR_WHITE);
-            activatedACube = true;
-        };
-        _planetCubes[i].Update(deltaTime);
+
+    if (_planetCubes.Count() < _numPlanetCubes) {
+        Random::RandomSeed(Timer::Seconds());
+        _planetCubes.Add(glm::sphericalRand(110.0f),
+                         0.5+10.0*(Random::RandomDouble()*CHUNK_BLOCK_WIDTH),
+                         COLOR_WHITE);
     }
+    _planetCubes.Update(deltaTime);
 }
 
 void Planetoid::Draw()
@@ -139,15 +136,16 @@ void Planetoid::Draw()
     _sunLight.specular = spec;
     glm::vec3 sunWorldPos = _camera.position+_skyDome->GetSunPos()*512.0f;
     _sunLight.position = glm::vec4(sunWorldPos.x,sunWorldPos.y,sunWorldPos.z,0.0f);
-    
+
     Stencil::Enable();
     Stencil::SetReplaceLower(Stencil::Layer_Sky);
     _skyDome->Draw(_camera);
     
     Stencil::SetReplaceLower(Stencil::Layer_Solid);
 
-    Locator::getPhysics().Draw();
-    Locator::getRenderer().DrawPrimitives3D()->Render(_camera.GetMVP());
+//    Locator::getPhysics().Draw();   // Debug physics
+    
+    _planetCubes.Draw(_camera.GetMVP());
     Stencil::Disable();
 }
 
@@ -165,7 +163,7 @@ bool Planetoid::OnEvent(const typeInputEvent& event, const float& amount)
     {
         if ( event == "run" ) { _camera.movementSpeedFactor = 20.0; return true; }
         if ( event == "sneak" ) { _camera.movementSpeedFactor = 5.0; return true; }
-        if ( event == "shoot" ) { Locator::getPhysics().AddExplosion(btVector3(), 5.0, 10.0); return true; }
+        if ( event == "shoot" ) { Locator::getPhysics().AddExplosion(btVector3(), 500.0, 100.0); return true; }
     }
     else if ( amount == -1 )
     {

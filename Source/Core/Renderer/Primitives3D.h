@@ -9,6 +9,7 @@
 #ifndef __DungeonSmith__Primitives3D__
 #define __DungeonSmith__Primitives3D__
 
+#include "IRenderComponent.h"
 #include "RenderDefines.h"
 #include "Color.h"
 #include "MeshInstanceColored.h"
@@ -17,7 +18,8 @@
 
 class Shader;
 
-class Primitives3D {
+class Primitives3D : public IRenderComponent
+{
 public:
     void Initialize();
     void Terminate();
@@ -27,17 +29,16 @@ public:
               const glm::vec3& b,
               const Color& aColor,
               const Color& bColor);
-    
-    Instance_Position_Rotation_Color& Cube( const glm::vec3& pos, const float size, const glm::quat& rot, const Color& diffuse, const Color& specular );
+    void CubeOutline(const glm::vec3& pos,
+                     const float size,
+                     const glm::quat& rot,
+                     const Color& color);
     
     void Render( const glm::mat4& matrix );
     
-private:
-    MeshInstanceColored * _cubeBuffer;
-    
+private:    
     VertexBuffer_XYZW_RGBA * _lineBuffer;
     
-    Shader* _deferred_cube_shader;
     Shader* _forward_vColor_shader;
 };
 

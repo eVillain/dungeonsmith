@@ -19,6 +19,7 @@
 #include "GUIManager.h"
 #include "ThreadPool.h"
 #include "SceneManager.h"
+#include "Physics.h"
 
 HyperVisor::HyperVisor() :
 quit(false),
@@ -136,6 +137,11 @@ int HyperVisor::Run()
 
         // --- Finish deferred render and switch to forward render --- //
         Locator::getRenderer().FinishDeferred();
+        
+        if ( Locator::getPhysics().DebugEnabled() )
+        {
+            Locator::getPhysics().Draw();
+        }
         
         Locator::getGUI().Draw();
         

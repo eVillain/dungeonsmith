@@ -2,7 +2,7 @@
 //  PhysicsDefines.h
 //  DungeonSmith
 //
-//  Created by eVillain on 15/08/15.
+//  Created by The Drudgerist on 15/08/15.
 //  Copyright (c) 2015 The Drudgerist. All rights reserved.
 //
 
@@ -27,5 +27,6 @@ enum Collision_Types {
     Collision_Terrain = BIT(0),     //<Collides with ground
     Collision_Entity = BIT(1),      //<Collides with entity
 };
+
 
 #endif

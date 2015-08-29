@@ -9,7 +9,7 @@
 #include "World.h"
 #include "Locator.h"
 #include "Renderer.h"
-#include "DrawMesh.h"
+#include "Mesh.h"
 #include "Primitives2D.h"
 #include "LightSystem3D.h"
 #include "SkyDome.h"

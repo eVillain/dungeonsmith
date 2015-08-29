@@ -22,7 +22,6 @@ void Primitives2D::Initialize()
     lineBuffer = new VertexBuffer_XYZW_RGBA(1024);  // TODO: Define default line buffer size
     polyBuffer = new VertexBuffer_XYZW_RGBA(1024);  // As above, so below
     texturedPolyBuffer = new VertexBuffer_XYZW_UV(1024);
-
     
     forward_vColor_shader = ShaderFactory::LoadFromFile("forward_color.fsh", "forward_vColor.vsh");
     forward_vTex_uColor_shader = ShaderFactory::LoadFromFile("forward_tex_color.fsh", "forward_vTex_uColor.vsh");

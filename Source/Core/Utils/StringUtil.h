@@ -19,6 +19,7 @@ public:
     static bool IsNumber( const std::string& string );
     static std::string BoolToString(bool number);
     static std::string IntToString( int number );
+    static std::string LongToString( long number );
     static std::string FloatToString( float number, int precision = 3 );
     static std::string DoubleToString( double number, int precision = 3 );
 #if defined(_WIN32)

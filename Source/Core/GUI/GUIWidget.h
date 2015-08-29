@@ -26,6 +26,7 @@ namespace GUI
         
         virtual void SetPosition( const int posX, const int posY );
         virtual void SetSize( const int width, const int height );
+        virtual void SetDepth( const int depth );
         
         /* Override these for different cursor events */
         // Focus is true when the cursor is over a widget
@@ -49,6 +50,8 @@ namespace GUI
         inline bool IsVisible() { return _visible; };
         inline bool HasFocus() { return _focus; };
         
+        virtual const int GetHeight() { return h; };
+        virtual const int GetDepth() { return z; };
     protected:
         // UIWidget attributes
         int x,y,w,h,z;

@@ -1,12 +1,12 @@
 //
-//  DrawMesh.cpp
+//  Mesh.cpp
 //  DungeonSmith
 //
 //  Created by The Drudgerist on 08/06/15.
 //  Copyright (c) 2015 The Drudgerist. All rights reserved.
 //
 
-#include "DrawMesh.h"
+#include "Mesh.h"
 #include "Shader.h"
 #include "ShaderFactory.h"
 #include "MatrixUtil.h"
@@ -15,24 +15,24 @@
 #include "GLErrorUtil.h"
 #include "Locator.h"
 
-void DrawMesh::Initialize()
+void Mesh::Initialize()
 {
     deferred_mesh_shader = ShaderFactory::LoadFromFile("deferred_mesh.fsh", "deferred_mesh.vsh");
 }
 
-void DrawMesh::Terminate()
+void Mesh::Terminate()
 {
     ShaderFactory::ClearShader(deferred_mesh_shader);
     deferred_mesh_shader = nullptr;
 }
 
-void DrawMesh::SetupCamera(Camera &camera)
+void Mesh::SetupCamera(Camera &camera)
 {
     glm::ivec2 windowSize = Locator::getRenderer().GetWindowSize();
     MatrixUtil::GetGameMatrix(mvp, windowSize.x, windowSize.y, camera);
 }
 
-void DrawMesh::Draw(VertexBuffer_XYZW_DSN *buffer, const glm::vec3& position)
+void Mesh::Draw(VertexBuffer_XYZW_DSN *buffer, const glm::vec3& position)
 {
     deferred_mesh_shader->Begin();
     

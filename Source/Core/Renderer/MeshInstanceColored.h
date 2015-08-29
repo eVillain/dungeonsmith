@@ -29,7 +29,7 @@ public:
         
         glEnableVertexAttribArray(0);
         glEnableVertexAttribArray(1);
-//        glVertexAttribDivisorARB(0, 0);
+        glVertexAttribDivisorARB(0, 0);
         glVertexAttribDivisorARB(1, 0);
         
         glBindBuffer( GL_ARRAY_BUFFER, _vboInstances );
@@ -39,7 +39,7 @@ public:
         glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(Instance_Position_Rotation_Color), 0);
         glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(Instance_Position_Rotation_Color), (GLvoid*)(4*sizeof(GLfloat)));
         glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, sizeof(Instance_Position_Rotation_Color), (GLvoid*)(8*sizeof(GLfloat)));
-        glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, sizeof(Instance_Position_Rotation_Color), (GLvoid*)(12*sizeof(GLfloat)));
+        glVertexAttribPointer(5, 1, GL_FLOAT, GL_FALSE, sizeof(Instance_Position_Rotation_Color), (GLvoid*)(12*sizeof(GLfloat)));
         
         glEnableVertexAttribArray(2);
         glEnableVertexAttribArray(3);

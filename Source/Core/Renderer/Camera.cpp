@@ -18,8 +18,8 @@
 
 Camera::Camera() {
     fieldOfView = 45.0f;
-    nearDepth = 0.01f;
-    farDepth = 128.0f;
+    nearDepth = 0.1f;
+    farDepth = 500.0f;
     focalDepth = 6.0;
     focalLength = 30.0;
     fStop = 10.0f;

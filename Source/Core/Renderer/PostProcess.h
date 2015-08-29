@@ -9,12 +9,14 @@
 #ifndef __DungeonSmith__PostProcess__
 #define __DungeonSmith__PostProcess__
 
+#include "IRenderComponent.h"
 #include "VertexBuffer_XYZW.h"
 #include "Color.h"
 
 class Shader;
 
-class PostProcess {
+class PostProcess : public IRenderComponent
+{
 public:
     
     void Initialize();

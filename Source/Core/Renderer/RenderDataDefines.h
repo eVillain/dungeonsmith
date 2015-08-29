@@ -18,10 +18,14 @@ typedef struct {
 
 // Structure for instance data
 typedef struct {
+    // Position and scaling
     GLfloat pos_x,pos_y,pos_z,scale;
-    GLfloat rot_x,rot_y,rot_z,rot_w; // Use quaternions for these rotation values
+    // Use quaternions for these rotation values
+    GLfloat rot_x,rot_y,rot_z,rot_w;
+    // Diffuse color
     GLfloat d_red,d_green,d_blue,d_alpha;
-    GLfloat s_red,s_green,s_blue,s_intensity;
+    // Specular intensity, makes shiny :)
+    GLfloat spec_i;
 } Instance_Position_Rotation_Color;
 
 #endif

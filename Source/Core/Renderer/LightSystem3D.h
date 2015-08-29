@@ -9,6 +9,7 @@
 #ifndef NGN_LIGHT_SYSTEM3D_H
 #define NGN_LIGHT_SYSTEM3D_H
 
+#include "IRenderComponent.h"
 #include "Light3D.h"
 #include "Camera.h"
 #include <vector>
@@ -16,7 +17,8 @@
 class Shader;
 class GBuffer;
 
-class LightSystem3D {
+class LightSystem3D : public IRenderComponent
+{
 public:    
     LightSystem3D();
     ~LightSystem3D();

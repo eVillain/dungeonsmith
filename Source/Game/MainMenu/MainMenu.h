@@ -35,6 +35,7 @@ private:
     void CreateButtons();
     void RemoveButtons();
     GUI::GUIButtonLabeled* _buttonStartGame;
+    GUI::GUIButtonLabeled* _buttonStartEditor;
     GUI::GUIButtonLabeled* _buttonPlanetoid;
 
 };

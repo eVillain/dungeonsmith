@@ -10,7 +10,7 @@
 #include "Physics.h"
 #include "CollisionDispatcher.h"
 #include "Camera.h"
-
+#include "CommandProcessor.h"
 #include "btFractureBody.h"
 #include "btFractureDynamicsWorld.h"
 #include "BulletCollision/CollisionDispatch/btGhostObject.h"
@@ -21,7 +21,9 @@ bool Physics::fixedTime=false;
 int Physics::maxSubSteps=4;
 btScalar Physics::fixedTimeStep=btScalar(1.)/btScalar(60.); // try to simulate physics at 60fps
 
-Physics::Physics() {
+Physics::Physics() :
+_debugEnabled(false)
+{
     // Bullet physics engine setup
     _broadphase = new btDbvtBroadphase();
     _collisionConfiguration = new btDefaultCollisionConfiguration();
@@ -55,6 +57,10 @@ Physics::Physics() {
     btContactSolverInfo& info = _dynamicsWorld->getSolverInfo();
     info.m_numIterations = 2;
     info.m_solverMode = (info.m_solverMode|SOLVER_ENABLE_FRICTION_DIRECTION_CACHING);
+
+    CommandProcessor::AddCommand("debugphysics", Command<>([&](){
+        _debugEnabled = !_debugEnabled;
+    }));
 }
 
 Physics::~Physics() {
@@ -103,7 +109,24 @@ void Physics::Draw()
     _dynamicsWorld->debugDrawWorld();
 }
 
-btRigidBody* Physics::AddStaticBox(const btVector3 & pos, const btVector3 & halfSize) {
+btRigidBody* Physics::AddDynamicBox(const btVector3& pos,
+                                    const btVector3 & halfSize,
+                                    const btScalar mass)
+{
+    btCollisionShape * colShape = new btBoxShape(halfSize);
+    btDefaultMotionState* fallMotionState = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),pos));
+    btVector3 fallInertia(0,0,0);
+    colShape->calculateLocalInertia(mass,fallInertia);
+    btRigidBody::btRigidBodyConstructionInfo fallRigidBodyCI(mass,fallMotionState,colShape,fallInertia);
+    btRigidBody * body = new btRigidBody(fallRigidBodyCI);
+    body->setRestitution(0.8f);
+    _dynamicsWorld->addRigidBody(body);
+    return body;
+}
+
+btRigidBody* Physics::AddStaticBox(const btVector3 & pos,
+                                   const btVector3 & halfSize)
+{
     btCollisionShape * colShape = new btBoxShape(halfSize);
     btRigidBody::btRigidBodyConstructionInfo rbInfo(0.0f,0,colShape);
     btRigidBody * body = new btRigidBody(rbInfo);
@@ -115,19 +138,9 @@ btRigidBody* Physics::AddStaticBox(const btVector3 & pos, const btVector3 & half
     return body;
 }
 
-btRigidBody* Physics::AddDynamicBox(const btVector3& pos, const btVector3 & halfSize ) {
-    btCollisionShape * colShape = new btBoxShape(halfSize);
-    btDefaultMotionState* fallMotionState = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,0,0)));
-    btScalar mass = 1;
-    btVector3 fallInertia(0,0,0);
-    colShape->calculateLocalInertia(mass,fallInertia);
-    btRigidBody::btRigidBodyConstructionInfo fallRigidBodyCI(mass,fallMotionState,colShape,fallInertia);
-    btRigidBody * body = new btRigidBody(fallRigidBodyCI);
-    body->setRestitution(0.8f);
-    _dynamicsWorld->addRigidBody(body);
-    return body;
-}
-btRigidBody* Physics::AddDynamicVoxel(const btVector3& pos) {
+
+btRigidBody* Physics::AddDynamicVoxel(const btVector3& pos)
+{
     btDefaultMotionState* fallMotionState = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,0,0)));
     btRigidBody::btRigidBodyConstructionInfo fallRigidBodyCI(1.0f,fallMotionState,_defaultBoxShape,btVector3(0,0,0));
     btRigidBody * body = new btRigidBody(fallRigidBodyCI);
@@ -135,7 +148,9 @@ btRigidBody* Physics::AddDynamicVoxel(const btVector3& pos) {
     _dynamicsWorld->addRigidBody(body);
     return body;
 }
-btRigidBody* Physics::AddFractureBox(const btVector3 & pos, const btVector3 & halfSize) {
+btRigidBody* Physics::AddFractureBox(const btVector3 & pos,
+                                     const btVector3 & halfSize)
+{
     assert(fracturePhysics==true);
     btCollisionShape * colShape = new btBoxShape(halfSize);
     btScalar mass = 1;
@@ -149,6 +164,35 @@ btRigidBody* Physics::AddFractureBox(const btVector3 & pos, const btVector3 & ha
     btFractureBody* body = new btFractureBody(rbInfo, _dynamicsWorld);
     _dynamicsWorld->addRigidBody(body);
     ((btFractureDynamicsWorld*)_dynamicsWorld)->glueCallback();
+    return body;
+}
+
+btRigidBody* Physics::AddDynamicSphere(const btVector3 & pos,
+                                       const btScalar & radius,
+                                       const btScalar mass)
+{
+    btCollisionShape * colShape = new btSphereShape(radius);
+    btDefaultMotionState* fallMotionState = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,0,0)));
+    btVector3 fallInertia(0,0,0);
+    colShape->calculateLocalInertia(mass,fallInertia);
+    btRigidBody::btRigidBodyConstructionInfo fallRigidBodyCI(mass,fallMotionState,colShape,fallInertia);
+    btRigidBody * body = new btRigidBody(fallRigidBodyCI);
+    body->setRestitution(0.8f);
+    _dynamicsWorld->addRigidBody(body);
+    return body;
+}
+
+btRigidBody* Physics::AddStaticSphere(const btVector3 & pos,
+                                      const btScalar & radius)
+{
+    btCollisionShape * colShape = new btSphereShape(radius);
+    btRigidBody::btRigidBodyConstructionInfo rbInfo(0.0f,0,colShape);
+    btRigidBody * body = new btRigidBody(rbInfo);
+    btTransform trans;
+    trans.setIdentity();
+    trans.setOrigin(pos);
+    body->setWorldTransform(trans);
+    _dynamicsWorld->addRigidBody(body);
     return body;
 }
 

@@ -23,13 +23,13 @@ public:
     void Load(const std::string fileName);
 
     // -- Block editing -- //
-    Block& Get( const int x, const int y, const int z );
-    void Set( glm::vec3& pos, const Color& col, const Block& type );
-    Block* GetNearestBlock( const glm::vec3& pos );
-    void Rotate( const bool ccw );
-    void MoveContents( const int moveX, const int moveY, const int moveZ );
-    void ReplaceColor( const Color& oldColor, const Color& newColor );
-    void ReplaceType( const Block& oldType, const Block& newType );
+    Block& Get( const glm::ivec3& localCoord );
+    void Set( const glm::ivec3& localCoord, const Block& block );
+//    Block* GetNearestBlock( const glm::vec3& pos );
+//    void Rotate( const bool ccw );
+//    void MoveContents( const int moveX, const int moveY, const int moveZ );
+//    void ReplaceColor( const Color& oldColor, const Color& newColor );
+//    void ReplaceType( const Block& oldType, const Block& newType );
 
 private:
     Block* _blocks;

@@ -11,8 +11,15 @@
 
 static inline int GetIndex(const glm::ivec3& pos,
                            const glm::ivec3& size ) {
-    int index = pos.x+(pos.z*size.x)+(pos.y*size.x*size.z);
-    return index;
+    if (pos.x < 0 || pos.x > size.x-1 ||
+        pos.y < 0 || pos.y > size.y-1 ||
+        pos.z < 0 || pos.z > size.z-1)
+    {
+        throw "Error: Out of range!";
+    }
+    return (int)(pos.x+
+                 (pos.z*size.x)+
+                 (pos.y*size.x*size.z));
 };
 
 static inline glm::vec3 GetPosForIndex(int index, const glm::ivec3& size) {
@@ -32,6 +39,11 @@ _blocks(nullptr)
 
 BlockSet::~BlockSet()
 {
+    Clear();
+}
+
+void BlockSet::Clear()
+{
     if ( _blocks )
     {
         delete _blocks;
@@ -42,6 +54,9 @@ BlockSet::~BlockSet()
 void BlockSet::SetSize(const glm::ivec3 size)
 {
     if ( _size == size ) return;
+    
+    Clear();
+    
     _size = size;
     
     _blocks = new Block[size.x*size.z*size.y];
@@ -52,4 +67,14 @@ void BlockSet::Load(const std::string fileName)
     // TODO:: Implement serialization :)
 }
 
+Block& BlockSet::Get( const glm::ivec3& localCoord )
+{
+    const int index = GetIndex(localCoord, _size);
+    return _blocks[index];
+}
 
+void BlockSet::Set( const glm::ivec3& localCoord, const Block& block )
+{
+    const int index = GetIndex(localCoord, _size);
+    _blocks[index] = block;
+}

@@ -86,6 +86,16 @@ namespace MathUtils {
     inline static int Clamp(const int x, const int a, const int b ) {
         return x < a ? a : (x > b ? b : x);
     }
+    // Bigger of two values
+    static inline float Max( const float a, const float b ) {
+        return (a > b ? a : b);
+    }
+    static inline double Max( const double a, const double b ) {
+        return (a > b ? a : b);
+    }
+    static inline int Max( const int a, const int b ) {
+        return (a > b ? a : b);
+    }
 }
 
 #endif

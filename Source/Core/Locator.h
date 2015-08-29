@@ -19,6 +19,7 @@ class SceneManager;
 class Camera;
 class ThreadPool;
 class Physics;
+class Particles;
 
 namespace GUI {
     class GUIManager;
@@ -35,7 +36,7 @@ public:
     static GUI::GUIManager& getGUI() { return _guiManager; };
     static ThreadPool& getThreadPool() { return *_threadPool; };
     static Physics& getPhysics() { return _physics; };
-    
+    static Particles& getParticles() { return _particles; };
     // Setters for configuring services
     static void provideRenderer(IRenderer* service)
     {
@@ -78,6 +79,8 @@ private:
     static GUI::GUIManager _guiManager;
     // Physics engine, should always be available
     static Physics _physics;
+    // Particle engine, should always be available
+    static Particles _particles;
     // Scene manager, should always be available
     static SceneManager _sceneManager;
 };

@@ -56,7 +56,7 @@ void SkyDome::Draw(const Camera& camera) {
         glm::vec2 windowSize = Locator::getRenderer().GetWindowSize();
         glm::mat4 mvp;
         MatrixUtil::GetGameMatrix(mvp, windowSize.x, windowSize.y, camera);
-        glm::vec3 offset = glm::vec3(0,0.98,0);
+        glm::vec3 offset = glm::vec3(0,1.0-camera.nearDepth*2,0);
         mvp = glm::translate(mvp, camera.position-offset);
 
         CHECK_GL_ERROR();

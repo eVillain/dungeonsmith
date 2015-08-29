@@ -8,7 +8,7 @@
 
 #include "ChunkManager.h"
 #include "Locator.h"
-#include "DrawMesh.h"
+#include "Mesh.h"
 
 #include "CommandProcessor.h"
 #include "ThreadPool.h"
@@ -111,7 +111,7 @@ void ChunkManager::Update(const glm::vec3& position, const float radius)
 
 void ChunkManager::Draw(Camera& camera)
 {
-    DrawMesh* drawMesh = Locator::getRenderer().Mesh();
+    Mesh* drawMesh = Locator::getRenderer().DrawMesh();
     drawMesh->SetupCamera(camera);
     
     int numUploaded = 0;

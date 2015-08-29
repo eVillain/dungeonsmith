@@ -12,6 +12,8 @@
 #include "RenderDefines.h"
 #include <cstring>
 
+typedef unsigned int MeshInstanceID;
+
 template <typename VertexDataType, typename InstanceDataType>
 class MeshInstanceBufferBase {
 public:
@@ -68,21 +70,23 @@ public:
         _bufferCount += count;
     }
     
-    InstanceDataType& BufferInstance(const InstanceDataType& instance)
+    const MeshInstanceID BufferInstance(const InstanceDataType& instance)
     {
-        if ( _instanceBufferCount == _instanceBufferSize ) return _instanceBuffer[_instanceBufferCount-1];
-        _instanceBuffer[_instanceBufferCount] = instance;
-        _instanceBufferCount++;
-        return _instanceBuffer[_instanceBufferCount-1];
+        if ( _instanceBufferCount < _instanceBufferSize ) {
+            _instanceBufferCount++;
+        };
+        _instanceBuffer[_instanceBufferCount-1] = instance;
+        return _instanceBufferCount-1;
     }
     
-    void BufferInstances(const InstanceDataType& instances, int count)
+    InstanceDataType& GetInstance( const MeshInstanceID instanceID )
     {
-        if ( _instanceBufferCount+count > _instanceBufferSize ) return;
-        memcpy( &_instanceBuffer[_instanceBufferCount], &instances, sizeof(InstanceDataType)*count);
-        _instanceBufferCount += count;
+        if ( instanceID < 0 || instanceID > _instanceBufferCount )
+        {
+            throw "Instance ID out of range!";
+        }
+        return _instanceBuffer[instanceID];
     }
-    
     
     void Upload()
     {
@@ -104,6 +108,17 @@ public:
         delete _buffer;
         _buffer = new VertexDataType[numVerts];
     }
+    
+    void ResizeInstances(const int numInstances)
+    {
+        _instanceBufferSize = numInstances;
+        
+        InstanceDataType* oldInstances = _instanceBuffer;
+        _instanceBuffer = new InstanceDataType[numInstances];
+        memcpy(_instanceBuffer, oldInstances, sizeof(InstanceDataType)*_instanceBufferCount);
+        delete oldInstances;
+    }
+    
     
     void Clear()
     {

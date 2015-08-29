@@ -10,9 +10,10 @@
 #define DungeonSmith_IRenderer_h
 
 #include "RenderDefines.h"
+class Instanced;
 class Primitives2D;
 class Primitives3D;
-class DrawMesh;
+class Mesh;
 class TextureManager;
 class LightSystem3D;
 class Camera;
@@ -31,10 +32,11 @@ public:
     virtual void SetCamera( Camera* camera ) = 0;
     virtual Camera* GetCamera() = 0;
 
+    virtual Instanced* DrawInstanced() = 0;
     virtual Primitives2D* DrawPrimitives2D() = 0;
     virtual Primitives3D* DrawPrimitives3D() = 0;
 
-    virtual DrawMesh* Mesh() = 0;
+    virtual Mesh* DrawMesh() = 0;
     virtual TextureManager* Textures() = 0;
     virtual LightSystem3D* Lighting() = 0;
 
@@ -53,10 +55,11 @@ public:
     void SetCamera( Camera* camera ) {};
     Camera* GetCamera() { return nullptr; };
     
+    Instanced* DrawInstanced() { return nullptr; };
     Primitives2D* DrawPrimitives2D() { return nullptr; };
     Primitives3D* DrawPrimitives3D() { return nullptr; };
     
-    DrawMesh* Mesh() { return nullptr; };
+    Mesh* DrawMesh() { return nullptr; };
     TextureManager* Textures() { return nullptr; };
     LightSystem3D* Lighting() {return nullptr; };
 

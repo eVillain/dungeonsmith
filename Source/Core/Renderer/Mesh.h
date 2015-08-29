@@ -1,22 +1,23 @@
 //
-//  DrawMesh.h
+//  Mesh.h
 //  DungeonSmith
 //
 //  Created by The Drudgerist on 08/06/15.
 //  Copyright (c) 2015 The Drudgerist. All rights reserved.
 //
 
-#ifndef __DungeonSmith__DrawMesh__
-#define __DungeonSmith__DrawMesh__
+#ifndef __DungeonSmith__Mesh__
+#define __DungeonSmith__Mesh__
 
-#include "Chunk.h"
+#include "IRenderComponent.h"
 #include "VertexBuffer_XYZW_DSN.h"
 
 class Shader;
 class Renderer;
 class Camera;
 
-class DrawMesh {
+class Mesh : public IRenderComponent
+{
 public:
     void Initialize();
     void Terminate();
@@ -27,4 +28,4 @@ private:
     glm::mat4 mvp;
 };
 
-#endif /* defined(__DungeonSmith__DrawMesh__) */
+#endif /* defined(__DungeonSmith__Mesh__) */

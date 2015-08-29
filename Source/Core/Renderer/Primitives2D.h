@@ -9,6 +9,7 @@
 #ifndef __DungeonSmith__Primitives2D__
 #define __DungeonSmith__Primitives2D__
 
+#include "IRenderComponent.h"
 #include "RenderDefines.h"
 #include "Color.h"
 #include "VertexBuffer_XYZW_RGBA.h"
@@ -17,7 +18,8 @@
 
 class Shader;
 
-class Primitives2D {
+class Primitives2D : public IRenderComponent
+{
 public:
     void Initialize();
     void Terminate();

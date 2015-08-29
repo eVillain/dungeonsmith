@@ -13,13 +13,14 @@
 #include "GUIButton.h"
 #include "Planetoid.h"
 #include "LocalGame.h"
+#include "Editor.h"
 
 MainMenu::MainMenu() : Scene("Main Menu"),
 eventFunctor(this, &MainMenu::OnEvent)
 {
     _buttonStartGame = nullptr;
     _buttonPlanetoid = nullptr;
-
+    _buttonStartEditor = nullptr;
 }
 
 
@@ -100,6 +101,12 @@ void MainMenu::CreateButtons()
     });
     _buttonPlanetoid->SetBehavior(startPlanetoidBehavior);
 
+    _buttonStartEditor = new GUI::GUIButtonLabeled("Editor", 0,80,200,40,0);
+    GUI::ButtonBehaviorLambda* startEditorBehavior = new GUI::ButtonBehaviorLambda([](){
+        Locator::getSceneManager().AddActiveScene( new Editor());
+    });
+    _buttonStartEditor->SetBehavior(startEditorBehavior);
+
 }
 
 void MainMenu::RemoveButtons()
@@ -113,5 +120,10 @@ void MainMenu::RemoveButtons()
     {
         delete _buttonPlanetoid;
         _buttonPlanetoid = nullptr;
+    }
+    if ( _buttonStartEditor )
+    {
+        delete _buttonStartEditor;
+        _buttonStartEditor = nullptr;
     }
 }

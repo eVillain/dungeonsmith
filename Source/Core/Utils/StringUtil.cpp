@@ -63,7 +63,11 @@ std::string StringUtil::IntToString( int number ) {
     ss << number;//add number to the stream
     return ss.str();//return a string with the contents of the stream
 }
-
+std::string StringUtil::LongToString( long number ) {
+    std::stringstream ss;//create a stringstream
+    ss << number;//add number to the stream
+    return ss.str();//return a string with the contents of the stream
+}
 std::string StringUtil::FloatToString( float number, int precision ) {
     std::ostringstream buff;
     buff.precision(precision);

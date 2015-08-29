@@ -38,11 +38,6 @@ void LocalGame::Initialize()
     
     Locator::getRenderer().SetCamera(&world.GetCamera());
     _labelFPS = nullptr;
-
-    for (int i=0; i< 20; i++) {
-        Locator::getRenderer().DrawPrimitives3D()->Cube(glm::vec3(i*2,0.0,0), 1.0, glm::quat(), COLOR_PURPLE, COLOR_GREEN);
-    }
-    
 }
 
 void LocalGame::ReInitialize()
@@ -80,6 +75,7 @@ void LocalGame::Resume()
 
 void LocalGame::Update( double deltaTime )
 {
+    Locator::getPhysics().Update(deltaTime);
     std::string fpsText =
     "FPS: " + StringUtil::IntToString(1.0/deltaTime) +
     "\nFrameTime: " + StringUtil::DoubleToString(deltaTime*1000.0,3) + "ms";
@@ -118,7 +114,6 @@ bool LocalGame::OnEvent(const typeInputEvent& event, const float& amount)
     {
         if ( event == "run" ) { world.GetCamera().movementSpeedFactor = 20.0; return true; }
         if ( event == "sneak" ) { world.GetCamera().movementSpeedFactor = 5.0; return true; }
-//        if ( event == "shoot" ) { CommandProcessor::ExecuteCommand("lighting"); return true; }
     }
     else if ( amount == -1 )
     {

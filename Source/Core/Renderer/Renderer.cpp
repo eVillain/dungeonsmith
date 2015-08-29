@@ -9,10 +9,11 @@
 #include "Renderer.h"
 #include "Shader.h"
 #include "GLErrorUtil.h"
+#include "Instanced.h"
 #include "Primitives2D.h"
 #include "Primitives3D.h"
 #include "TextureManager.h"
-#include "DrawMesh.h"
+#include "Mesh.h"
 #include "PostProcess.h"
 #include "LightSystem3D.h"
 #include "StencilUtils.h"
@@ -154,21 +155,31 @@ bool Renderer::InitializeComponents()
     SDL_GetWindowSize(_window, &windowWidth, &windowHeight);
     _gbuffer.Initialize(windowWidth, windowHeight);
     
+    _instanced = new Instanced();
+    _instanced->Initialize();
+    _components.push_back(_instanced);
+    
     _primitives2D = new Primitives2D();
     _primitives2D->Initialize();
+    _components.push_back(_primitives2D);
+
     
     _primitives3D = new Primitives3D();
     _primitives3D->Initialize();
-    
-    _mesh = new DrawMesh();
+    _components.push_back(_primitives3D);
+
+    _mesh = new class Mesh();
     _mesh->Initialize();
-    
+    _components.push_back(_mesh);
+
     _postProcess = new PostProcess();
     _postProcess->Initialize();
-    
+    _components.push_back(_postProcess);
+
     _lighting = new LightSystem3D();
     _lighting->Initialize();
-    
+    _components.push_back(_lighting);
+
     _textureManager = new TextureManager();
     
     // Generate final image framebuffer
@@ -186,26 +197,36 @@ bool Renderer::TerminateComponents()
 {
     bool success = true;
     
-    _primitives2D->Terminate();
-    delete _primitives2D;
-    _primitives2D = nullptr;
+    for (IRenderComponent* component : _components) {
+        component->Terminate();
+        delete component;
+    }
+    _components.clear();
     
-    _primitives3D->Terminate();
-    delete _primitives3D;
-    _primitives3D = nullptr;
-    
-    
-    _mesh->Terminate();
-    delete _mesh;
-    _mesh = nullptr;
-    
-    _postProcess->Terminate();
-    delete _postProcess;
-    _postProcess = nullptr;
-    
-    _lighting->Terminate();
-    delete _lighting;
-    _lighting = nullptr;
+//    _instanced->Terminate();
+//    delete _instanced;
+//    _instanced = nullptr;
+//    
+//    _primitives2D->Terminate();
+//    delete _primitives2D;
+//    _primitives2D = nullptr;
+//    
+//    _primitives3D->Terminate();
+//    delete _primitives3D;
+//    _primitives3D = nullptr;
+//    
+//    
+//    _mesh->Terminate();
+//    delete _mesh;
+//    _mesh = nullptr;
+//    
+//    _postProcess->Terminate();
+//    delete _postProcess;
+//    _postProcess = nullptr;
+//    
+//    _lighting->Terminate();
+//    delete _lighting;
+//    _lighting = nullptr;
     
     delete _textureManager;
     _textureManager = nullptr;
@@ -322,10 +343,14 @@ void Renderer::FinishDeferred()
                 if ( _enableLighting && _camera )
                 {
                     _lighting->RenderLighting(*_camera, _gbuffer);
+                    // Draw any forward-rendered primitives
+                    if ( _camera ) _primitives3D->Render(_camera->GetMVP());
                     glDisable( GL_BLEND );
                     Stencil::Enable();
+                    // Copy over sky layer, which was not lit
                     Stencil::SetKeepEqual(Stencil::Layer_Sky);
                     _postProcess->TextureFullScreen(_gbuffer.GetDiffuse());
+                    // Replace undrawn pixels with fog color
                     Stencil::SetReplaceEqual(Stencil::Layer_Clear);
                     _primitives2D->RectFilled(glm::vec2(), GetWindowSize(), COLOR_FOG_DEFAULT, 1.0);
                     _primitives2D->Render();

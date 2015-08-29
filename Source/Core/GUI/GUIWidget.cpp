@@ -39,6 +39,11 @@ namespace GUI
         w = width; h = height;
     }
     
+    void GUIWidget::SetDepth(const int depth)
+    {
+        z = depth;
+    }
+    
     // If point is within button area returns true
     bool GUIWidget::Contains( int tx, int ty )
     {

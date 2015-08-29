@@ -14,6 +14,7 @@
 #include "ThreadPool.h"
 #include "GUIManager.h"
 #include "Physics.h"
+#include "Particles.h"
 
 NullRenderer Locator::_nullRenderService;
 NullText Locator::_nullTextService;
@@ -26,4 +27,5 @@ HyperVisor* Locator::_hv = nullptr;
 ThreadPool* Locator::_threadPool = nullptr;
 GUI::GUIManager Locator::_guiManager;
 Physics Locator::_physics;
+Particles Locator::_particles;
 SceneManager Locator::_sceneManager;
