@@ -7,7 +7,7 @@ layout(location = 3) out float depth;
 
 in Fragment {
     vec4 diffColor;
-    float specColor;
+    float specIntensity;
     smooth vec3 normal;
     smooth vec3 wPos;
     float depth;
@@ -17,7 +17,7 @@ uniform bool renderGrid = true;
 
 void main(void) {
     diffuseColor = fragment.diffColor;
-    specularColor = vec4(fragment.diffColor.xyz*fragment.specColor,1.0);
+    specularColor = vec4(fragment.specIntensity,fragment.specIntensity,fragment.specIntensity,fragment.diffColor.a);
     
     normal = (fragment.normal+1.0)*0.5; // Save normal as value between 0 and 1, not -1.0 and 1.0
     depth = fragment.depth;

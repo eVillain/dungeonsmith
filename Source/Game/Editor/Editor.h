@@ -13,11 +13,13 @@
 #include "InputFunctors.h"
 #include "Light3D.h"
 #include "Camera.h"
+#include "MeshInstanceVertexColored.h"
 
 class BlockSet;
 
 namespace GUI {
     class GUIMenu;
+    class GUISlider;
 }
 
 class Editor : public Scene
@@ -38,16 +40,22 @@ public:
     
 private:
     std::unique_ptr<BlockSet> _blockSet;
+    MeshInstanceVertexColored* _buffer;
+    
     Light3D _light;
     Camera _camera;
     
-    bool OnEvent( const typeInputEvent& theEvent, const float& amount );
-    EventFunctor<Editor> eventFunctor;
-
     void AddGUI();
     void RemoveGUI();
     GUI::GUIMenu* _menu;
-
+    GUI::GUISlider* _slider;
+    
+    bool OnEvent( const typeInputEvent& theEvent, const float& amount );
+    bool OnMouse( const int& x, const int& y );
+    EventFunctor<Editor> _eventFunctor;
+    MouseFunctor<Editor> _mouseFunctor;
+    glm::ivec2 _cursorPosition;
+    
     void UpdateMovement();
     glm::vec2 inputMove;
     glm::vec2 inputLook;

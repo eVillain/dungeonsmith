@@ -13,14 +13,7 @@
 #define __DungeonSmith__VertexBuffer_XYZW_DSN__
 
 #include "VertexBufferBase.h"
-
-// Structure for vertex data with diffuse, specular and normals
-typedef struct {
-    GLfloat x,y,z,w;        // World pos
-    GLfloat dr,dg,db,da;    // Diffuse material
-    GLfloat si;             // Specular intensity
-    GLfloat nx,ny,nz;       // Normal
-} Vertex_XYZW_DSN;
+#include "RenderDataDefines.h"
 
 class VertexBuffer_XYZW_DSN : public VertexBufferBase<Vertex_XYZW_DSN>{
 public:

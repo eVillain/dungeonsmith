@@ -49,9 +49,6 @@ public:
     // Finishes drawing for this frame - swaps frame buffer
     void EndDraw();
 
-    void SetCamera( Camera* camera ) { _camera = camera; };
-    Camera* GetCamera() { return _camera; };
-    glm::ivec2 GetWindowSize();
     
     Instanced* DrawInstanced() { return _instanced; };
     Primitives2D* DrawPrimitives2D() { return _primitives2D; };
@@ -61,6 +58,10 @@ public:
     TextureManager* Textures() { return _textureManager; };
     LightSystem3D* Lighting() { return _lighting; };
     
+    void SetCamera( Camera* camera ) { _camera = camera; };
+    Camera* GetCamera() { return _camera; };
+    glm::ivec2 GetWindowSize();
+    glm::vec3 Get3DPosition(glm::ivec2 screenCoord);
 private:
     std::vector<IRenderComponent*> _components;
     bool InitializeComponents();

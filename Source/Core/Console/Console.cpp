@@ -44,7 +44,7 @@ inline void VarLoadGuard( void ) {
 std::map<std::string, ConsoleVar*>  Console::m_cvars;                // Holds cvars by name
 std::deque<ConsoleLine>             Console::m_textLines;            // Holds lines of text
 bool                                Console::visible = false;        // Whether the console is shown on screen
-GUI::GUITextInput*                       Console::textWidget = nullptr;
+GUI::GUITextInput*                  Console::textWidget = nullptr;
 //========================================================================
 // 'Public' console functions, available to outside
 //========================================================================
@@ -310,6 +310,7 @@ void Console::Show() {
     GUI::TextInputBehaviorLambda* behavior = new GUI::TextInputBehaviorLambda(
         [](const std::string& inputText)
         {
+            if ( inputText.length() == 0 ) return;
             CommandProcessor::Buffer(inputText);
             textWidget->ClearText();
             textWidget->StartTextInput();

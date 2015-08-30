@@ -58,7 +58,7 @@ private:
     static std::deque<ConsoleLine>  m_textLines;            // Holds lines of text
     static bool                     visible;                // Whether the console is shown on screen
     static GUI::GUITextInput*       textWidget;             // Widget which takes text input
-
+    
     static void Refresh();
     static void Show();
     static void Hide();

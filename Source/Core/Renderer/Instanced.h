@@ -14,6 +14,7 @@
 
 class Shader;
 class MeshInstanceColored;
+class MeshInstanceVertexColored;
 
 class Instanced : public IRenderComponent
 {
@@ -24,9 +25,11 @@ public:
     
     void RenderForward( MeshInstanceColored* buffer, const glm::mat4& matrix );
     void RenderDeferred( MeshInstanceColored* buffer, const glm::mat4& matrix );
+    void RenderDeferred( MeshInstanceVertexColored* buffer, const glm::mat4& matrix );
 
 private:
     Shader* _deferred_instance_shader;
+    Shader* _deferred_instance_vColor_shader;
     Shader* _forward_instance_shader;
 };
 

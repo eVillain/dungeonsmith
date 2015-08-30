@@ -50,6 +50,7 @@ void Primitives3D::CubeOutline(const glm::vec3 &pos,
                                const Color &color)
 {
     const float radius = size/2;
+    // TODO: Apply rotation
     glm::vec3 ltbVert = glm::vec3(pos.x-radius,pos.y+radius,pos.z-radius);
     glm::vec3 rtbVert = glm::vec3(pos.x+radius,pos.y+radius,pos.z-radius);
     glm::vec3 ltfVert = glm::vec3(pos.x-radius,pos.y+radius,pos.z+radius);

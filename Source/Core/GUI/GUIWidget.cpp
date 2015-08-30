@@ -44,7 +44,7 @@ namespace GUI
         z = depth;
     }
     
-    // If point is within button area returns true
+    // If point is within widget area returns true
     bool GUIWidget::Contains( int tx, int ty )
     {
         if ( !_visible ) return false;
@@ -64,18 +64,47 @@ namespace GUI
     void GUIWidget::Draw()
     {
         if ( !_visible ) return;
-        Color fillCol = COLOR_GREY;
-        Color lineCol = COLOR_BLACK;
         
-        if ( !_active ) {
-            fillCol = COLOR_GREY_DARK;
-            lineCol = COLOR_BLACK;
-        } else if ( _focus ) {
-            fillCol = COLOR_GREY_BRIGHT;
-            lineCol = COLOR_GREY_DARK;
+        Primitives2D& primitives = *Locator::getRenderer().DrawPrimitives2D();
+        
+        glm::ivec2 drawPos = glm::ivec2(x-(w*0.5), y-(h*0.5));
+        
+        // Pixel perfect outer border (should render with 1px shaved off corners)
+        primitives.Line(glm::vec2(drawPos.x,drawPos.y),
+                        glm::vec2(drawPos.x,drawPos.y+h),
+                        COLOR_UI_BORDER_OUTER,
+                        COLOR_UI_BORDER_OUTER,
+                        z);  // L
+        primitives.Line(glm::vec2(drawPos.x,drawPos.y+h),
+                        glm::vec2(drawPos.x+w,drawPos.y+h),
+                        COLOR_UI_BORDER_OUTER,
+                        COLOR_UI_BORDER_OUTER,
+                        z);  // T
+        primitives.Line(glm::vec2(drawPos.x+w+1,drawPos.y+h),
+                        glm::vec2(drawPos.x+w+1,drawPos.y),
+                        COLOR_UI_BORDER_OUTER,
+                        COLOR_UI_BORDER_OUTER,
+                        z);  // R
+        primitives.Line(glm::vec2(drawPos.x+w,drawPos.y-1),
+                        glm::vec2(drawPos.x,drawPos.y-1),
+                        COLOR_UI_BORDER_OUTER,
+                        COLOR_UI_BORDER_OUTER,
+                        z);  // B
+        
+        // Inner gradient fill
+        Color gradColTop = COLOR_UI_GRADIENT_TOP;
+        Color gradColBottom = COLOR_UI_GRADIENT_BOTTOM;
+        if ( !_active)
+        {
+            gradColTop *= 0.9;
+            gradColBottom *= 0.9;
+        }
+        else if (_focus)
+        {
+            gradColTop *= 1.1;
+            gradColBottom *= 1.1;
         }
         
-        Locator::getRenderer().DrawPrimitives2D()->RectFilled(glm::vec2(x,y), glm::vec2(w,h), fillCol, z);
-        Locator::getRenderer().DrawPrimitives2D()->RectOutline(glm::vec2(x,y), glm::vec2(w,h), lineCol, z);
+        primitives.RectangleGradientY(glm::vec2(x,y), glm::vec2(w,h), gradColTop, gradColBottom, z);
     }
 }    /* namespace GUI */

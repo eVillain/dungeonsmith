@@ -16,6 +16,14 @@ typedef struct {
     GLfloat nx,ny,nz,nw;
 } Vertex_XYZW_N;
 
+// Structure for vertex data with diffuse, specular and normals
+typedef struct {
+    GLfloat x,y,z,w;        // World pos
+    GLfloat dr,dg,db,da;    // Diffuse material
+    GLfloat si;             // Specular intensity
+    GLfloat nx,ny,nz;       // Normal
+} Vertex_XYZW_DSN;
+
 // Structure for instance data
 typedef struct {
     // Position and scaling

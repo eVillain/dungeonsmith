@@ -29,8 +29,6 @@ public:
     virtual void FinishDeferred() = 0;
     virtual void EndDraw() = 0;
     
-    virtual void SetCamera( Camera* camera ) = 0;
-    virtual Camera* GetCamera() = 0;
 
     virtual Instanced* DrawInstanced() = 0;
     virtual Primitives2D* DrawPrimitives2D() = 0;
@@ -40,7 +38,10 @@ public:
     virtual TextureManager* Textures() = 0;
     virtual LightSystem3D* Lighting() = 0;
 
+    virtual void SetCamera( Camera* camera ) = 0;
+    virtual Camera* GetCamera() = 0;
     virtual glm::ivec2 GetWindowSize() = 0;
+    virtual glm::vec3 Get3DPosition(glm::ivec2 screenCoord) = 0;
 };
 
 class NullRenderer : public IRenderer {
@@ -52,9 +53,7 @@ public:
     void FinishDeferred() {};
     void EndDraw() {};
     
-    void SetCamera( Camera* camera ) {};
-    Camera* GetCamera() { return nullptr; };
-    
+
     Instanced* DrawInstanced() { return nullptr; };
     Primitives2D* DrawPrimitives2D() { return nullptr; };
     Primitives3D* DrawPrimitives3D() { return nullptr; };
@@ -63,7 +62,10 @@ public:
     TextureManager* Textures() { return nullptr; };
     LightSystem3D* Lighting() {return nullptr; };
 
+    void SetCamera( Camera* camera ) {};
+    Camera* GetCamera() { return nullptr; };
     glm::ivec2 GetWindowSize() { return glm::ivec2(1,1); };
+    glm::vec3 Get3DPosition(glm::ivec2 screenCoord) { return glm::vec3(); };
 };
 
 #endif

@@ -41,12 +41,12 @@ namespace GUI
         // Inner gradient fill
         Color gradColTop = COLOR_UI_GRADIENT_TOP;
         Color gradColBottom = COLOR_UI_GRADIENT_BOTTOM;
-        if ( _focus)
+        if ( !_active)
         {
             gradColTop *= 0.9;
             gradColBottom *= 0.9;
         }
-        else
+        else if ( _focus)
         {
             gradColTop *= 1.1;
             gradColBottom *= 1.1;
@@ -69,15 +69,31 @@ namespace GUI
     {
 
     }
-    
+    // If point is within menu area returns true
+    bool GUIMenu::Contains( int tx, int ty )
+    {
+        if ( !_visible ) return false;
+        // If point is within button area, then returns true
+        int vH = GetHeight()*0.5;
+        int vW = w*0.5;
+        if( tx > x-vW &&
+           tx < x+vW &&
+           ty > y-(vH-1) &&    // For some reason this is offset by 1px, check later
+           ty < y+vH+1 )
+        {
+            return true;
+        }
+        return false;
+    }
     void GUIMenu::AddWidget(GUIWidget *widget)
     {
-        _widgets.push_back(widget);
         
         if (widget->GetDepth() <= z)
         {
             widget->SetDepth(z+1);
         }
+        
+        _widgets.push_back(widget);
     }
     
     const int GUIMenu::GetHeight()

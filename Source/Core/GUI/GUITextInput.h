@@ -59,6 +59,8 @@ namespace GUI
 
         double _lastCursorBlink;
         bool _cursorBlink;
+        
+        // Sugar :)
     };
 }   /* namespace GUI */
 

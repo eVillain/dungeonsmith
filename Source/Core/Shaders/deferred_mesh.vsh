@@ -2,7 +2,7 @@
 
 layout (location = 0) in vec4 v_vertex;
 layout (location = 1) in vec4 v_diffColor;
-layout (location = 2) in float v_specColor;
+layout (location = 2) in float v_specIntensity;
 layout (location = 3) in vec3 v_normal;
 
 // Values that stay constant for the whole mesh.
@@ -11,7 +11,7 @@ uniform vec3 instance_position;
 
 out Fragment {  // Output to fragment shader
     vec4 diffColor;
-    float specColor;
+    float specIntensity;
     smooth vec3 normal;
     smooth vec3 wPos;
     float depth;
@@ -28,7 +28,7 @@ void main(void) {
     // v_vertex.w contains vertex light intensity
     // (for minecraft-style ambient occlusion)
     fragment.diffColor = vec4(v_diffColor.rgb*v_vertex.w, v_diffColor.a);
-    fragment.specColor = v_specColor * v_vertex.w;
+    fragment.specIntensity = v_specIntensity;
 
     fragment.normal = v_normal;
     fragment.depth = gl_Position.z;

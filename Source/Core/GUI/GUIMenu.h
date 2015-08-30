@@ -27,7 +27,8 @@ namespace GUI
         virtual void Update();
         // When clicked/pressed
         virtual void OnInteract( const bool interact );
-        
+        virtual bool Contains( const int tx, const int ty );
+
         virtual void AddWidget( GUIWidget* widget );
         
         virtual const int GetHeight();

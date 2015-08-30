@@ -15,54 +15,60 @@
 #include "ShaderFactory.h"
 #include <glm/gtc/matrix_transform.hpp>
 
+#include "CommandProcessor.h"
+static bool Offset2D = false;
+
 const glm::mat4 screenMVP = glm::ortho<GLfloat>(-0.5, 0.5, -0.5, 0.5, -1.0, 1.0);
 
 void Primitives2D::Initialize()
 {
-    lineBuffer = new VertexBuffer_XYZW_RGBA(1024);  // TODO: Define default line buffer size
-    polyBuffer = new VertexBuffer_XYZW_RGBA(1024);  // As above, so below
-    texturedPolyBuffer = new VertexBuffer_XYZW_UV(1024);
+    _lineBuffer = new VertexBuffer_XYZW_RGBA(1024);  // TODO: Define default line buffer size
+    _polyBuffer = new VertexBuffer_XYZW_RGBA(1024);  // As above, so below
+    _texturedPolyBuffer = new VertexBuffer_XYZW_UV(1024);
     
-    forward_vColor_shader = ShaderFactory::LoadFromFile("forward_color.fsh", "forward_vColor.vsh");
-    forward_vTex_uColor_shader = ShaderFactory::LoadFromFile("forward_tex_color.fsh", "forward_vTex_uColor.vsh");
+    _forward_vColor_shader = ShaderFactory::LoadFromFile("forward_color.fsh", "forward_vColor.vsh");
+    _forward_vTex_uColor_shader = ShaderFactory::LoadFromFile("forward_tex_color.fsh", "forward_vTex_uColor.vsh");
+    
+    CommandProcessor::AddCommand("offset2d", Command<>([&](){ Offset2D = !Offset2D; }));
 }
 
 void Primitives2D::Terminate()
 {
-    delete lineBuffer;
-    delete polyBuffer;
-    delete texturedPolyBuffer;
+    delete _lineBuffer;
+    delete _polyBuffer;
+    delete _texturedPolyBuffer;
     
-    ShaderFactory::ClearShader(forward_vColor_shader);
-    ShaderFactory::ClearShader(forward_vTex_uColor_shader);
-    forward_vColor_shader = NULL;
-    forward_vTex_uColor_shader = NULL;
+    ShaderFactory::ClearShader(_forward_vColor_shader);
+    ShaderFactory::ClearShader(_forward_vTex_uColor_shader);
+    _forward_vColor_shader = NULL;
+    _forward_vTex_uColor_shader = NULL;
 }
 
 void Primitives2D::Render()
 {
-    forward_vColor_shader->Begin();
+    _forward_vColor_shader->Begin();
     glm::mat4 mvp;
     glm::vec2 windowSize = Locator::getRenderer().GetWindowSize();
     MatrixUtil::GetUIMatrix(mvp, windowSize.x, windowSize.y);
+    if (Offset2D) mvp = glm::translate(mvp, glm::vec3(0.5, 0.5, 0.0));
 
-    forward_vColor_shader->setUniformM4fv("MVP", mvp);
+    _forward_vColor_shader->setUniformM4fv("MVP", mvp);
     
     // Render polygons
-    polyBuffer->Bind();
-    polyBuffer->Upload();
-    glDrawArrays(GL_TRIANGLES, 0, polyBuffer->Count());
-    polyBuffer->Clear();
-    polyBuffer->Unbind();
+    _polyBuffer->Bind();
+    _polyBuffer->Upload();
+    glDrawArrays(GL_TRIANGLES, 0, _polyBuffer->Count());
+    _polyBuffer->Clear();
+    _polyBuffer->Unbind();
     
     // Render lines
-    lineBuffer->Bind();
-    lineBuffer->Upload();
-    glDrawArrays(GL_LINES, 0, lineBuffer->Count());
-    lineBuffer->Clear();
-    lineBuffer->Unbind();
+    _lineBuffer->Bind();
+    _lineBuffer->Upload();
+    glDrawArrays(GL_LINES, 0, _lineBuffer->Count());
+    _lineBuffer->Clear();
+    _lineBuffer->Unbind();
     
-    forward_vColor_shader->End();
+    _forward_vColor_shader->End();
 }
 
 void Primitives2D::Line(const glm::vec2& a,
@@ -79,8 +85,8 @@ void Primitives2D::Line(const glm::vec2& a,
         b.x,b.y,z,1.0,
         bColor.r,bColor.g,bColor.b,bColor.a
     };
-    lineBuffer->Buffer( aVert );
-    lineBuffer->Buffer( bVert );
+    _lineBuffer->Buffer( aVert );
+    _lineBuffer->Buffer( bVert );
 }
 void Primitives2D::RectOutline(const glm::vec2 position,
                                  const glm::vec2 size,
@@ -107,7 +113,7 @@ void Primitives2D::RectOutline(const glm::vec2 position,
         position.x-halfWidth,position.y+halfHeight-1,z,1.0,   // top-left
         color.r,color.g,color.b,color.a,
     };
-    lineBuffer->Buffer( *verts, 8 );
+    _lineBuffer->Buffer( *verts, 8 );
 }
 
 void Primitives2D::RectFilled(const glm::vec2 position,
@@ -131,7 +137,7 @@ void Primitives2D::RectFilled(const glm::vec2 position,
         position.x+halfWidth,position.y+halfHeight,z,1.0,   // top-right
         color.r,color.g,color.b,color.a
     };
-    polyBuffer->Buffer( *verts, 6 );
+    _polyBuffer->Buffer( *verts, 6 );
 }
 
 void Primitives2D::RectangleGradientX(const glm::vec2 position,
@@ -156,7 +162,7 @@ void Primitives2D::RectangleGradientX(const glm::vec2 position,
         position.x+halfWidth,position.y+halfHeight,z,1.0,   // top-right
         colorRight.r,colorRight.g,colorRight.b,colorRight.a
     };
-    polyBuffer->Buffer( *verts, 6 );
+    _polyBuffer->Buffer( *verts, 6 );
 }
 
 void Primitives2D::RectangleGradientY(const glm::vec2 position,
@@ -181,7 +187,7 @@ void Primitives2D::RectangleGradientY(const glm::vec2 position,
         position.x+halfWidth,position.y+halfHeight,z,1.0,   // top-right
         colorTop.r,colorTop.g,colorTop.b,colorTop.a
     };
-    polyBuffer->Buffer( *verts, 6 );
+    _polyBuffer->Buffer( *verts, 6 );
 }
 
 void Primitives2D::Circle(const glm::vec2 center,
@@ -209,7 +215,7 @@ void Primitives2D::Circle(const glm::vec2 center,
             1.0,
             color.r, color.g, color.b, color.a
         };
-        polyBuffer->Buffer(vertA);
+        _polyBuffer->Buffer(vertA);
 
         Vertex_XYZW_RGBA vertB = {
             (radius * cosf(radsB))+center.x,
@@ -218,13 +224,99 @@ void Primitives2D::Circle(const glm::vec2 center,
             1.0,
             color.r, color.g, color.b, color.a
         };
-        polyBuffer->Buffer(vertB);
+        _polyBuffer->Buffer(vertB);
 
         Vertex_XYZW_RGBA vertC = {
             center.x, center.y, z, 1.0,
             color.r, color.g, color.b, color.a
         };
-        polyBuffer->Buffer(vertC);
+        _polyBuffer->Buffer(vertC);
+    }
+}
+
+void Primitives2D::CircleOutline(const glm::vec2 center,
+                                 const float angle,
+                                 const float radius,
+                                 const Color& color,
+                                 const float z,
+                                 const int pixelsPerSeg,
+                                 const bool drawLineToCenter)
+{
+    // Outside segments in circle
+    int segs = (2*M_PI*radius) / pixelsPerSeg;
+    if ( segs < 8 ) segs = 8;
+    // Set coefficient for each triangle fan
+    const float coef = (float)(2.0f * (M_PI/segs));
+    
+    // Loop through each segment and store the verts and colors
+    for( int i = 0; i <= segs; i++ ) {
+        float radsA = (i)*coef;
+        float radsB = (i+1)*coef;
+        
+        Vertex_XYZW_RGBA vertA = {
+            (radius * cosf(radsA))+center.x,
+            (radius * sinf(radsA))+center.y,
+            z,
+            1.0,
+            color.r, color.g, color.b, color.a
+        };
+        _lineBuffer->Buffer(vertA);
+        
+        Vertex_XYZW_RGBA vertB = {
+            (radius * cosf(radsB))+center.x,
+            (radius * sinf(radsB))+center.y,
+            z,
+            1.0,
+            color.r, color.g, color.b, color.a
+        };
+        _lineBuffer->Buffer(vertB);
+    }
+    
+    if (drawLineToCenter)
+    {
+        Vertex_XYZW_RGBA vertR = {
+            center.x+radius, center.y, z, 1.0,
+            color.r, color.g, color.b, color.a
+        };
+        _lineBuffer->Buffer(vertR);
+        Vertex_XYZW_RGBA vertC = {
+            center.x, center.y, z, 1.0,
+            color.r, color.g, color.b, color.a
+        };
+        _lineBuffer->Buffer(vertC);
+    }
+}
+
+void Primitives2D::Polygon(const glm::vec2* verts,
+                           const unsigned int count,
+                           const Color& color,
+                           const float z)
+{
+    for (int i=0; i<count; i++) {
+        Vertex_XYZW_RGBA vert = {
+            verts[i].x, verts[i].y, z, 1.0,
+            color.r, color.g, color.b, color.a
+        };
+        _polyBuffer->Buffer(vert);
+    }
+}
+void Primitives2D::PolygonOutline(const glm::vec2* verts,
+                    const unsigned int count,
+                    const Color& color,
+                    const float z)
+{
+    for (int i=0; i<count; i++) {
+        Vertex_XYZW_RGBA vertA = {
+            verts[i].x, verts[i].y, z, 1.0,
+            color.r, color.g, color.b, color.a
+        };
+        _lineBuffer->Buffer(vertA);
+        int nextIndex = (i < count-1) ? i+1 : 0;
+        Vertex_XYZW_RGBA vertB = {
+            verts[nextIndex].x, verts[nextIndex].y, z, 1.0,
+            color.r, color.g, color.b, color.a
+        };
+        _lineBuffer->Buffer(vertB);
     }
 }
 
@@ -242,27 +334,27 @@ void Primitives2D::Texture(const Rect2D rect,
         rect.x+rect.w, rect.y+rect.h, z, 1, texRect.x+texRect.w, texRect.y+texRect.h,   // TR
     };
 
-    texturedPolyBuffer->Buffer(*verts, 6);
+    _texturedPolyBuffer->Buffer(*verts, 6);
     
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, tex);
-    forward_vTex_uColor_shader->Begin();
+    _forward_vTex_uColor_shader->Begin();
     glm::mat4 mvp;
     glm::vec2 windowSize = Locator::getRenderer().GetWindowSize();
     MatrixUtil::GetUIMatrix(mvp, windowSize.x, windowSize.y);
 
-    forward_vTex_uColor_shader->setUniformM4fv("MVP", mvp);
-    forward_vTex_uColor_shader->setUniform4fv("uColor", color);
-    forward_vTex_uColor_shader->setUniform1iv("textureMap", 0);
+    _forward_vTex_uColor_shader->setUniformM4fv("MVP", mvp);
+    _forward_vTex_uColor_shader->setUniform4fv("uColor", color);
+    _forward_vTex_uColor_shader->setUniform1iv("textureMap", 0);
     
     // Render textured polygons
-    texturedPolyBuffer->Bind();
-    texturedPolyBuffer->Upload();
-    glDrawArrays(GL_TRIANGLES, 0, texturedPolyBuffer->Count());
-    texturedPolyBuffer->Clear();
-    texturedPolyBuffer->Unbind();
+    _texturedPolyBuffer->Bind();
+    _texturedPolyBuffer->Upload();
+    glDrawArrays(GL_TRIANGLES, 0, _texturedPolyBuffer->Count());
+    _texturedPolyBuffer->Clear();
+    _texturedPolyBuffer->Unbind();
     
-    forward_vTex_uColor_shader->End();
+    _forward_vTex_uColor_shader->End();
     glBindVertexArray(0);
 }
 

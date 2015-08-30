@@ -51,13 +51,28 @@ public:
                             const Color& colorBottom,
                             float z=0.0);
     
-    
     void Circle(const glm::vec2 center,
                 const float angle,
                 const float radius,
                 const Color& color,
                 const float z=0.0,
                 const int pixelsPerSeg=8);
+    void CircleOutline(const glm::vec2 center,
+                       const float angle,
+                       const float radius,
+                       const Color& color,
+                       const float z=0.0,
+                       const int pixelsPerSeg=8,
+                       const bool drawLineToCenter=false);
+    
+    void Polygon(const glm::vec2* verts,
+                 const unsigned int count,
+                 const Color& color,
+                 const float z=0.0);
+    void PolygonOutline(const glm::vec2* verts,
+                        const unsigned int count,
+                        const Color& color,
+                        const float z=0.0);
     
     void Texture(const Rect2D rect,
                  const Rect2D texRect,
@@ -67,11 +82,11 @@ public:
     
     void Render();
 private:
-    VertexBuffer_XYZW_RGBA * lineBuffer;
-    VertexBuffer_XYZW_RGBA * polyBuffer;
-    VertexBuffer_XYZW_UV * texturedPolyBuffer;
+    VertexBuffer_XYZW_RGBA * _lineBuffer;
+    VertexBuffer_XYZW_RGBA * _polyBuffer;
+    VertexBuffer_XYZW_UV * _texturedPolyBuffer;
     
-    Shader* forward_vColor_shader;
-    Shader* forward_vTex_uColor_shader;
+    Shader* _forward_vColor_shader;
+    Shader* _forward_vTex_uColor_shader;
 };
 #endif /* defined(__DungeonSmith__Primitives2D__) */

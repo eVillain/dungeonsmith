@@ -12,7 +12,8 @@
 #include "MeshInstanceBufferBase.h"
 #include "RenderDataDefines.h"
 
-class MeshInstanceColored : public MeshInstanceBufferBase<Vertex_XYZW_N, Instance_Position_Rotation_Color> {
+class MeshInstanceColored : public MeshInstanceBufferBase<Vertex_XYZW_N, Instance_Position_Rotation_Color>
+{
 public:
     MeshInstanceColored(const int numVerts, const int numInstances) :
     MeshInstanceBufferBase(numVerts, numInstances)

@@ -8,11 +8,13 @@ precision highp float;
 // "instance_rotation" contains the cube rotation as a quaternion
 // "instance_color" contains the cube color in rgba values ranged 0.0~1.0
 layout (location = 0) in vec4 v_vertex;
-layout (location = 1) in vec4 v_normal;
-layout (location = 2) in vec4 instance_position;
-layout (location = 3) in vec4 instance_rotation;
-layout (location = 4) in vec4 instance_diffuse;
-layout (location = 5) in float instance_specular;
+layout (location = 1) in vec4 v_diffColor;
+layout (location = 2) in float v_specIntensity;
+layout (location = 3) in vec3 v_normal;
+layout (location = 4) in vec4 instance_position;
+layout (location = 5) in vec4 instance_rotation;
+layout (location = 6) in vec4 instance_diffuse;
+layout (location = 7) in float instance_specular;
 
 // Values that stay constant for the whole mesh.
 uniform mat4 MVP;
@@ -62,14 +64,14 @@ void main(void) {
     // Move vertex
     vertex += instance_position.xyz;
     // Rotate normal
-    vec3 normal = rotate( normalize( v_normal.xyz ), instance_rotation );
+    vec3 normal = rotate( normalize( v_normal ), instance_rotation );
 
     
     gl_Position = MVP*(vec4(vertex.xyz,1));
     fragment.pos = vertex.xyz;
     
-    fragment.diffuse = instance_diffuse;
-    fragment.specular = vec4(vec3(instance_specular),instance_diffuse.a);
+    fragment.diffuse = v_diffColor*instance_diffuse;
+    fragment.specular = vec4(vec3(v_specIntensity*instance_specular),v_diffColor.a*instance_diffuse.a);
     fragment.normal = normal;
     fragment.depth = gl_Position.z;
 }

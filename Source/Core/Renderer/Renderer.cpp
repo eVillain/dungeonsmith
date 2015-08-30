@@ -23,6 +23,7 @@
 
 #include <SDL2/SDL.h>
 #include <GL/glew.h>
+#include <glm/gtc/matrix_transform.hpp>
 
 const int Default_Window_Width = 1280;
 const int Default_Window_Height = 720;
@@ -203,30 +204,12 @@ bool Renderer::TerminateComponents()
     }
     _components.clear();
     
-//    _instanced->Terminate();
-//    delete _instanced;
-//    _instanced = nullptr;
-//    
-//    _primitives2D->Terminate();
-//    delete _primitives2D;
-//    _primitives2D = nullptr;
-//    
-//    _primitives3D->Terminate();
-//    delete _primitives3D;
-//    _primitives3D = nullptr;
-//    
-//    
-//    _mesh->Terminate();
-//    delete _mesh;
-//    _mesh = nullptr;
-//    
-//    _postProcess->Terminate();
-//    delete _postProcess;
-//    _postProcess = nullptr;
-//    
-//    _lighting->Terminate();
-//    delete _lighting;
-//    _lighting = nullptr;
+    _instanced = nullptr;
+    _primitives2D = nullptr;
+    _primitives3D = nullptr;
+    _mesh = nullptr;
+    _postProcess = nullptr;
+    _lighting = nullptr;
     
     delete _textureManager;
     _textureManager = nullptr;
@@ -305,15 +288,14 @@ void Renderer::BeginDraw()
 
 void Renderer::FinishDeferred()
 {
-    if ( _camera ) _primitives3D->Render(_camera->GetMVP());
-    _primitives2D->Render();
-    
     // Bind frame buffer
     glBindFramebuffer(GL_FRAMEBUFFER, _fboFinal);
- 
+    
     // Make sure we are rendering properly at this stage :)
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-    
+    glDepthMask(GL_FALSE);
+    glDisable(GL_DEPTH_TEST);
+
     switch (_debugMode)
     {
         case Debug_Render_Diffuse:
@@ -343,8 +325,6 @@ void Renderer::FinishDeferred()
                 if ( _enableLighting && _camera )
                 {
                     _lighting->RenderLighting(*_camera, _gbuffer);
-                    // Draw any forward-rendered primitives
-                    if ( _camera ) _primitives3D->Render(_camera->GetMVP());
                     glDisable( GL_BLEND );
                     Stencil::Enable();
                     // Copy over sky layer, which was not lit
@@ -355,6 +335,7 @@ void Renderer::FinishDeferred()
                     _primitives2D->RectFilled(glm::vec2(), GetWindowSize(), COLOR_FOG_DEFAULT, 1.0);
                     _primitives2D->Render();
                     Stencil::Disable();
+
                 }
                 else    // Copy from G-buffer diffuse texture
                 {
@@ -362,7 +343,12 @@ void Renderer::FinishDeferred()
                 }
         } break;
     }
-
+    Stencil::Enable();
+    Stencil::SetReplaceLower(Stencil::Layer_Solid);
+    // Draw any forward-rendered primitives
+    if ( _camera ) _primitives3D->Render(_camera->GetMVP());
+    Stencil::Disable();
+    
     glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
     if ( _enableAA )
     {
@@ -373,6 +359,10 @@ void Renderer::FinishDeferred()
         _postProcess->TextureFullScreen(_textureFinal);
     }
     CHECK_GL_ERROR();
+    
+    glEnable( GL_BLEND );
+    glDepthMask(GL_TRUE);
+    glEnable(GL_DEPTH_TEST);
 }
 
 void Renderer::EndDraw()
@@ -389,5 +379,34 @@ glm::ivec2 Renderer::GetWindowSize()
     return glm::ivec2(windowWidth,windowHeight);
 }
 
+glm::vec3 Renderer::Get3DPosition(glm::ivec2 screenCoord)
+{
+    glm::ivec2 windowSize = GetWindowSize();
+    glm::vec3 cursorPos = glm::vec3(screenCoord.x+windowSize.x/2,
+                                    screenCoord.y+windowSize.y/2,
+                                    0);
+    // Obtain the Z position (not world coordinates but in range 0 ~ 1)
+    glReadPixels(cursorPos.x, cursorPos.y, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &cursorPos.z);
+
+    // To grab the pixel color at cursor
+    //    GLfloat col[4];
+    //    glReadPixels(cursorPos.x, cursorPos.y, 1, 1, GL_RGBA, GL_FLOAT, &col);
+    //    printf("cursor color:%.1f, %.1f %.1f\n", col[0],col[1],col[2]);
+    
+     glm::vec3 worldPosition  = glm::unProject(glm::vec3(cursorPos.x,
+                                                        cursorPos.y,
+                                                        cursorPos.z),
+                                              _camera->GetModel(),
+                                              _camera->GetProjection(),
+                                              _camera->GetViewport());
+    // To linearize depth
+    // glm::vec2 depthParameter = glm::vec2( _camera->farDepth / ( camera->farDepth - camera->nearDepth ),
+    //                                       _camera->farDepth * camera->nearDepth / ( camera->nearDepth - camera->farDepth ) );
+    // float linearZ = depthParameter.y/(depthParameter.x - cursorPos.z);
+    
+    //    printf("Cursor depth: %f, pos: %f, %f, %f\n", linearZ, crosshairPos.x, crosshairPos.y, crosshairPos.z);
+
+    return worldPosition;
+}
 
 
