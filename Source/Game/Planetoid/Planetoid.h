@@ -11,14 +11,14 @@
 
 #include "Scene.h"
 #include "World.h"
-#include "InputFunctors.h"
+#include "InputListener.h"
 #include "DynamicCubes.h"
 
 class TextLabel;
 class SkyDome;
 class Light3D;
 
-class Planetoid : public Scene
+class Planetoid : public Scene, public InputEventListener
 {
 public:
     Planetoid();
@@ -36,8 +36,7 @@ public:
     void Draw();
     
 private:
-    EventFunctor<Planetoid> eventFunctor;
-    bool OnEvent( const typeInputEvent& theEvent, const float& amount );
+    bool OnEvent( const std::string& theEvent, const float& amount );
     
     void UpdateMovement();
     glm::vec2 inputMove;

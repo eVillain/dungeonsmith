@@ -2,6 +2,18 @@
 //  BlockSet.h
 //  DungeonSmith
 //
+//  An editable set of voxels of arbitrary size
+//  Add some cubes then grab a mesh with GenerateMesh() and
+//  use it for instancing multiple copies of the object.
+//  (see MeshInstanceVertexColored)
+//
+//  TAKE HEED:
+//  const glm::vec3& position
+//  is always assumed to be in world coordinates relative to the center
+//
+//  const glm::ivec3& localCoord
+//  is always assumed to be in local voxel coordinates
+//
 //  Created by The Drudgerist on 01/08/15.
 //  Copyright (c) 2015 The Drudgerist. All rights reserved.
 //
@@ -11,7 +23,7 @@
 
 #include "BlockDefs.h"
 #include "RenderDataDefines.h"
-#define DEBUG_BLOCKSET 0
+#define DEBUG_BLOCKSET 1
 
 const int Default_Blocks_Per_Axis = 16;
 const float Default_Blocks_Radius = 1.0/16.0;
@@ -29,35 +41,50 @@ public:
     // -- Block editing -- //
     const Block& Get( const glm::ivec3& localCoord );
     void Set( const glm::ivec3& localCoord, const Block& block );
-    const Block& GetNearestBlock( const glm::vec3& position );
-    const glm::vec3 GetNearestBlockCenter( const glm::vec3& position );
 
+    const Block& GetNearestBlock( const glm::vec3& position );
+    const Block& GetSurfaceBlock( const glm::vec3 position );
+    
+    const glm::vec3 GetNearestBlockCenter( const glm::vec3& position );
+    const glm::vec3 GetSurfaceBlockCenter( const glm::vec3& position );
+    
+    void ReplaceType( const Block& oldType, const Block& newType );
+
+    // -- Utilities -- //
+    const inline glm::ivec3 WorldToLocalCoord( const glm::vec3& position ) const {
+        const glm::vec3 offset = -glm::vec3(_size)*_radius;
+        return glm::ivec3((position-offset)/(_radius*2.0f));
+    };
+    const inline glm::vec3 WorldToLocalOffset() const {
+        return glm::vec3(_radius) - glm::vec3(_size)*_radius;
+    };
+    const bool IsWithinBounds( const glm::vec3 position );
+    
+    
 //    void Rotate( const bool ccw );
 //    void MoveContents( const int moveX, const int moveY, const int moveZ );
-//    void ReplaceColor( const Color& oldColor, const Color& newColor );
-//    void ReplaceType( const Block& oldType, const Block& newType );
 
     void SetRadius(const float radius) { _radius = radius; };
     const float GetRadius() const { return _radius; };
     const glm::ivec3 GetSize() { return _size; };
-    const glm::vec3 GetBounds() { return glm::vec3(_size)*_radius; };
+    const glm::vec3 GetBounds() { return glm::vec3(_size)*_radius*2.0f; };
     const void GenerateMesh(Vertex_XYZW_DSN** verts, int32_t& count) const;
 private:
     Block* _blocks;
     glm::ivec3 _size;
     float _radius;
     
-    inline const bool WithinBounds(const int16_t x,
+    inline const bool WithinLocalBounds(const int16_t x,
                                    const int16_t y,
                                    const int16_t z) const
     {
-        if (x < 0 || x > _size.x-1 ||
-            y < 0 || y > _size.y-1 ||
-            z < 0 || z > _size.z-1) { return false; }
+        if (x < 0 || x >= _size.x ||
+            y < 0 || y >= _size.y ||
+            z < 0 || z >= _size.z) { return false; }
         else { return true; }
     }
     
-    inline const bool WithinBounds(const int32_t index) const
+    inline const bool WithinLocalBounds(const int32_t index) const
     {
         if (index >= _size.x*_size.y*_size.z) { return false; }
         else { return true; }
@@ -68,7 +95,10 @@ private:
                               const int16_t z) const
     {
 #if DEBUG_BLOCKSET
-        if (!WithinBounds(x,y,z)) { throw "Error: Out of bounds!"; }
+        if (!WithinLocalBounds(x,y,z))
+        {
+            throw "Error: Out of bounds!";
+        }
 #endif
         return (int32_t)(x + (z*_size.x) + (y*_size.x*_size.z));
     };
@@ -76,7 +106,7 @@ private:
     inline const glm::ivec3 GetPosForIndex(const int32_t index) const
     {
 #if DEBUG_BLOCKSET
-        if (!WithinBounds(index)) { throw "Error: Out of bounds!"; }
+        if (!WithinLocalBounds(index)) { throw "Error: Out of bounds!"; }
 #endif
         int area = _size.x*_size.z;
         int16_t y = (index/area);
@@ -90,7 +120,7 @@ private:
                                        const int16_t z,
                                        const Block& type ) const
     {
-        if (!WithinBounds(x,y,z)) { return false; }
+        if (!WithinLocalBounds(x,y,z)) { return false; }
         else
         {
             int32_t blockIndex = GetIndex(x,y,z);
@@ -108,7 +138,7 @@ private:
                                  const int16_t y,
                                  const int16_t z) const
     {
-        if (!WithinBounds(x,y,z)) { return true; }
+        if (!WithinLocalBounds(x,y,z)) { return true; }
         else
         {
             int32_t blockIndex = GetIndex(x,y,z);

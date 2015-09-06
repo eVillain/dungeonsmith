@@ -25,7 +25,6 @@
 #include <glm/gtc/random.hpp>
 
 Planetoid::Planetoid() : Scene("Game"),
-eventFunctor(this, &Planetoid::OnEvent),
 _numPlanetCubes(4096)
 {
 }
@@ -39,7 +38,7 @@ void Planetoid::Initialize()
 {
     Scene::Initialize();
     
-    Input::RegisterEventObserver(&eventFunctor);
+    Input::RegisterEventObserver(this);
     
     Locator::getRenderer().SetCamera(&_camera);
     _camera.position.z = 150;
@@ -77,7 +76,7 @@ void Planetoid::Pause()
     {
         Scene::Pause();
     }
-    Input::UnRegisterEventObserver(&eventFunctor);
+    Input::UnRegisterEventObserver(this);
     delete _labelFPS;
     _labelFPS = nullptr;
 }
@@ -88,7 +87,7 @@ void Planetoid::Resume()
     {
         Scene::Resume();
     }
-    Input::RegisterEventObserver(&eventFunctor);
+    Input::RegisterEventObserver(this);
 }
 
 void Planetoid::Update( double deltaTime )
@@ -149,7 +148,7 @@ void Planetoid::Draw()
     Stencil::Disable();
 }
 
-bool Planetoid::OnEvent(const typeInputEvent& event, const float& amount)
+bool Planetoid::OnEvent(const std::string& event, const float& amount)
 {
     if ( event == "lookleft" ) { inputLook.x -= amount; return true; }
     else if ( event == "lookright" ) { inputLook.x += amount; return true; }

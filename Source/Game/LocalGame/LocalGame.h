@@ -15,11 +15,12 @@
 
 #include "Scene.h"
 #include "World.h"
-#include "InputFunctors.h"
+#include "InputListener.h"
 
 class TextLabel;
 
-class LocalGame : public Scene {
+class LocalGame : public Scene, public InputEventListener
+{
 public:
     LocalGame();
     ~LocalGame();
@@ -38,8 +39,7 @@ public:
 private:
     World world;
     
-    EventFunctor<LocalGame> eventFunctor;
-    bool OnEvent( const typeInputEvent& theEvent, const float& amount );
+    bool OnEvent( const std::string& theEvent, const float& amount );
     
     void UpdateMovement();
     glm::vec2 inputMove;

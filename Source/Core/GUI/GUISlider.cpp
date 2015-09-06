@@ -13,8 +13,10 @@
 
 namespace GUI
 {
-    GUISlider::GUISlider(int posX, int posY, int width, int height, int depth) :
-    GUIWidget(posX, posY, width, height, depth)
+    GUISlider::GUISlider(const glm::ivec2& position,
+                         const glm::ivec2& size,
+                         const int depth) :
+    GUIWidget(position, size, depth)
     {
         _pressed = false;
         _behavior = nullptr;
@@ -37,7 +39,7 @@ namespace GUI
         
         Primitives2D& primitives = *Locator::getRenderer().DrawPrimitives2D();
         
-        glm::ivec2 drawPos = glm::ivec2(x-(w*0.5), y-(h*0.5));
+        glm::ivec2 drawPos = glm::ivec2(_position.x-(_size.x*0.5), _position.y-(_size.y*0.5));
 
         // Slider
         if (_behavior)
@@ -45,16 +47,16 @@ namespace GUI
             const int sliderWidth = 9;
             const int sliderPadding = 8;
             const int sliderMaxLeft = drawPos.x + sliderPadding;
-            const int sliderMaxRight = drawPos.x + (w - sliderPadding);
+            const int sliderMaxRight = drawPos.x + (_size.x - sliderPadding);
             const int sliderLength = (sliderMaxRight-sliderMaxLeft);
             const int sliderOffset = _sliderValue*sliderLength;
 
-            const int widgetMiddle = drawPos.y+(h/2);
+            const int widgetMiddle = drawPos.y+(_size.y/2);
             const int sliderMiddle = sliderMaxLeft+sliderOffset;
             const int sliderLeft = sliderMiddle-(sliderWidth/2);
             const int sliderRight = sliderMiddle+(sliderWidth/2);
             const int sliderBottom = drawPos.y + sliderPadding;
-            const int sliderTop = drawPos.y + (h - sliderPadding);
+            const int sliderTop = drawPos.y + (_size.y - sliderPadding);
             
 //            printf("--- Slider:\n"
 //                   "- Width %i, Padding %i \n"
@@ -69,7 +71,7 @@ namespace GUI
                             glm::vec2(sliderMaxRight,widgetMiddle),
                             COLOR_BLACK,
                             COLOR_BLACK,
-                            z+1);  // Slider bar
+                            _position.z+1);  // Slider bar
 
             glm::vec2 topLeft = glm::vec2(sliderLeft, sliderTop);
             glm::vec2 topRight = glm::vec2(sliderRight, sliderTop);
@@ -95,7 +97,7 @@ namespace GUI
             primitives.Polygon(verts,
                                18,
                                COLOR_UI_GRADIENT_TOP,
-                               z+1);
+                               _position.z+1);
             glm::vec2 vertsOutline[10] = {
                 midCenter, midRightTop, topRight, topLeft, midLeftTop,
                 midCenter, midRightBottom, bottomRight, bottomLeft, midLeftBottom,
@@ -103,7 +105,7 @@ namespace GUI
             primitives.PolygonOutline(vertsOutline,
                                       10,
                                       COLOR_UI_BORDER_OUTER,
-                                      z+2);
+                                      _position.z+2);
         }
     }
     

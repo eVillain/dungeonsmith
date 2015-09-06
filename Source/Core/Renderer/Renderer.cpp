@@ -343,6 +343,11 @@ void Renderer::FinishDeferred()
                 }
         } break;
     }
+    glEnable( GL_BLEND );
+    glDepthMask(GL_TRUE);
+    glEnable(GL_DEPTH_TEST);
+    glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
+
     Stencil::Enable();
     Stencil::SetReplaceLower(Stencil::Layer_Solid);
     // Draw any forward-rendered primitives
@@ -359,10 +364,6 @@ void Renderer::FinishDeferred()
         _postProcess->TextureFullScreen(_textureFinal);
     }
     CHECK_GL_ERROR();
-    
-    glEnable( GL_BLEND );
-    glDepthMask(GL_TRUE);
-    glEnable(GL_DEPTH_TEST);
 }
 
 void Renderer::EndDraw()

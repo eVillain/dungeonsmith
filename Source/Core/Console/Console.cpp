@@ -302,10 +302,10 @@ void Console::Show() {
     std::string consoleInfo = "DungeonSmith v." + HyperVisor::VERSION();
     
     int winWidth = Locator::getRenderer().GetWindowSize().x;
-    textWidget = new GUI::GUITextInput(0, 1,
-                                  winWidth-1, CONSOLE_TEXT_HEIGHT,
-                                  CONSOLE_TEXT_DEPTH,
-                                  consoleInfo);
+    textWidget = new GUI::GUITextInput(glm::ivec2(0, 1),
+                                       glm::ivec2(winWidth-1, CONSOLE_TEXT_HEIGHT),
+                                       CONSOLE_TEXT_DEPTH,
+                                       consoleInfo);
     
     GUI::TextInputBehaviorLambda* behavior = new GUI::TextInputBehaviorLambda(
         [](const std::string& inputText)

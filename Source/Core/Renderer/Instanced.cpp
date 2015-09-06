@@ -45,7 +45,7 @@ void Instanced::RenderDeferred( MeshInstanceColored* buffer, const glm::mat4& ma
     _deferred_instance_shader->Begin();
     _deferred_instance_shader->setUniformM4fv("MVP", matrix);
     
-    glDrawArraysInstanced(GL_TRIANGLES, 0, 36, buffer->InstanceCount());
+    glDrawArraysInstanced(GL_TRIANGLES, 0, buffer->Count(), buffer->InstanceCount());
     
     _deferred_instance_shader->End();
     buffer->Unbind();
@@ -64,7 +64,7 @@ void Instanced::RenderDeferred( MeshInstanceVertexColored* buffer, const glm::ma
     _deferred_instance_vColor_shader->Begin();
     _deferred_instance_vColor_shader->setUniformM4fv("MVP", matrix);
     
-    glDrawArraysInstanced(GL_TRIANGLES, 0, 36, buffer->InstanceCount());
+    glDrawArraysInstanced(GL_TRIANGLES, 0, buffer->Count(), buffer->InstanceCount());
     
     _deferred_instance_vColor_shader->End();
     buffer->Unbind();

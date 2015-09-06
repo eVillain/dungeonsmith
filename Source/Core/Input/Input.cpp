@@ -14,10 +14,10 @@
 #include "RangeReverseAdapter.h"
 #include "Renderer.h"
 
-std::map<std::string, typeInputEvent> Input::InputBindings;
-std::vector<EventFunctorBase*> Input::eventObserverList;
-std::vector<MouseFunctorBase*> Input::mouseObserverList;
-TextInputFunctorBase* Input::textInputObserver = nullptr;
+std::map<std::string, std::string> Input::InputBindings;
+std::vector<InputEventListener*> Input::eventObserverList;
+std::vector<MouseEventListener*> Input::mouseObserverList;
+TextInputEventListener* Input::textInputObserver = nullptr;
 std::string Input::_inputText = "";
 
 void Input::Initialize() {
@@ -34,11 +34,11 @@ void Input::Terminate() {
     textInputObserver = nullptr;
 }
 
-void Input::RegisterEventObserver( EventFunctorBase* observer ) {
+void Input::RegisterEventObserver( InputEventListener* observer ) {
     eventObserverList.push_back( observer );
 }
 
-void Input::UnRegisterEventObserver( EventFunctorBase* observer ) {
+void Input::UnRegisterEventObserver( InputEventListener* observer ) {
     // Try to find observer in list
     bool found = false;
     for ( unsigned int i=0; i < eventObserverList.size(); i++ ) {
@@ -53,13 +53,13 @@ void Input::UnRegisterEventObserver( EventFunctorBase* observer ) {
     }
 }
 
-void Input::RegisterMouseObserver( MouseFunctorBase* observer ) {
+void Input::RegisterMouseObserver( MouseEventListener* observer ) {
     mouseObserverList.push_back( observer );
 }
 
 
-void Input::UnRegisterMouseObserver( MouseFunctorBase* observer ) {
-    std::vector<MouseFunctorBase*>::iterator it = std::find(mouseObserverList.begin(), mouseObserverList.end(), observer);
+void Input::UnRegisterMouseObserver( MouseEventListener* observer ) {
+    std::vector<MouseEventListener*>::iterator it = std::find(mouseObserverList.begin(), mouseObserverList.end(), observer);
     if ( it != mouseObserverList.end() )
     {
         mouseObserverList.erase(it);
@@ -162,9 +162,9 @@ void Input::ProcessInput() {
         else if (event.type == SDL_MOUSEMOTION)
         {
             glm::ivec2 adjustedCoords = ConvertSDLCoordToScreen(event.motion.x, event.motion.y);
-            for ( MouseFunctorBase* func : mouseObserverList )
+            for ( MouseEventListener* listener : mouseObserverList )
             {
-                bool swallowed = (*func)( adjustedCoords.x, adjustedCoords.y );
+                bool swallowed = (*listener).OnMouse( adjustedCoords );
                 if ( swallowed ) // Event was swallowed, don't propagate
                 {
                     break;
@@ -188,7 +188,7 @@ void Input::ProcessInput() {
         if ( textInputObserver && ProcessTextInput(event))
         {
             // Call the registered observer
-            (*textInputObserver)(_inputText);
+            (*textInputObserver).OnTextInput(_inputText);
         }
         else if ( input.length() )   // Regular events
         {
@@ -200,9 +200,9 @@ void Input::ProcessInput() {
                     return;
                 }
 //           printf("Bound to: %s\n", InputBindings[input].c_str());
-                for ( EventFunctorBase* func : eventObserverList )
+                for ( InputEventListener* listener : eventObserverList )
                 {
-                    bool swallowed = (*func)( InputBindings[input], amount );
+                    bool swallowed = (*listener).OnEvent( InputBindings[input], amount );
                     if ( swallowed )
                     { break; }  // Event was swallowed, don't propagate
                 }
@@ -279,10 +279,11 @@ void Input::SetDefaultBindings()
     
     // Mouse bindings
     Bind("MouseButton1", "shoot");
+    Bind("MouseButton3", "shoot2");
 }
 
 // Text input
-void Input::StartTextInput( TextInputFunctorBase* observer )
+void Input::StartTextInput( TextInputEventListener* observer )
 {
     //Enable text input
     SDL_StartTextInput();
@@ -296,7 +297,7 @@ void Input::UpdateTextInput()
 
 }
 
-void Input::StopTextInput( TextInputFunctorBase* observer )
+void Input::StopTextInput( TextInputEventListener* observer )
 {
     textInputObserver = nullptr;
     // Disable text input

@@ -23,8 +23,7 @@
 
 HyperVisor::HyperVisor() :
 quit(false),
-errorCode(0),
-eventFunctor(this, &HyperVisor::OnEvent)
+errorCode(0)
 {
 }
 
@@ -52,7 +51,7 @@ void HyperVisor::Initialize(int argc, char * arg[])
         ThreadPool* threadPool = new ThreadPool(numThreads);
         
         Input::Initialize();
-        Input::RegisterEventObserver(&eventFunctor);
+        Input::RegisterEventObserver(this);
         Console::Initialize();
         
         // Create and initialize all of our engine subsystems
@@ -84,6 +83,8 @@ void HyperVisor::Terminate()
     // Clean up
     if ( initialized )
     {
+        Input::UnRegisterEventObserver(this);
+
         CommandProcessor::Terminate();
         
         Console::Terminate();
@@ -163,7 +164,7 @@ void HyperVisor::Stop(const int reason)
 
 // Low level events - we will try to make sure that we can always access the
 // console or at least back to the main menu so we can quit :)
-bool HyperVisor::OnEvent( const typeInputEvent& event, const float& amount )
+bool HyperVisor::OnEvent( const std::string& event, const float& amount )
 {
     if ( amount != -1 ) return false; // We only care for key/button release events here
     

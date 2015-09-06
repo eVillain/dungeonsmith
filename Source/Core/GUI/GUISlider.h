@@ -17,9 +17,9 @@ namespace GUI
     class GUISlider : public GUIWidget
     {
     public:
-        GUISlider(int posX, int posY,
-                  int width, int height,
-                  int depth);
+        GUISlider(const glm::ivec2& position,
+                  const glm::ivec2& size,
+                  const int depth);
         ~GUISlider();
         
         // Overrides from GUIWidget

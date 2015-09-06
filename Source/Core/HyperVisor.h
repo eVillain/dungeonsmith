@@ -9,9 +9,10 @@
 #ifndef NGN_HYPERVISOR_H
 #define NGN_HYPERVISOR_H
 
-#include "InputFunctors.h"
+#include "InputListener.h"
 
-class HyperVisor {
+class HyperVisor : public InputEventListener
+{
 public:
     static const std::string VERSION() { return "0.1a"; };
     HyperVisor();
@@ -22,14 +23,13 @@ public:
     
     int Run();
     void Stop(const int errorCode=0); // TODO: Add reason for stop as parameter for error handling
-    
+    bool OnEvent( const std::string& theEvent, const float& amount );
+
 private:
     double timeAtLastFrameStart;
     int errorCode;
     bool quit;
     bool initialized;
-    EventFunctor<HyperVisor> eventFunctor;
-    bool OnEvent( const typeInputEvent& theEvent, const float& amount );
 };
 
 #endif /* defined(NGN_HYPERVISOR_H) */

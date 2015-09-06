@@ -10,18 +10,16 @@
 #include "GUIWidget.h"
 namespace GUI
 {
-    GUIManager::GUIManager() :
-    eventFunctor(this, &GUIManager::OnEvent),
-    mouseFunctor(this, &GUIManager::OnMouse)
+    GUIManager::GUIManager()
     {
-        Input::RegisterEventObserver(&eventFunctor);
-        Input::RegisterMouseObserver(&mouseFunctor);
+        Input::RegisterEventObserver(this);
+        Input::RegisterMouseObserver(this);
     }
     
     GUIManager::~GUIManager()
     {
-        Input::UnRegisterEventObserver(&eventFunctor);
-        Input::UnRegisterMouseObserver(&mouseFunctor);
+        Input::UnRegisterEventObserver(this);
+        Input::UnRegisterMouseObserver(this);
     }
     
     void GUIManager::Add(GUIWidget *widget)
@@ -46,7 +44,7 @@ namespace GUI
         }
     }
     
-    void GUIManager::Draw()
+    const void GUIManager::Draw() const
     {
         for (GUIWidget* widget : _widgets)
         {
@@ -54,10 +52,10 @@ namespace GUI
         }
     }
     
-    bool GUIManager::OnCursorPress( int x, int y ) {
+    bool GUIManager::OnCursorPress( const glm::ivec2& coord ) {
         for (GUIWidget* widget : _widgets)
         {
-            if( widget->Contains(x, y) )
+            if( widget->Contains(coord) )
             {
                 widget->OnInteract(true);
                 return true;
@@ -66,10 +64,10 @@ namespace GUI
         return false;
     }
     
-    bool GUIManager::OnCursorRelease( int x, int y ) {
+    bool GUIManager::OnCursorRelease( const glm::ivec2& coord ) {
         for (GUIWidget* widget : _widgets)
         {
-            if( widget->Contains(x, y) )
+            if( widget->Contains(coord) )
             {
                 widget->OnInteract(false);
                 return true;
@@ -78,11 +76,11 @@ namespace GUI
         return false;
     }
     
-    bool GUIManager::OnCursorHover( int x, int y ) {
+    bool GUIManager::OnCursorHover( const glm::ivec2& coord ) {
         bool overWidget = false;
         for (GUIWidget* widget : _widgets)
         {
-            if( widget->Contains(x, y) )
+            if( widget->Contains(coord) )
             {
                 widget->SetFocus(true);
                 overWidget = true;
@@ -93,26 +91,26 @@ namespace GUI
         return overWidget;
     }
     
-    bool GUIManager::OnEvent( const typeInputEvent& theEvent, const float& amount )
+    bool GUIManager::OnEvent( const std::string& event, const float& amount )
     {
-        if ( theEvent == "shoot")
+        if ( event == "shoot")
         {
             if ( amount == -1 )
             {
-                return OnCursorRelease(currentMouseCoord.x, currentMouseCoord.y);
+                return OnCursorRelease(_currentMouseCoord);
             }
             else if ( amount == 1 )
             {
-                return OnCursorPress(currentMouseCoord.x, currentMouseCoord.y);
+                return OnCursorPress(_currentMouseCoord);
             }
         }
         return false;
     }
     
-    bool GUIManager::OnMouse( const int& x, const int& y )
+    bool GUIManager::OnMouse( const glm::ivec2& coord )
     {
-        currentMouseCoord.x = x;
-        currentMouseCoord.y = y;
-        return OnCursorHover(x, y);;
+        _currentMouseCoord.x = coord.x;
+        _currentMouseCoord.y = coord.y;
+        return OnCursorHover(_currentMouseCoord);
     }
 }   /* namespace GUI */

@@ -11,12 +11,13 @@
 
 #include <vector>
 #include "Input.h"
+#include "RenderDefines.h"
 
 namespace GUI
 {
     class GUIWidget;
     
-    class GUIManager
+    class GUIManager : public InputEventListener, public MouseEventListener
     {
         friend class GUIWidget;
     public:
@@ -24,12 +25,12 @@ namespace GUI
         ~GUIManager();
         
         void Update( double delta );
-        void Draw();
+        const void Draw() const;
         
         // Test cursor events on widgets - return value true means event was swallowed
-        bool OnCursorHover( int x,int y );
-        bool OnCursorPress( int x,int y );
-        bool OnCursorRelease( int x,int y );
+        bool OnCursorHover( const glm::ivec2& coord );
+        bool OnCursorPress( const glm::ivec2& coord );
+        bool OnCursorRelease( const glm::ivec2& coord );
         
     protected:
         void Add(GUIWidget* widget);
@@ -37,12 +38,10 @@ namespace GUI
     private:
         std::vector<GUIWidget*> _widgets;
         
-        EventFunctor<GUIManager> eventFunctor;
-        bool OnEvent( const typeInputEvent& theEvent, const float& amount );
-        MouseFunctor<GUIManager> mouseFunctor;
-        bool OnMouse( const int& x, const int& y );
+        bool OnEvent( const std::string& theEvent, const float& amount );
+        bool OnMouse( const glm::ivec2& coord );
         
-        glm::ivec2 currentMouseCoord;
+        glm::ivec2 _currentMouseCoord;
     };
 }    /* namespace GUI */
 

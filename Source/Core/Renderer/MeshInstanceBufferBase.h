@@ -63,9 +63,10 @@ public:
         _bufferCount++;
     }
     
-    void Buffer(const VertexDataType& verts, int count)
+    void Buffer(const VertexDataType& verts, const int count)
     {
         if ( _bufferCount+count > _bufferSize ) return;
+//        printf("Buffering %i verts from %p, total data %lu bytes\n", count, &verts, sizeof(VertexDataType)*count);
         memcpy( &_buffer[_bufferCount], &verts, sizeof(VertexDataType)*count);
         _bufferCount += count;
     }
@@ -123,6 +124,7 @@ public:
     void Clear()
     {
         _bufferCount = 0;
+//        memset(_buffer, 0, sizeof(VertexDataType)*_bufferSize);
     }
     
     void ClearInstances()

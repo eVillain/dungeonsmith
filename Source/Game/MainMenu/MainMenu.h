@@ -10,10 +10,11 @@
 #define __DungeonSmith__MainMenu__
 
 #include "Scene.h"
-#include "InputFunctors.h"
+#include "InputListener.h"
 #include "GUIButtonLabeled.h"
 
-class MainMenu : public Scene {
+class MainMenu : public Scene, public InputEventListener
+{
 public:
     MainMenu();
     ~MainMenu();
@@ -29,8 +30,7 @@ public:
     void Draw( void );
     
 private:
-    EventFunctor<MainMenu> eventFunctor;
-    bool OnEvent( const typeInputEvent& theEvent, const float& amount );
+    bool OnEvent( const std::string& event, const float& amount );
 
     void CreateButtons();
     void RemoveButtons();

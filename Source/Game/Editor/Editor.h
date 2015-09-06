@@ -10,7 +10,7 @@
 #define __DungeonSmith__Editor__
 
 #include "Scene.h"
-#include "InputFunctors.h"
+#include "InputListener.h"
 #include "Light3D.h"
 #include "Camera.h"
 #include "MeshInstanceVertexColored.h"
@@ -22,7 +22,7 @@ namespace GUI {
     class GUISlider;
 }
 
-class Editor : public Scene
+class Editor : public Scene, public InputEventListener, public MouseEventListener
 {
 public:
     Editor();
@@ -50,14 +50,16 @@ private:
     GUI::GUIMenu* _menu;
     GUI::GUISlider* _slider;
     
-    bool OnEvent( const typeInputEvent& theEvent, const float& amount );
-    bool OnMouse( const int& x, const int& y );
-    EventFunctor<Editor> _eventFunctor;
-    MouseFunctor<Editor> _mouseFunctor;
-    glm::ivec2 _cursorPosition;
-    
+    bool OnEvent( const std::string& theEvent, const float& amount );
+    bool OnMouse( const glm::ivec2 &coord );
+    glm::ivec2 _cursorScreenPosition;
+    glm::vec3 _cursorWorldPosition;
+
     void UpdateMovement();
     glm::vec2 inputMove;
     glm::vec2 inputLook;
+    
+    void AddBlock();
+    void RemoveBlock();
 };
 #endif /* defined(__DungeonSmith__Editor__) */

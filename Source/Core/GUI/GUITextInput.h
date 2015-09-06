@@ -10,18 +10,21 @@
 
 #include "GUIWidget.h"
 #include "TextInputBehavior.h"
-#include "InputFunctors.h"
+#include "InputListener.h"
 #include "TextLabel.h"
 
 #include <SDL2/SDL_events.h>
 
 namespace GUI
 {
-    class GUITextInput: public GUIWidget
+    class GUITextInput:
+    public GUIWidget,
+    public InputEventListener,
+    public TextInputEventListener
     {
     public:
-        GUITextInput(const int posX, const int posY,
-                     const int width, const int height,
+        GUITextInput(const glm::ivec2& position,
+                     const glm::ivec2& size,
                      const int depth,
                      const std::string defaultVal="<text input>");
         ~GUITextInput();
@@ -45,11 +48,9 @@ namespace GUI
     private:
         TextInputBehavior* _behavior;
         // Regular events, we need them to accept/cancel text input
-        EventFunctor<GUITextInput> _eventFunctor;
-        bool OnEvent( const typeInputEvent& theEvent, const float& amount );
+        bool OnEvent( const std::string& event, const float& amount );
         // Text input parameters
-        TextInputFunctor<GUITextInput> _textInputFunctor;
-        void OnTextInputEvent( const std::string& inputText );
+        void OnTextInput( const std::string& text );
         bool _textInputActive;
 
         // Text input attributes

@@ -10,7 +10,7 @@
 #define NGN_PARTICLE3D_EDITOR_H
 
 #include "Scene.h"
-#include "InputFunctors.h"
+#include "InputListener.h"
 #include "ParticleSys.h"
 #include "Camera.h"
 
@@ -18,7 +18,7 @@ class GUIButton;
 class GUIMenu;
 class GUIFileMenu;
 
-class ParticleEditor : public Scene
+class ParticleEditor : public Scene, public InputEventListener, public MouseEventListener
 {
 public:
     ParticleEditor();
@@ -32,8 +32,6 @@ public:
     void Resume( void );
     void Update ( double delta );
     void Draw( void );
-    void HandleEvent( typeInputEvent theEvent, float amount );
-    void HandleMousePos( double mx, double my );
 
     void ShowEditor( void );
     void RemoveEditor( void );
@@ -41,11 +39,8 @@ public:
     float timeScaler;
     
 private:
-    EventFunctor<ParticleEditor> _eventFunctor;
-    MouseFunctor<ParticleEditor> _mouseFunctor;
-
-    bool OnEvent( const typeInputEvent& theEvent, const float& amount );
-    bool OnMouse( const int& x, const int& y );
+    bool OnEvent( const std::string& theEvent, const float& amount );
+    bool OnMouse( const glm::ivec2& coord );
 
     Camera camera;
 

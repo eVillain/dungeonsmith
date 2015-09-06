@@ -33,16 +33,18 @@ void BlockSet::Clear()
 
 void BlockSet::SetSize(const glm::ivec3 size)
 {
-    if ( _size == size ) return;
+    if (_size == size) return;
+
+    glm::ivec3 newSize = glm::max(size, glm::ivec3(1));
     
-    Block* newBlocks = new Block[size.x*size.z*size.y];
-    memset(newBlocks, Type_Empty, size.x*size.z*size.y);
+    Block* newBlocks = new Block[newSize.x*newSize.z*newSize.y];
+    memset(newBlocks, Type_Empty, newSize.x*newSize.z*newSize.y);
     // TODO: Copy old blocks over to new block array, should be a util to copy/move
     
     Clear();
 
     _blocks = newBlocks;
-    _size = size;
+    _size = newSize;
 }
 
 void BlockSet::Load(const std::string fileName)
@@ -58,27 +60,71 @@ const Block& BlockSet::Get( const glm::ivec3& localCoord )
 
 void BlockSet::Set( const glm::ivec3& localCoord, const Block& block )
 {
-    if ( !_blocks ) throw "Blocks not initialized!";
     const int32_t index = GetIndex(localCoord.x, localCoord.y, localCoord.z);
     _blocks[index] = block;
 }
 
+
 const Block& BlockSet::GetNearestBlock( const glm::vec3& position )
 {
-    if ( !_blocks ) throw "Blocks not initialized!";
-    const int32_t index = GetIndex(position.x*_radius,
-                                   position.y*_radius,
-                                   position.z*_radius);
+    const glm::vec3 offset = -glm::vec3(_size)*_radius;
+    const int32_t index = GetIndex((position.x-offset.x)/(_radius*2.0f),
+                                   (position.y-offset.y)/(_radius*2.0f),
+                                   (position.z-offset.z)/(_radius*2.0f));
     return _blocks[index];
 }
-const glm::vec3 BlockSet::GetNearestBlockCenter( const glm::vec3& position )
+
+const Block& BlockSet::GetSurfaceBlock( const glm::vec3 position )
 {
-    int x = position.x*_radius;
-    int y = position.y*_radius;
-    int z = position.z*_radius;
-    return glm::vec3(x,y,z);
+    glm::vec3 nearestCenter = GetNearestBlockCenter(position);
+    glm::vec3 distanceToNearest = position - nearestCenter;
+    glm::vec3 offsetToNext = glm::normalize(distanceToNearest) * _radius;
+    return GetNearestBlock(position + offsetToNext);
 }
 
+const glm::vec3 BlockSet::GetNearestBlockCenter( const glm::vec3& position )
+{
+    const glm::vec3 offset = -glm::vec3(_size)*_radius;
+    int32_t x = (position.x-offset.x)/(_radius*2.0f);
+    int32_t y = (position.y-offset.y)/(_radius*2.0f);
+    int32_t z = (position.z-offset.z)/(_radius*2.0f);
+    return glm::vec3(x,y,z)*_radius*2.0f + offset + glm::vec3(_radius);
+}
+
+const glm::vec3 BlockSet::GetSurfaceBlockCenter( const glm::vec3& position )
+{
+    glm::vec3 nearestCenter = GetNearestBlockCenter(position);
+    glm::vec3 distanceToNearest = position - nearestCenter;
+    glm::vec3 offsetToNext = glm::normalize(distanceToNearest) * _radius;
+    return GetNearestBlockCenter(position + offsetToNext);
+}
+
+
+void BlockSet::ReplaceType( const Block& oldType, const Block& newType )
+{
+    int volume = _size.x*_size.y*_size.z;
+    
+    for (int i = 0; i < volume; i++)
+    {
+        Block& block = _blocks[i];
+        if (block == oldType)
+        {
+            block = newType;
+        }
+    }
+}
+
+const bool BlockSet::IsWithinBounds( const glm::vec3 position )
+{
+    const glm::vec3 bounds = glm::vec3(_size)*_radius;
+    if (position.x > bounds.x || position.x < -bounds.x ||
+        position.y > bounds.y || position.y < -bounds.y ||
+        position.z > bounds.z || position.z < -bounds.z)
+    {
+        return false;
+    }
+    return true;
+}
 
 const void BlockSet::GenerateMesh(Vertex_XYZW_DSN** verts, int32_t& count) const
 {
@@ -96,15 +142,15 @@ const void BlockSet::GenerateMesh(Vertex_XYZW_DSN** verts, int32_t& count) const
     int totalTVerts = 0;
     const GLfloat occlusion = 0.25;
     const float blockWidth = _radius*2.0;
-    glm::vec3 offset = glm::vec3();
-    
+    const glm::vec3 offset = WorldToLocalOffset();
+
     // View from negative x
     for(int32_t x = _size.x - 1; x >= 0; x--) {
-        for(int y = 0; y < _size.y; y++) {
+        for(int32_t y = 0; y < _size.y; y++) {
             visibility = false;
             for(int32_t z = 0; z < _size.z; z++) {
-                const int32_t blockIndex = GetIndex(x, y, z);
-                const Block& b = _blocks[blockIndex];
+                const Block& b = _blocks[GetIndex(x, y, z)];
+                
                 Vertex_XYZW_DSN* gBuffer = NULL;
                 // Empty or line of sight blocked?
                 if (b == Type_Empty ||
@@ -115,7 +161,7 @@ const void BlockSet::GenerateMesh(Vertex_XYZW_DSN** verts, int32_t& count) const
                 // Separate transparent from opaque verts
                 else if ( b >= Type_Dirt ) { gBuffer = o_verts + totalOVerts; }
                 else { gBuffer = t_verts + totalTVerts; }
-                
+
                 Color diff = ColorForType((Block)b);
                 float spec = SpecularForType((Block)b);
                 int cubeVerts = 0;
@@ -139,14 +185,14 @@ const void BlockSet::GenerateMesh(Vertex_XYZW_DSN** verts, int32_t& count) const
                 Vertex_XYZW_DSN ltf = { pos.x-_radius, pos.y+_radius, pos.z+_radius, occlusion+ltao+lfao+ltfao,
                     diff.r,diff.g,diff.b,diff.a,spec, -1.0f,0.0f,0.0f };
                 
-                bool flipQuad = lbr.w+ltf.w>ltr.w+lbf.w;
+                bool flipQuad = lbr.w+ltf.w > ltr.w+lbf.w;
                 bool potentialMerge = false;
-                if ( visibility && z != 0 ) {
+                if ( visibility && z > 0 ) {
                     if (gBuffer[cubeVerts - 6].w == lbr.w &&
                         gBuffer[cubeVerts - 4].w == ltr.w &&
                         gBuffer[cubeVerts - 2].w == lbf.w &&
                         gBuffer[cubeVerts - 1].w == ltf.w ) {
-                        const Block& b2 = _blocks[blockIndex-1024];
+                        const Block& b2 = _blocks[GetIndex(x, y, z-1)];
                         if ( b == b2 ) potentialMerge = true;
                     }
                 }
@@ -181,23 +227,25 @@ const void BlockSet::GenerateMesh(Vertex_XYZW_DSN** verts, int32_t& count) const
             }
         }
     }
+
     // View from positive x
-    for(int x = 0; x < _size.x; x++) {
-        for(int y = 0; y < _size.y; y++) {
+    for(int32_t x = 0; x < _size.x; x++) {
+        for(int32_t y = 0; y < _size.y; y++) {
             visibility = false;
-            for(int z = 0; z < _size.z; z++) {
-                const int32_t blockIndex = GetIndex(x, y, z);
-                const Block& b = _blocks[blockIndex];
+            for(int32_t z = 0; z < _size.z; z++) {
+                const Block& b = _blocks[GetIndex(x, y, z)];
+                
                 Vertex_XYZW_DSN* gBuffer = NULL;
                 // Empty or line of sight blocked?
-                if ( b == Type_Empty || BlocksVisibility(x+1, y, z, b) ) {
+                if (b == Type_Empty ||
+                    BlocksVisibility(x+1, y, z, b)) {
                     visibility = false;
                     continue;
                 }
                 // Separate transparent from opaque verts
                 else if ( b >= Type_Dirt ) { gBuffer = o_verts + totalOVerts; }
                 else { gBuffer = t_verts + totalTVerts; }
-                
+
                 Color diff = ColorForType((Block)b);
                 float spec = SpecularForType((Block)b);
                 int cubeVerts = 0;
@@ -211,7 +259,7 @@ const void BlockSet::GenerateMesh(Vertex_XYZW_DSN** verts, int32_t& count) const
                 GLfloat rbfao = ( IsOccluder(x+1, y-1, z+1 ) ) ? occlusion : 0.0f;
                 GLfloat rtrao = ( IsOccluder(x+1, y+1, z-1 ) ) ? occlusion : 0.0f;
                 GLfloat rtfao = ( IsOccluder(x+1, y+1, z+1 ) ) ? occlusion : 0.0f;
-                glm::vec3 pos = glm::vec3(x*blockWidth,y*blockWidth,z*blockWidth)+offset;
+                glm::vec3 pos = glm::vec3(x,y,z)*blockWidth+offset;
                 Vertex_XYZW_DSN rbr = { pos.x+_radius, pos.y-_radius, pos.z-_radius, occlusion+rbao+rrao+rbrao,
                     diff.r,diff.g,diff.b,diff.a,spec, 1.0f,0.0f,0.0f };
                 Vertex_XYZW_DSN rbf = { pos.x+_radius, pos.y-_radius, pos.z+_radius, occlusion+rbao+rfao+rbfao,
@@ -221,14 +269,14 @@ const void BlockSet::GenerateMesh(Vertex_XYZW_DSN** verts, int32_t& count) const
                 Vertex_XYZW_DSN rtf = { pos.x+_radius, pos.y+_radius, pos.z+_radius, occlusion+rtao+rfao+rtfao,
                     diff.r,diff.g,diff.b,diff.a,spec, 1.0f,0.0f,0.0f };
                 
-                bool flipQuad = rbr.w+rtf.w>rtr.w+rbf.w;
+                bool flipQuad = rbr.w+rtf.w > rtr.w+rbf.w;
                 bool potentialMerge = false;
-                if ( visibility && z != 0 ) {
+                if ( visibility && z > 0 ) {
                     if (gBuffer[cubeVerts - 6].w == rbr.w &&
                         gBuffer[cubeVerts - 5].w == rtr.w &&
                         gBuffer[cubeVerts - 2].w == rtf.w &&
                         gBuffer[cubeVerts - 1].w == rbf.w ) {
-                        const Block& b2 = _blocks[blockIndex-1024];
+                        const Block& b2 = _blocks[GetIndex(x, y, z-1)];
                         if ( b == b2 ) potentialMerge = true;
                     }
                 }
@@ -263,23 +311,25 @@ const void BlockSet::GenerateMesh(Vertex_XYZW_DSN** verts, int32_t& count) const
             }
         }
     }
+
     // View from negative y
     for(int z = 0; z < _size.z; z++) {
         for(int y = 0; y < _size.y; y++) {
             visibility = false;
             for(int x = 0; x < _size.x; x++) {
-                const int32_t blockIndex = GetIndex(x, y, z);
-                const Block& b = _blocks[blockIndex];
+                const Block& b = _blocks[GetIndex(x, y, z)];
+
                 Vertex_XYZW_DSN* gBuffer = NULL;
                 // Empty or line of sight blocked?
-                if ( b == Type_Empty || BlocksVisibility(x, y-1, z, b) ) {
+                if ( b == Type_Empty ||
+                    BlocksVisibility(x, y-1, z, b) ) {
                     visibility = false;
                     continue;
                 }
                 // Separate transparent from opaque verts
                 else if ( b >= Type_Dirt ) { gBuffer = o_verts + totalOVerts; }
                 else { gBuffer = t_verts + totalTVerts; }
-                
+
                 Color diff = ColorForType((Block)b);
                 float spec = SpecularForType((Block)b);
                 int cubeVerts = 0;
@@ -293,7 +343,7 @@ const void BlockSet::GenerateMesh(Vertex_XYZW_DSN** verts, int32_t& count) const
                 GLfloat lbfao = ( IsOccluder(x-1, y-1, z+1 ) ) ? occlusion : 0.0f;
                 GLfloat rbrao = ( IsOccluder(x+1, y-1, z-1 ) ) ? occlusion : 0.0f;
                 GLfloat rbfao = ( IsOccluder(x+1, y-1, z+1 ) ) ? occlusion : 0.0f;
-                glm::vec3 pos = glm::vec3(x*blockWidth,y*blockWidth,z*blockWidth)+offset;
+                glm::vec3 pos = glm::vec3(x,y,z)*blockWidth+offset;
                 Vertex_XYZW_DSN lbr = { pos.x-_radius, pos.y-_radius, pos.z-_radius, occlusion+lbao+brao+lbrao,
                     diff.r,diff.g,diff.b,diff.a,spec, 0.0f,-1.0f,0.0f };
                 Vertex_XYZW_DSN lbf = { pos.x-_radius, pos.y-_radius, pos.z+_radius, occlusion+lbao+bfao+lbfao,
@@ -310,7 +360,7 @@ const void BlockSet::GenerateMesh(Vertex_XYZW_DSN** verts, int32_t& count) const
                         gBuffer[cubeVerts-2].w == rbr.w &&
                         gBuffer[cubeVerts-4].w == lbf.w &&
                         gBuffer[cubeVerts-6].w == lbr.w ) {
-                        const Block& b2 = _blocks[blockIndex-32];
+                        const Block& b2 = _blocks[GetIndex(x-1, y, z)];
                         if ( b == b2 ) potentialMerge = true;
                     }
                 }
@@ -345,23 +395,25 @@ const void BlockSet::GenerateMesh(Vertex_XYZW_DSN** verts, int32_t& count) const
             }
         }
     }
+
     // View from positive y
     for(int z = 0; z < _size.z; z++) {
         for(int y = 0; y < _size.y; y++) {
             visibility = false;
             for(int x = 0; x < _size.x; x++) {
-                const int32_t blockIndex = GetIndex(x, y, z);
-                const Block& b = _blocks[blockIndex];
+                const Block& b = _blocks[GetIndex(x, y, z)];
+
                 Vertex_XYZW_DSN* gBuffer = NULL;
                 // Empty or line of sight blocked?
-                if ( b == Type_Empty || BlocksVisibility(x, y+1, z, b) ) {
+                if ( b == Type_Empty ||
+                    BlocksVisibility(x, y+1, z, b) ) {
                     visibility = false;
                     continue;
                 }
                 // Separate transparent from opaque verts
                 else if ( b >= Type_Dirt ) { gBuffer = o_verts + totalOVerts; }
                 else { gBuffer = t_verts + totalTVerts; }
-                
+
                 Color diff = ColorForType((Block)b);
                 float spec = SpecularForType((Block)b);
                 int cubeVerts = 0;
@@ -375,7 +427,7 @@ const void BlockSet::GenerateMesh(Vertex_XYZW_DSN** verts, int32_t& count) const
                 GLfloat ltfao = ( IsOccluder(x-1, y+1, z+1 ) ) ? occlusion : 0.0f;
                 GLfloat rtrao = ( IsOccluder(x+1, y+1, z-1 ) ) ? occlusion : 0.0f;
                 GLfloat rtfao = ( IsOccluder(x+1, y+1, z+1 ) ) ? occlusion : 0.0f;
-                glm::vec3 pos = glm::vec3(x*blockWidth,y*blockWidth,z*blockWidth)+offset;
+                glm::vec3 pos = glm::vec3(x,y,z)*blockWidth+offset;
                 Vertex_XYZW_DSN ltr = { pos.x-_radius, pos.y+_radius, pos.z-_radius, occlusion+ltao+trao+ltrao,
                     diff.r,diff.g,diff.b,diff.a,spec, 0.0f,1.0f,0.0f };
                 Vertex_XYZW_DSN ltf = { pos.x-_radius, pos.y+_radius, pos.z+_radius, occlusion+ltao+tfao+ltfao,
@@ -385,14 +437,14 @@ const void BlockSet::GenerateMesh(Vertex_XYZW_DSN** verts, int32_t& count) const
                 Vertex_XYZW_DSN rtf = { pos.x+_radius, pos.y+_radius, pos.z+_radius, occlusion+rtao+tfao+rtfao,
                     diff.r,diff.g,diff.b,diff.a,spec, 0.0f,1.0f,0.0f };
                 
-                bool flipQuad = ltr.w+rtf.w>ltf.w+rtr.w;
+                bool flipQuad = ltr.w+rtf.w > ltf.w+rtr.w;
                 bool potentialMerge = false;
-                if ( visibility && z != 0 ) {
+                if ( visibility && x > 0 ) {
                     if (gBuffer[cubeVerts - 6].w == ltr.w &&
                         gBuffer[cubeVerts - 5].w == ltf.w &&
                         gBuffer[cubeVerts - 2].w == rtf.w &&
                         gBuffer[cubeVerts - 1].w == rtr.w) {
-                        const Block& b2 = _blocks[blockIndex-32];
+                        const Block& b2 = _blocks[GetIndex(x-1, y, z)];
                         if ( b == b2 ) potentialMerge = true;
                     }
                 }
@@ -427,25 +479,27 @@ const void BlockSet::GenerateMesh(Vertex_XYZW_DSN** verts, int32_t& count) const
             }
         }
     }
+
     // View from negative z
     for(int z = _size.z-1; z > -1 ; z--) {
         for(int y = 0; y < _size.y; y++) {
             visibility = false;
             for(int x = 0; x < _size.x; x++) {
-                const int32_t blockIndex = GetIndex(x, y, z);
-                const Block& b = _blocks[blockIndex];
+                const Block& b = _blocks[GetIndex(x, y, z)];
+
                 Vertex_XYZW_DSN* gBuffer = NULL;
                 // Empty or line of sight blocked?
-                if ( b == Type_Empty || BlocksVisibility(x, y, z-1, b) ) {
+                if ( b == Type_Empty ||
+                    BlocksVisibility(x, y, z-1, b) ) {
                     visibility = false;
                     continue;
                 }
                 // Separate transparent from opaque verts
-                else if ( b >= Type_Dirt ) { gBuffer = o_verts + totalOVerts; }
+                if ( b >= Type_Dirt ) { gBuffer = o_verts + totalOVerts; }
                 else { gBuffer = t_verts + totalTVerts; }
-                
-                Color diff = ColorForType((Block)b);
-                float spec = SpecularForType((Block)b);
+
+                Color diff = ColorForType(b);
+                float spec = SpecularForType(b);
                 int cubeVerts = 0;
                 // Each vertex has 4 neighbors to be checked for ambient occlusion
                 // These are the amounts for each neighbor node
@@ -457,7 +511,7 @@ const void BlockSet::GenerateMesh(Vertex_XYZW_DSN** verts, int32_t& count) const
                 GLfloat ltrao = ( IsOccluder(x-1, y+1, z-1 ) ) ? occlusion : 0.0f;
                 GLfloat rbrao = ( IsOccluder(x+1, y-1, z-1 ) ) ? occlusion : 0.0f;
                 GLfloat rtrao = ( IsOccluder(x+1, y+1, z-1 ) ) ? occlusion : 0.0f;
-                glm::vec3 pos = glm::vec3(x*blockWidth,y*blockWidth,z*blockWidth)+offset;
+                glm::vec3 pos = glm::vec3(x,y,z)*blockWidth+offset;
                 Vertex_XYZW_DSN lbr = { pos.x-_radius, pos.y-_radius, pos.z-_radius, occlusion+brao+lrao+lbrao,
                     diff.r,diff.g,diff.b,diff.a,spec, 0.0f,0.0f,-1.0f };
                 Vertex_XYZW_DSN ltr = { pos.x-_radius, pos.y+_radius, pos.z-_radius, occlusion+trao+lrao+ltrao,
@@ -467,14 +521,14 @@ const void BlockSet::GenerateMesh(Vertex_XYZW_DSN** verts, int32_t& count) const
                 Vertex_XYZW_DSN rtr = { pos.x+_radius, pos.y+_radius, pos.z-_radius, occlusion+trao+rrao+rtrao,
                     diff.r,diff.g,diff.b,diff.a,spec, 0.0f,0.0f,-1.0f };
                 
-                bool flipQuad = lbr.w+rtr.w>ltr.w+rbr.w;
+                bool flipQuad = lbr.w+rtr.w > ltr.w+rbr.w;
                 bool potentialMerge = false;
-                if ( visibility && x != 0 ) {
+                if ( visibility && x > 0 ) {
                     if (gBuffer[cubeVerts - 6].w == lbr.w &&
                         gBuffer[cubeVerts - 5].w == ltr.w &&
                         gBuffer[cubeVerts - 2].w == rtr.w &&
                         gBuffer[cubeVerts - 1].w == rbr.w ) {
-                        const Block& b2 = _blocks[blockIndex-32];
+                        const Block& b2 = _blocks[GetIndex(x-1, y, z)];
                         if ( b == b2 ) potentialMerge = true;
                     }
                 }
@@ -509,13 +563,14 @@ const void BlockSet::GenerateMesh(Vertex_XYZW_DSN** verts, int32_t& count) const
             }
         }
     }
+
     // View from positive z
     for(int z = 0; z < _size.z; z++) {
         for(int y = 0; y < _size.y; y++) {
             visibility = false;
             for(int x = 0; x < _size.x; x++) {
-                const int32_t blockIndex = GetIndex(x, y, z);
-                const Block& b = _blocks[blockIndex];
+                const Block& b = _blocks[GetIndex(x, y, z)];
+
                 Vertex_XYZW_DSN* gBuffer = NULL;
                 // Empty or line of sight blocked?
                 if ( b == Type_Empty || BlocksVisibility(x, y, z+1, b) ) {
@@ -523,9 +578,9 @@ const void BlockSet::GenerateMesh(Vertex_XYZW_DSN** verts, int32_t& count) const
                     continue;
                 }
                 // Separate transparent from opaque verts
-                else if ( b >= Type_Dirt ) { gBuffer = o_verts + totalOVerts; }
+                if ( b >= Type_Dirt ) { gBuffer = o_verts + totalOVerts; }
                 else { gBuffer = t_verts + totalTVerts; }
-                
+
                 Color diff = ColorForType(b);
                 float spec = SpecularForType(b);
                 int cubeVerts = 0;
@@ -539,7 +594,7 @@ const void BlockSet::GenerateMesh(Vertex_XYZW_DSN** verts, int32_t& count) const
                 GLfloat ltfao = ( IsOccluder(x-1, y+1, z+1 ) ) ? occlusion : 0.0f;
                 GLfloat rbfao = ( IsOccluder(x+1, y-1, z+1 ) ) ? occlusion : 0.0f;
                 GLfloat rtfao = ( IsOccluder(x+1, y+1, z+1 ) ) ? occlusion : 0.0f;
-                glm::vec3 pos = glm::vec3(x*blockWidth,y*blockWidth,z*blockWidth)+offset;
+                glm::vec3 pos = glm::vec3(x,y,z)*blockWidth+offset;
                 Vertex_XYZW_DSN lbf = { pos.x-_radius, pos.y-_radius, pos.z+_radius, occlusion+bfao+lfao+lbfao,
                     diff.r,diff.g,diff.b,diff.a,spec, 0.0f,0.0f,1.0f };
                 Vertex_XYZW_DSN ltf = { pos.x-_radius, pos.y+_radius, pos.z+_radius, occlusion+tfao+lfao+ltfao,
@@ -549,14 +604,14 @@ const void BlockSet::GenerateMesh(Vertex_XYZW_DSN** verts, int32_t& count) const
                 Vertex_XYZW_DSN rtf = { pos.x+_radius, pos.y+_radius, pos.z+_radius, occlusion+tfao+rfao+rtfao,
                     diff.r,diff.g,diff.b,diff.a,spec, 0.0f,0.0f,1.0f };
                 
-                bool flipQuad = lbf.w+rtf.w>ltf.w+rbf.w;
+                bool flipQuad = lbf.w+rtf.w > ltf.w+rbf.w;
                 bool potentialMerge = false;
-                if ( visibility && x != 0 ) {
+                if ( visibility && x > 0 ) {
                     if (gBuffer[cubeVerts - 6].w == ltf.w &&
                         gBuffer[cubeVerts - 5].w == lbf.w &&
                         gBuffer[cubeVerts - 2].w == rbf.w &&
                         gBuffer[cubeVerts - 1].w == rtf.w ) {
-                        const Block& b2 = _blocks[blockIndex-32];
+                        const Block& b2 = _blocks[GetIndex(x-1, y, z)];
                         if ( b == b2 ) potentialMerge = true;
                     }
                 }
@@ -592,25 +647,23 @@ const void BlockSet::GenerateMesh(Vertex_XYZW_DSN** verts, int32_t& count) const
         }
     }
 
-    if ( totalOVerts > 0 || totalTVerts > 0 )
-    {
-        count = totalOVerts + totalTVerts;
-        *verts = new Vertex_XYZW_DSN[count];
+    count = totalOVerts + totalTVerts;
 
-        //        printf("[Chunk] at %i,%i,%i - %i verts cached\n", _coord.x,_coord.y,_coord.z, numVerts);
+    if (count > 0)
+    {
         
-        if ( totalOVerts ) memcpy( *verts, o_verts, sizeof(Vertex_XYZW_DSN)*totalOVerts);
-        if ( totalTVerts ) memcpy( &(*verts)[totalOVerts], t_verts, sizeof(Vertex_XYZW_DSN)*totalTVerts);
+        *verts = new Vertex_XYZW_DSN[count];
+        
+        if ( totalOVerts )
+            memcpy( *verts, o_verts, sizeof(Vertex_XYZW_DSN)*totalOVerts);
+        if ( totalTVerts )
+            memcpy( &(*verts)[totalOVerts], t_verts, sizeof(Vertex_XYZW_DSN)*totalTVerts);
     }
     
-    if ( totalOVerts >= maxVerts || totalTVerts >= maxVerts ) {
-        printf("[BlockSet] at %i,%i/%i  -- OVERFLOW!!! --\n",totalOVerts,totalTVerts,maxVerts);
-    }
-    
+//    printf("[BlockSet] meshed %i opaque, %i transparent - max %i, %lu bytes \n",
+//           totalOVerts,totalTVerts,maxVerts, sizeof(Vertex_XYZW_DSN)*totalOVerts);
+
     delete[] o_verts;
-    o_verts = NULL;
     delete[] t_verts;
-    t_verts = NULL;
-    
 }
 

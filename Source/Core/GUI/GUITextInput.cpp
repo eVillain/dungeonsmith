@@ -11,16 +11,14 @@
 
 namespace GUI
 {
-    GUITextInput::GUITextInput(const int posX, const  int posY,
-                               const int width, const int height,
+    GUITextInput::GUITextInput(const glm::ivec2& position,
+                               const glm::ivec2& size,
                                const int depth,
                                const std::string defaultText )  :
-    GUIWidget(posX, posY, width, height, depth),
-    _label(defaultText, glm::vec3(posX-(width/2)+8,posY-(height/4),depth+1)),
+    GUIWidget(position, size, depth),
+    _label(defaultText, glm::vec3(position.x-(size.x/2)+8,position.y-(size.y/4),depth+1)),
     _inputText(defaultText),
-    _defaultText(defaultText),
-    _textInputFunctor(this,&GUITextInput::OnTextInputEvent),
-    _eventFunctor(this, &GUITextInput::OnEvent)
+    _defaultText(defaultText)
     {
         _textInputActive = false;
         _behavior = nullptr;
@@ -33,13 +31,13 @@ namespace GUI
         
     }
     
-    void GUITextInput::OnTextInputEvent( const std::string& inputText )
+    void GUITextInput::OnTextInput( const std::string& inputText )
     {
         _inputText = inputText;
         _label.SetText(_inputText);
     }
     
-    bool GUITextInput::OnEvent( const typeInputEvent& theEvent, const float& amount )
+    bool GUITextInput::OnEvent( const std::string& theEvent, const float& amount )
     {
         if ( theEvent == "back" && _textInputActive )
         {
@@ -67,16 +65,18 @@ namespace GUI
     void GUITextInput::Draw()
     {
         if ( !_visible ) return;
+        GUIWidget::Draw();
+        
         Primitives2D& primitives = *Locator::getRenderer().DrawPrimitives2D();
         
-        glm::ivec2 drawPos = glm::ivec2(x-(w*0.5), y-(h*0.5));
+//        glm::ivec2 drawPos = glm::ivec2(_position.x-(_size.x*0.5), _position.y-(_size.y*0.5));
         
-        // Pixel perfect outer border (should render with 1px shaved off corners)
-        primitives.Line(glm::vec2(drawPos.x,drawPos.y), glm::vec2(drawPos.x,drawPos.y+h), COLOR_UI_BORDER_OUTER, COLOR_UI_BORDER_OUTER, z);  // L
-        primitives.Line(glm::vec2(drawPos.x,drawPos.y+h), glm::vec2(drawPos.x+w,drawPos.y+h), COLOR_UI_BORDER_OUTER, COLOR_UI_BORDER_OUTER, z);  // T
-        primitives.Line(glm::vec2(drawPos.x+w+1,drawPos.y+h), glm::vec2(drawPos.x+w+1,drawPos.y), COLOR_UI_BORDER_OUTER, COLOR_UI_BORDER_OUTER, z);  // R
-        primitives.Line(glm::vec2(drawPos.x+w,drawPos.y-1), glm::vec2(drawPos.x,drawPos.y-1), COLOR_UI_BORDER_OUTER, COLOR_UI_BORDER_OUTER, z);  // B
-        
+//        // Pixel perfect outer border (should render with 1px shaved off corners)
+//        primitives.Line(glm::vec2(drawPos.x,drawPos.y), glm::vec2(drawPos.x,drawPos.y+h), COLOR_UI_BORDER_OUTER, COLOR_UI_BORDER_OUTER, z);  // L
+//        primitives.Line(glm::vec2(drawPos.x,drawPos.y+h), glm::vec2(drawPos.x+w,drawPos.y+h), COLOR_UI_BORDER_OUTER, COLOR_UI_BORDER_OUTER, z);  // T
+//        primitives.Line(glm::vec2(drawPos.x+w+1,drawPos.y+h), glm::vec2(drawPos.x+w+1,drawPos.y), COLOR_UI_BORDER_OUTER, COLOR_UI_BORDER_OUTER, z);  // R
+//        primitives.Line(glm::vec2(drawPos.x+w,drawPos.y-1), glm::vec2(drawPos.x,drawPos.y-1), COLOR_UI_BORDER_OUTER, COLOR_UI_BORDER_OUTER, z);  // B
+//        
         // Inner gradient fill
         Color gradColTop = COLOR_UI_GRADIENT_TOP;
         Color gradColBottom = COLOR_UI_GRADIENT_BOTTOM;
@@ -93,12 +93,19 @@ namespace GUI
                 gradColBottom *= 1.1;
             }
         }
-        primitives.RectangleGradientY(glm::vec2(x,y), glm::vec2(w,h), gradColTop, gradColBottom, z);
+        primitives.RectangleGradientY(glm::vec2(_position.x,_position.y),
+                                      glm::vec2(_size.x,_size.y),
+                                      gradColTop,
+                                      gradColBottom,
+                                      _position.z);
         
         // Inside border
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        primitives.RectOutline(glm::vec2(x,y), glm::vec2(w-2,h-2), COLOR_UI_BORDER_INNER, z+1);
+        primitives.RectOutline(glm::vec2(_position.x,_position.y),
+                               glm::vec2(_size.x-2,_size.y-2),
+                               COLOR_UI_BORDER_INNER,
+                               _position.z+1);
         
         // Render blinking cursor
         if ( _textInputActive ) {
@@ -115,9 +122,9 @@ namespace GUI
                 glm::vec2 textSize = _label.GetSize();
                 Primitives2D& primitives = *Locator::getRenderer().DrawPrimitives2D();
                 float cursorX = _label.position.x+textSize.x + 4;
-                primitives.Line(glm::vec2(cursorX, y-8+(h-TEXTSIZE)*0.6f),
-                                glm::vec2(cursorX , y-8+h-(h-TEXTSIZE)*0.6f),
-                                COLOR_WHITE, COLOR_WHITE, z);
+                primitives.Line(glm::vec2(cursorX, _position.y-8+(_size.y-TEXTSIZE)*0.6f),
+                                glm::vec2(cursorX , _position.y-8+_size.y-(_size.y-TEXTSIZE)*0.6f),
+                                COLOR_WHITE, COLOR_WHITE, _position.z);
             }
         }
     }
@@ -167,8 +174,8 @@ namespace GUI
     void GUITextInput::StartTextInput()
     {
         if ( _textInputActive ) return;
-        Input::StartTextInput(&_textInputFunctor);
-        Input::RegisterEventObserver(&_eventFunctor);
+        Input::StartTextInput(this);
+        Input::RegisterEventObserver(this);
 
         _textInputActive = true;
         if ( _inputText == _defaultText )
@@ -181,8 +188,8 @@ namespace GUI
     {
         if ( !_textInputActive ) return;
         _textInputActive = false;
-        Input::StopTextInput(&_textInputFunctor);
-        Input::UnRegisterEventObserver(&_eventFunctor);
+        Input::StopTextInput(this);
+        Input::UnRegisterEventObserver(this);
     }
     
     void GUITextInput::ClearText()

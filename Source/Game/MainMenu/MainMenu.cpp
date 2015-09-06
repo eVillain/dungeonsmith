@@ -15,8 +15,7 @@
 #include "LocalGame.h"
 #include "Editor.h"
 
-MainMenu::MainMenu() : Scene("Main Menu"),
-eventFunctor(this, &MainMenu::OnEvent)
+MainMenu::MainMenu() : Scene("Main Menu")
 {
     _buttonStartGame = nullptr;
     _buttonPlanetoid = nullptr;
@@ -33,7 +32,7 @@ void MainMenu::Initialize()
 {
     Scene::Initialize();
     
-    Input::RegisterEventObserver(&eventFunctor);
+    Input::RegisterEventObserver(this);
     
     CreateButtons();
 }
@@ -57,7 +56,7 @@ void MainMenu::Pause()
     {
         Scene::Pause();
     }
-    Input::UnRegisterEventObserver(&eventFunctor);
+    Input::UnRegisterEventObserver(this);
     
     RemoveButtons();
 }
@@ -68,7 +67,7 @@ void MainMenu::Resume()
     {
         Scene::Resume();
     }
-    Input::RegisterEventObserver(&eventFunctor);
+    Input::RegisterEventObserver(this);
     
     CreateButtons();
 }
@@ -82,26 +81,35 @@ void MainMenu::Draw()
 //    Locator::getRenderer().Primitives()->RectFilled(glm::vec2(0,0), glm::vec2(1000,1000), COLOR_WHITE, 2);
 }
 
-bool MainMenu::OnEvent(const typeInputEvent& event, const float& amount)
+bool MainMenu::OnEvent(const std::string& event, const float& amount)
 {
     return false;
 }
 
 void MainMenu::CreateButtons()
 {
-    _buttonStartGame = new GUI::GUIButtonLabeled("Start Game", 0,0,200,40,0);
+    _buttonStartGame = new GUI::GUIButtonLabeled("Start Game",
+                                                 glm::ivec2(0,0),
+                                                 glm::ivec2(200,40),
+                                                 0);
     GUI::ButtonBehaviorLambda* startGameBehavior = new GUI::ButtonBehaviorLambda([](){
         Locator::getSceneManager().AddActiveScene( new LocalGame());
     });
     _buttonStartGame->SetBehavior(startGameBehavior);
     
-    _buttonPlanetoid = new GUI::GUIButtonLabeled("Planetoid", 0,40,200,40,0);
+    _buttonPlanetoid = new GUI::GUIButtonLabeled("Planetoid",
+                                                 glm::ivec2(0,40),
+                                                 glm::ivec2(200,40),
+                                                 0);
     GUI::ButtonBehaviorLambda* startPlanetoidBehavior = new GUI::ButtonBehaviorLambda([](){
         Locator::getSceneManager().AddActiveScene( new Planetoid());
     });
     _buttonPlanetoid->SetBehavior(startPlanetoidBehavior);
 
-    _buttonStartEditor = new GUI::GUIButtonLabeled("Editor", 0,80,200,40,0);
+    _buttonStartEditor = new GUI::GUIButtonLabeled("Editor",
+                                                   glm::ivec2(0,80),
+                                                   glm::ivec2(200,40),
+                                                   0);
     GUI::ButtonBehaviorLambda* startEditorBehavior = new GUI::ButtonBehaviorLambda([](){
         Locator::getSceneManager().AddActiveScene( new Editor());
     });

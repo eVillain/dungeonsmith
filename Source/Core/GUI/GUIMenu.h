@@ -12,14 +12,17 @@
 #include "GUIWidget.h"
 #include "ButtonBehavior.h"
 
+const static unsigned int DEFAULT_MENU_PADDING_X = 2;
+const static unsigned int DEFAULT_MENU_PADDING_Y = 2;
+
 namespace GUI
 {
     class GUIMenu : public GUIWidget
     {
     public:
-        GUIMenu(int posX, int posY,
-                int width, int height,
-                int depth);
+        GUIMenu(const glm::ivec2& position,
+                const glm::ivec2& size,
+                const int depth);
         ~GUIMenu();
         
         // Overrides from GUIWidget
@@ -31,9 +34,11 @@ namespace GUI
 
         virtual void AddWidget( GUIWidget* widget );
         
-        virtual const int GetHeight();
+        virtual const unsigned int GetHeight();
     private:
         std::vector<GUIWidget*> _widgets;
+        unsigned int _paddingX, _paddingY;
+        const unsigned int GetContentHeight() const;
         
     };
 }   /* namespace GUI */

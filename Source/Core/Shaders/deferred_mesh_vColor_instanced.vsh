@@ -70,7 +70,9 @@ void main(void) {
     gl_Position = MVP*(vec4(vertex.xyz,1));
     fragment.pos = vertex.xyz;
     
-    fragment.diffuse = v_diffColor*instance_diffuse;
+    // v_vertex.w contains vertex light intensity
+    // (for minecraft-style ambient occlusion)
+    fragment.diffuse = vec4(v_diffColor.rgb*v_vertex.w, v_diffColor.a);
     fragment.specular = vec4(vec3(v_specIntensity*instance_specular),v_diffColor.a*instance_diffuse.a);
     fragment.normal = normal;
     fragment.depth = gl_Position.z;

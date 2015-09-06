@@ -19,8 +19,8 @@ namespace GUI
     {
     public:
         GUIButtonLabeled(const std::string& newText,
-                         const int posX, const int posY,
-                         const int width, const int height,
+                         const glm::ivec2& position,
+                         const glm::ivec2& size,
                          const int depth);
         ~GUIButtonLabeled();
         

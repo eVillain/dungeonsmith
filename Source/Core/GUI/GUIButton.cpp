@@ -13,8 +13,10 @@
 
 namespace GUI
 {
-    GUIButton::GUIButton(int posX, int posY, int width, int height, int depth) :
-    GUIWidget(posX, posY, width, height, depth)
+    GUIButton::GUIButton(const glm::ivec2& position,
+                         const glm::ivec2& size,
+                         const int depth) :
+    GUIWidget(position, size, depth)
     {
         _pressed = false;
         _behavior = nullptr;
@@ -34,13 +36,29 @@ namespace GUI
         if ( !_visible ) return;
         Primitives2D& primitives = *Locator::getRenderer().DrawPrimitives2D();
         
-        glm::ivec2 drawPos = glm::ivec2(x-(w*0.5), y-(h*0.5));
+        glm::ivec2 drawPos = glm::ivec2(_position.x-(_size.x*0.5), _position.y-(_size.y*0.5));
         
         // Pixel perfect outer border (should render with 1px shaved off corners)
-        primitives.Line(glm::vec2(drawPos.x,drawPos.y), glm::vec2(drawPos.x,drawPos.y+h), COLOR_UI_BORDER_OUTER, COLOR_UI_BORDER_OUTER, z);  // L
-        primitives.Line(glm::vec2(drawPos.x,drawPos.y+h), glm::vec2(drawPos.x+w,drawPos.y+h), COLOR_UI_BORDER_OUTER, COLOR_UI_BORDER_OUTER, z);  // T
-        primitives.Line(glm::vec2(drawPos.x+w+1,drawPos.y+h), glm::vec2(drawPos.x+w+1,drawPos.y), COLOR_UI_BORDER_OUTER, COLOR_UI_BORDER_OUTER, z);  // R
-        primitives.Line(glm::vec2(drawPos.x+w,drawPos.y-1), glm::vec2(drawPos.x,drawPos.y-1), COLOR_UI_BORDER_OUTER, COLOR_UI_BORDER_OUTER, z);  // B
+        primitives.Line(glm::vec2(drawPos.x,drawPos.y),
+                        glm::vec2(drawPos.x,drawPos.y+_size.y),
+                        COLOR_UI_BORDER_OUTER,
+                        COLOR_UI_BORDER_OUTER,
+                        _position.z);  // L
+        primitives.Line(glm::vec2(drawPos.x,drawPos.y+_size.y),
+                        glm::vec2(drawPos.x+_size.x,drawPos.y+_size.y),
+                        COLOR_UI_BORDER_OUTER,
+                        COLOR_UI_BORDER_OUTER,
+                        _position.z);  // T
+        primitives.Line(glm::vec2(drawPos.x+_size.x+1,drawPos.y+_size.y),
+                        glm::vec2(drawPos.x+_size.x+1,drawPos.y),
+                        COLOR_UI_BORDER_OUTER,
+                        COLOR_UI_BORDER_OUTER,
+                        _position.z);  // R
+        primitives.Line(glm::vec2(drawPos.x+_size.x,drawPos.y-1),
+                        glm::vec2(drawPos.x,drawPos.y-1),
+                        COLOR_UI_BORDER_OUTER,
+                        COLOR_UI_BORDER_OUTER,
+                        _position.z);  // B
         
         // Inner gradient fill
         Color gradColTop = COLOR_UI_GRADIENT_TOP;
@@ -58,12 +76,18 @@ namespace GUI
                 gradColBottom *= 1.1;
             }
         }
-        primitives.RectangleGradientY(glm::vec2(x,y), glm::vec2(w,h), gradColTop, gradColBottom, z);
+        primitives.RectangleGradientY(glm::vec2(_position.x,_position.y),
+                                      glm::vec2(_size.x,_size.y),
+                                      gradColTop, gradColBottom,
+                                      _position.z);
         
         // Inside border
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        primitives.RectOutline(glm::vec2(x,y), glm::vec2(w-2,h-2), COLOR_UI_BORDER_INNER, z+1);
+        primitives.RectOutline(glm::vec2(_position.x,_position.y),
+                               glm::vec2(_size.x-2,_size.y-2),
+                               COLOR_UI_BORDER_INNER,
+                               _position.z+1);
     }
     
     void GUIButton::Update()

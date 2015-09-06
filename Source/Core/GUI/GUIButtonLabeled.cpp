@@ -11,11 +11,11 @@
 namespace GUI
 {
     GUIButtonLabeled::GUIButtonLabeled(const std::string& text,
-                                       const int posX, const int posY,
-                                       const int width, const int height,
+                                       const glm::ivec2& position,
+                                       const glm::ivec2& size,
                                        const int depth) :
-    GUIButton(posX, posY, width, height, depth),
-    _label(text, glm::vec3(posX - (width/2) + 4,posY,depth+1))
+    GUIButton(position, size, depth),
+    _label(text, glm::vec3(position.x - (_size.x/2) + 4,position.y,depth+1))
     { }
     
     GUIButtonLabeled::~GUIButtonLabeled()

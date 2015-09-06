@@ -17,9 +17,9 @@ namespace GUI
     class GUIButton : public GUIWidget
     {
     public:
-        GUIButton(int posX, int posY,
-                  int width, int height,
-                  int depth);
+        GUIButton(const glm::ivec2& position,
+                  const glm::ivec2& size,
+                  const int depth);
         ~GUIButton();
         
         // Overrides from GUIWidget

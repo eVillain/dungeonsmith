@@ -28,14 +28,10 @@
 #include "Particles.h"
 #include "FileUtil.h"
 
-ParticleEditor::ParticleEditor() :
-Scene("Editor"),
-
-_eventFunctor(this, &ParticleEditor::OnEvent),
-_mouseFunctor(this, &ParticleEditor::OnMouse)
+ParticleEditor::ParticleEditor() : Scene("Editor")
 {
-    Input::RegisterEventObserver(&_eventFunctor);
-    Input::RegisterMouseObserver(&_mouseFunctor);
+    Input::RegisterEventObserver(this);
+    Input::RegisterMouseObserver(this);
 
     optionsMenu = NULL;
     fileMenu = NULL;
@@ -55,8 +51,8 @@ _mouseFunctor(this, &ParticleEditor::OnMouse)
 }
 ParticleEditor::~ParticleEditor()
 {
-    Input::UnRegisterEventObserver(&_eventFunctor);
-    Input::UnRegisterMouseObserver(&_mouseFunctor);
+    Input::UnRegisterEventObserver(this);
+    Input::UnRegisterMouseObserver(this);
 
     Locator::getParticles().RemoveSystem(m_particleSys);
 }
@@ -75,8 +71,8 @@ void ParticleEditor::Pause( void )
     {
         Scene::Pause();
         RemoveEditor();
-        Input::UnRegisterEventObserver(&_eventFunctor);
-        Input::UnRegisterMouseObserver(&_mouseFunctor);
+        Input::UnRegisterEventObserver(this);
+        Input::UnRegisterMouseObserver(this);
     }
 
 }
@@ -86,8 +82,8 @@ void ParticleEditor::Resume( void )
     {
         Scene::Resume();
         ShowEditor();
-        Input::RegisterEventObserver(&_eventFunctor);
-        Input::RegisterMouseObserver(&_mouseFunctor);
+        Input::RegisterEventObserver(this);
+        Input::RegisterMouseObserver(this);
     }
 }
 void ParticleEditor::Release()
@@ -486,38 +482,38 @@ void ParticleEditor::UpdateMovement() {
     camera.CameraRotate(rotationX, rotationY);
 }
 
-bool ParticleEditor::OnEvent(const typeInputEvent &theEvent, const float &amount)
+bool ParticleEditor::OnEvent(const std::string& event, const float &amount)
 {
-    if (theEvent == "MoveForward") {
+    if (event == "MoveForward") {
         joyMoveInput.y += amount;
-    } else if (theEvent == "MoveBackward") {
+    } else if (event == "MoveBackward") {
         joyMoveInput.y += -amount;
-    } else if (theEvent == "MoveLeft") {
+    } else if (event == "MoveLeft") {
         joyMoveInput.x += -amount;
-    } else if (theEvent == "MoveRight") {
+    } else if (event == "MoveRight") {
         joyMoveInput.x += amount;
-    } else if (theEvent == "MoveUp") {
+    } else if (event == "MoveUp") {
         joyMoveInput.y += -amount;
-    } else if (theEvent == "MoveDown") {
+    } else if (event == "MoveDown") {
         joyMoveInput.y += amount;
     }
     else if ( amount == 1.0 ) {
-        if ( theEvent == "Shoot" )
+        if ( event == "Shoot" )
         {
 //            printf("Editor has been clicked\n");
         }
 
     } else if ( amount == -1.0 ) {
-//        if ( theEvent == "ShowConsole" ) {
+//        if ( event == "ShowConsole" ) {
 //            Console::ToggleVisibility();
-//        } else if (theEvent == "GrabCursor" ) {
+//        } else if (event == "GrabCursor" ) {
 //            m_hyperVisor.GetOptions()->GetOptionDataPtr<bool>("r_grabCursor") = !m_hyperVisor.GetOptions()->GetOptionDataPtr<bool>("r_grabCursor");
 //            if ( m_hyperVisor.GetOptions()->GetOptionDataPtr<bool>("r_grabCursor") ) {
 //                glfwSetInputMode(m_hyperVisor.GetRenderer()->GetWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 //            } else {
 //                glfwSetInputMode(m_hyperVisor.GetRenderer()->GetWindow(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 //            }
-//        } else if ( theEvent == "Escape" ) {
+//        } else if ( event == "Escape" ) {
 //            if ( Console::isVisible() ) {
 //                Console::ToggleVisibility();
 //            }
@@ -531,7 +527,7 @@ bool ParticleEditor::OnEvent(const typeInputEvent &theEvent, const float &amount
     return false;
 }
 
-bool ParticleEditor::OnMouse(const int &x, const int &y) {
+bool ParticleEditor::OnMouse(const glm::ivec2& coord) {
 //    double midWindowX = m_hyperVisor.GetOptions()->GetOptionDataPtr<int>("r_resolutionX") / 2.0;     // Middle of the window horizontally
 //    double midWindowY = m_hyperVisor.GetOptions()->GetOptionDataPtr<int>("r_resolutionY") / 2.0;    // Middle of the window vertically
 //    if ( m_hyperVisor.GetOptions()->GetOptionDataPtr<bool>("r_grabCursor") ) {

@@ -11,6 +11,7 @@
 //  Copyright (c) 2013 The Drudgerist. All rights reserved.
 //
 
+#include "RenderDefines.h"
 #include <string>
 #include <vector>
 
@@ -19,14 +20,14 @@ namespace GUI
     class GUIWidget
     {
     public:
-        GUIWidget(const int posX, const  int posY,
-                  const int width, const int height,
+        GUIWidget(const glm::ivec2& position,
+                  const glm::ivec2& size,
                   const int depth);
         virtual ~GUIWidget();
         
-        virtual void SetPosition( const int posX, const int posY );
-        virtual void SetSize( const int width, const int height );
-        virtual void SetDepth( const int depth );
+        virtual void SetPosition(const glm::ivec2& position);
+        virtual void SetSize(const glm::ivec2& size);
+        virtual void SetDepth(const int depth);
         
         /* Override these for different cursor events */
         // Focus is true when the cursor is over a widget
@@ -38,10 +39,10 @@ namespace GUI
         // When clicked/pressed
         virtual void OnInteract( const bool interact ) { };
         // Cursor over widget test - returns true if point is inside widget
-        virtual bool Contains( const int tx, const int ty );
+        virtual bool Contains( const glm::ivec2& coord );
         
         // Override this for drawing different widgets
-        virtual void Draw();
+        virtual const void Draw() const;
         // Update - Unused for most widgets but some will need it
         virtual void Update()
         { /* printf("[GUIWidget] update called, override me!\n"); */ };
@@ -50,11 +51,12 @@ namespace GUI
         inline bool IsVisible() { return _visible; };
         inline bool HasFocus() { return _focus; };
         
-        virtual const int GetHeight() { return h; };
-        virtual const int GetDepth() { return z; };
+        virtual const unsigned int GetHeight() { return _size.y; };
+        virtual const int GetDepth() { return _position.z; };
     protected:
         // UIWidget attributes
-        int x,y,w,h,z;
+        glm::ivec3 _position;
+        glm::ivec2 _size;
         
         bool _active;                                // Whether UIWidget is active (interactable)
         bool _focus;                                 // Whether cursor is over widget

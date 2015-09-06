@@ -18,8 +18,7 @@
 #include "StringUtil.h"
 
 
-LocalGame::LocalGame() : Scene("Game"),
-eventFunctor(this, &LocalGame::OnEvent)
+LocalGame::LocalGame() : Scene("Game")
 {
     world.GetCamera().position.z = 20;
 }
@@ -34,7 +33,7 @@ void LocalGame::Initialize()
     Scene::Initialize();
     world.Initialize();
     
-    Input::RegisterEventObserver(&eventFunctor);
+    Input::RegisterEventObserver(this);
     
     Locator::getRenderer().SetCamera(&world.GetCamera());
     _labelFPS = nullptr;
@@ -59,7 +58,7 @@ void LocalGame::Pause()
     {
         Scene::Pause();
     }
-    Input::UnRegisterEventObserver(&eventFunctor);
+    Input::UnRegisterEventObserver(this);
     delete _labelFPS;
     _labelFPS = nullptr;
 }
@@ -70,7 +69,7 @@ void LocalGame::Resume()
     {
         Scene::Resume();
     }
-    Input::RegisterEventObserver(&eventFunctor);
+    Input::RegisterEventObserver(this);
 }
 
 void LocalGame::Update( double deltaTime )
@@ -100,7 +99,7 @@ void LocalGame::Draw()
     world.Draw();
 }
 
-bool LocalGame::OnEvent(const typeInputEvent& event, const float& amount)
+bool LocalGame::OnEvent(const std::string& event, const float& amount)
 {
     if ( event == "lookleft" ) { inputLook.x -= amount; return true; }
     else if ( event == "lookright" ) { inputLook.x += amount; return true; }

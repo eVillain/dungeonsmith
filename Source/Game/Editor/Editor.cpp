@@ -18,20 +18,27 @@
 #include "LightSystem3D.h"
 #include "Instanced.h"
 
-Editor::Editor() : Scene("Editor"),
-_eventFunctor(this, &Editor::OnEvent),
-_mouseFunctor(this, &Editor::OnMouse)
+Editor::Editor() : Scene("Editor")
 {
     _menu = nullptr;
     _blockSet = std::unique_ptr<BlockSet>(new BlockSet);
-    _blockSet->Set(glm::ivec3(), Type_Grass);
+//    _blockSet->SetSize(glm::ivec3(2));
+//    for (int i=0; i<2; i++) {
+//        for (int j=0; j<2; j++) {
+//            for (int k=0; k<2; k++) {
+//            _blockSet->Set(glm::ivec3(i,k,j), Type_Grass);
+//            }
+//        }
+//    }
+//    _blockSet->ReplaceType(Type_Empty, Type_Snow);
+    _blockSet->Set(glm::ivec3(0,0,0), Type_Grass);
     
     Vertex_XYZW_DSN* verts = nullptr;
     int32_t count = 0;
     _blockSet->GenerateMesh(&verts, count);
-    
     _buffer = new MeshInstanceVertexColored(count, 1);
     _buffer->Buffer(*verts, count);
+    delete [] verts;
     _buffer->Bind();
     _buffer->Upload();
     _buffer->Unbind();
@@ -52,14 +59,15 @@ _mouseFunctor(this, &Editor::OnMouse)
 Editor::~Editor()
 {
     delete _buffer;
+    _buffer = nullptr;
 }
 
 void Editor::Initialize()
 {
     Scene::Initialize();
     
-    Input::RegisterEventObserver(&_eventFunctor);
-    Input::RegisterMouseObserver(&_mouseFunctor);
+    Input::RegisterEventObserver(this);
+    Input::RegisterMouseObserver(this);
     
     AddGUI();
 }
@@ -83,8 +91,8 @@ void Editor::Pause()
     {
         Scene::Pause();
     }
-    Input::UnRegisterEventObserver(&_eventFunctor);
-    Input::UnRegisterMouseObserver(&_mouseFunctor);
+    Input::UnRegisterEventObserver(this);
+    Input::UnRegisterMouseObserver(this);
     RemoveGUI();
 }
 
@@ -94,8 +102,8 @@ void Editor::Resume()
     {
         Scene::Resume();
     }
-    Input::RegisterEventObserver(&_eventFunctor);
-    Input::RegisterMouseObserver(&_mouseFunctor);
+    Input::RegisterEventObserver(this);
+    Input::RegisterMouseObserver(this);
     
     AddGUI();
 }
@@ -120,7 +128,7 @@ void DrawAxisCross(const glm::vec3& position, const float size)
 
 void Editor::Draw()
 {
-    DrawAxisCross(glm::vec3(), 10.0);
+    DrawAxisCross(glm::vec3(), 2.0);
     const glm::vec3 blockSetBounds = _blockSet->GetBounds();
     float blockSetBoundsMax = blockSetBounds.x;
     if (blockSetBounds.y > blockSetBoundsMax ||
@@ -131,19 +139,40 @@ void Editor::Draw()
         else blockSetBoundsMax = blockSetBounds.y;
     }
     
-    Locator::getRenderer().DrawPrimitives3D()->CubeOutline(glm::vec3(), blockSetBoundsMax, glm::quat(), COLOR_WHITE);
+    Locator::getRenderer().DrawPrimitives3D()->CubeOutline(glm::vec3(),
+                                                           blockSetBoundsMax+0.001f,
+                                                           glm::quat(),
+                                                           COLOR_WHITE);
     
     Locator::getRenderer().DrawInstanced()->RenderDeferred(_buffer, _camera.GetMVP());
-    glm::vec3 cursorWorldPosition = Locator::getRenderer().Get3DPosition(_cursorPosition);
+    _cursorWorldPosition = Locator::getRenderer().Get3DPosition(_cursorScreenPosition);
+    // Adjust cursor position by a small bias (1cm) as the cursor is at the
+    // surface and we actually want the position just under the surface
+    glm::vec3 bias = glm::normalize(_cursorWorldPosition - _camera.position)*0.01f;
+    _cursorWorldPosition += bias;
     
-    DrawAxisCross(cursorWorldPosition, 0.1);
-    glm::vec3 nearestBlockPosition = _blockSet->GetNearestBlockCenter(cursorWorldPosition);
-    Locator::getRenderer().DrawPrimitives3D()->CubeOutline(nearestBlockPosition, _blockSet->GetRadius()*2.0, glm::quat(), COLOR_SELECT);
+    if ( _blockSet->IsWithinBounds(_cursorWorldPosition) )
+    {
+        DrawAxisCross(_cursorWorldPosition, 0.1);
+        glm::vec3 cursorBlockPosition = _blockSet->GetNearestBlockCenter(_cursorWorldPosition);
+        Locator::getRenderer().DrawPrimitives3D()->CubeOutline(cursorBlockPosition,
+                                                               _blockSet->GetRadius()*2.0+0.01,
+                                                               glm::quat(),
+                                                               COLOR_RED);
 
+            glm::vec3 surfaceBlockPosition = _blockSet->GetSurfaceBlockCenter(_cursorWorldPosition);
+        if ( _blockSet->IsWithinBounds(surfaceBlockPosition) )
+        {
+            Locator::getRenderer().DrawPrimitives3D()->CubeOutline(surfaceBlockPosition,
+                                                                   _blockSet->GetRadius()*2.0+0.01,
+                                                                   glm::quat(),
+                                                                   COLOR_SELECT);
+        }
+    }
 }
 
 
-bool Editor::OnEvent(const typeInputEvent& event, const float& amount)
+bool Editor::OnEvent(const std::string& event, const float& amount)
 {
     if ( event == "lookleft" ) { inputLook.x -= amount; return true; }
     else if ( event == "lookright" ) { inputLook.x += amount; return true; }
@@ -157,6 +186,8 @@ bool Editor::OnEvent(const typeInputEvent& event, const float& amount)
     {
         if ( event == "run" ) { _camera.movementSpeedFactor = 20.0; return true; }
         if ( event == "sneak" ) { _camera.movementSpeedFactor = 5.0; return true; }
+        if ( event == "shoot" ) { AddBlock(); }
+        if ( event == "shoot2" ) { RemoveBlock(); }
     }
     else if ( amount == -1 )
     {
@@ -166,9 +197,9 @@ bool Editor::OnEvent(const typeInputEvent& event, const float& amount)
     return false;
 }
 
-bool Editor::OnMouse(const int &x, const int &y)
+bool Editor::OnMouse(const glm::ivec2& coord)
 {
-    _cursorPosition = glm::ivec2(x,y);
+    _cursorScreenPosition = coord;
     return true;
 }
 
@@ -189,8 +220,8 @@ void Editor::UpdateMovement()
 
 void Editor::AddGUI()
 {
-    _menu = new GUI::GUIMenu(-200,200,200,40,0);
-    _slider = new GUI::GUISlider(-200,200,200,40,0);
+    _menu = new GUI::GUIMenu(glm::ivec2(-200,200),glm::ivec2(200,40),0);
+    _slider = new GUI::GUISlider(glm::ivec2(-200,200),glm::ivec2(200,40),0);
     _slider->SetBehavior(new GUI::SliderBehavior<float>(_camera.nearDepth, 0.001, 1.0));
     _menu->AddWidget(_slider);
 }
@@ -207,4 +238,44 @@ void Editor::RemoveGUI()
         delete _slider;
         _slider = nullptr;
     }
+}
+
+void Editor::AddBlock()
+{
+    if ( _blockSet->IsWithinBounds(_cursorWorldPosition) )
+    {
+        glm::vec3 surfaceBlockPosition = _blockSet->GetSurfaceBlockCenter(_cursorWorldPosition);
+        if ( _blockSet->IsWithinBounds(surfaceBlockPosition) )
+        {
+            _blockSet->Set(_blockSet->WorldToLocalCoord(surfaceBlockPosition), Type_Snow);
+        }
+    }
+    Vertex_XYZW_DSN* verts = nullptr;
+    int32_t count = 0;
+    _blockSet->GenerateMesh(&verts, count);
+    _buffer->Clear();
+    _buffer->Resize(count);
+    _buffer->Buffer(*verts, count);
+    _buffer->Bind();
+    _buffer->Upload();
+    _buffer->Unbind();
+    delete [] verts;
+}
+
+void Editor::RemoveBlock()
+{
+    if ( _blockSet->IsWithinBounds(_cursorWorldPosition) )
+    {
+        _blockSet->Set(_blockSet->WorldToLocalCoord(_cursorWorldPosition), Type_Empty);
+    }
+    Vertex_XYZW_DSN* verts = nullptr;
+    int32_t count = 0;
+    _blockSet->GenerateMesh(&verts, count);
+    _buffer->Clear();
+    _buffer->Resize(count);
+    _buffer->Buffer(*verts, count);
+    _buffer->Bind();
+    _buffer->Upload();
+    _buffer->Unbind();
+    delete [] verts;
 }
