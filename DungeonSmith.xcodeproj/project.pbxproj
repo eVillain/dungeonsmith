@@ -114,6 +114,7 @@
 		D9F4DB2E1B763E1D00523231 /* deferred_mesh_instanced.vsh in CopyFiles */ = {isa = PBXBuildFile; fileRef = D9F4DB2C1B763E1600523231 /* deferred_mesh_instanced.vsh */; };
 		D9F4DB331B76544500523231 /* Primitives3D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D9F4DB311B76544500523231 /* Primitives3D.cpp */; };
 		D9F4DB371B77F4CB00523231 /* GUITextInput.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D9F4DB351B77F4CB00523231 /* GUITextInput.cpp */; };
+		D9F7CC921B9CF78A00A3E377 /* GUIMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D9F7CC911B9CF78A00A3E377 /* GUIMenu.cpp */; };
 		D9FAFB9C1B7A95A4005AA42B /* TextConstants.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D9FAFB9B1B7A95A4005AA42B /* TextConstants.cpp */; };
 		D9FAFBB71B7AA8FB005AA42B /* libBulletCollision.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D9FAFBB41B7AA8FB005AA42B /* libBulletCollision.a */; };
 		D9FAFBB81B7AA8FB005AA42B /* libBulletDynamics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D9FAFBB51B7AA8FB005AA42B /* libBulletDynamics.a */; };
@@ -398,6 +399,7 @@
 		D9F4DB341B7656D900523231 /* RenderDataDefines.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RenderDataDefines.h; sourceTree = "<group>"; };
 		D9F4DB351B77F4CB00523231 /* GUITextInput.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GUITextInput.cpp; sourceTree = "<group>"; };
 		D9F4DB361B77F4CB00523231 /* GUITextInput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GUITextInput.h; sourceTree = "<group>"; };
+		D9F7CC911B9CF78A00A3E377 /* GUIMenu.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GUIMenu.cpp; sourceTree = "<group>"; };
 		D9FAFB981B7A6F15005AA42B /* RangeReverseAdapter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RangeReverseAdapter.h; sourceTree = "<group>"; };
 		D9FAFB991B7A79DE005AA42B /* ThreadSafeQueue.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ThreadSafeQueue.h; sourceTree = "<group>"; };
 		D9FAFB9A1B7A7B00005AA42B /* ThreadSafeMap.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ThreadSafeMap.h; sourceTree = "<group>"; };
@@ -830,6 +832,7 @@
 				D9150E2D1B6A258400415F99 /* GUIConstants.h */,
 				D93B339C1B028D13004AE04D /* GUIManager.cpp */,
 				D93B339D1B028D13004AE04D /* GUIManager.h */,
+				D9F7CC911B9CF78A00A3E377 /* GUIMenu.cpp */,
 				D9E31D511B8A44EB00F3CB66 /* GUIMenu.h */,
 				D9F4DB351B77F4CB00523231 /* GUITextInput.cpp */,
 				D9F4DB361B77F4CB00523231 /* GUITextInput.h */,
@@ -1109,6 +1112,7 @@
 				D96C02A91AE84BB800001936 /* CommandProcessor.cpp in Sources */,
 				D9C16FE71AFF68CE00F66B19 /* TextureManager.cpp in Sources */,
 				D96C02BB1AE850EB00001936 /* SceneManager.cpp in Sources */,
+				D9F7CC921B9CF78A00A3E377 /* GUIMenu.cpp in Sources */,
 				D96DB9491B68AFAD008E1DF5 /* GUIButton.cpp in Sources */,
 				D9150E431B6BB26100415F99 /* LightSystem3D.cpp in Sources */,
 				D9F4DB331B76544500523231 /* Primitives3D.cpp in Sources */,
