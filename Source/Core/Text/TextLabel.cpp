@@ -66,7 +66,7 @@ void TextLabel::SetFontSize(const int newFontSize)
     _dirty = true;
 }
 
-glm::vec2 TextLabel::GetSize()
+const glm::vec2 TextLabel::GetSize() const
 {
     return _size;
 }

@@ -15,7 +15,7 @@ namespace GUI
                                        const glm::ivec2& size,
                                        const int depth) :
     GUIButton(position, size, depth),
-    _label(text, glm::vec3(position.x - (_size.x/2) + 4,position.y,depth+1))
+    _label(text, glm::vec3(position.x, position.y, depth+1))
     { }
     
     GUIButtonLabeled::~GUIButtonLabeled()

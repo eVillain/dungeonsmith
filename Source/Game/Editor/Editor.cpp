@@ -220,8 +220,8 @@ void Editor::UpdateMovement()
 
 void Editor::AddGUI()
 {
-    _menu = new GUI::GUIMenu(glm::ivec2(-200,200),glm::ivec2(200,40),0);
-    _slider = new GUI::GUISlider(glm::ivec2(-200,200),glm::ivec2(200,40),0);
+    _menu = new GUI::GUIMenu(glm::ivec2(-200,200),glm::ivec2(200,20),0, "Editor Menu");
+    _slider = new GUI::GUISlider(glm::ivec2(-200,240),glm::ivec2(200,40),0);
     _slider->SetBehavior(new GUI::SliderBehavior<float>(_camera.nearDepth, 0.001, 1.0));
     _menu->AddWidget(_slider);
 }

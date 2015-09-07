@@ -30,8 +30,8 @@ namespace GUI
         ~GUITextInput();
         
         // Overriden from UIWidget
-        virtual void Draw();
-        virtual void Update();
+        virtual const void Draw() const;
+        virtual const void Update();
         virtual void SetFocus( const bool focus);
         virtual void SetActive( const bool active );
         virtual void SetVisible( const bool visible );

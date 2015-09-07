@@ -12,15 +12,34 @@
 #include "GUIWidget.h"
 
 
-namespace GUI {
+const static unsigned int DEFAULT_LIST_PADDING_X = 2;
+const static unsigned int DEFAULT_LIST_PADDING_Y = 2;
+
+namespace GUI
+{
     class GUIList : public GUIWidget
     {
     public:
         GUIList(const glm::ivec2& position,
                 const glm::ivec2& size,
                 const int depth);
+        ~GUIList();
+        
+        // Overrides from GUIWidget
+        virtual const void Draw() const;
+        virtual const void Update();
+        // When clicked/pressed
+        virtual void OnInteract( const bool interact );
+        virtual const bool Contains( const int tx, const int ty ) const;
+        
+        virtual void AddWidget( GUIWidget* widget );
+        
+        virtual const unsigned int GetHeight() const;
+    private:
+        std::vector<GUIWidget*> _widgets;
+        unsigned int _paddingX, _paddingY;
+        const unsigned int GetContentHeight() const;
         
     };
 }   /* namespace GUI */
-
 #endif /* defined(__DungeonSmith__GUIList__) */

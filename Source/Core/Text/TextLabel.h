@@ -40,7 +40,7 @@ public:
     Color color;
 
     bool Render3D() { return _render3D; };
-    glm::vec2 GetSize();
+    const glm::vec2 GetSize() const;
 
 protected:
     void Draw();

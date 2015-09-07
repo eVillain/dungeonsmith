@@ -32,7 +32,7 @@ namespace GUI
         }
     }
     
-    void GUISlider::Draw()
+    const void GUISlider::Draw() const
     {
         if ( !_visible ) return;
         GUIWidget::Draw();
@@ -109,7 +109,7 @@ namespace GUI
         }
     }
     
-    void GUISlider::Update()
+    const void GUISlider::Update()
     {
         
     }

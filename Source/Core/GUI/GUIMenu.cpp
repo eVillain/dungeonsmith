@@ -15,29 +15,41 @@ namespace GUI
 {
     GUIMenu::GUIMenu(const glm::ivec2& position,
                      const glm::ivec2& size,
-                     const int depth) :
+                     const int depth,
+                     const std::string label) :
     GUIWidget(position, size, depth),
-    _paddingX(DEFAULT_MENU_PADDING_X), _paddingY(DEFAULT_MENU_PADDING_Y)
+    _paddingX(DEFAULT_MENU_PADDING_X), _paddingY(DEFAULT_MENU_PADDING_Y),
+    _label(nullptr)
     {
+        _label = new TextLabel(label,
+                               glm::vec3(position.x, position.y, depth+2),
+                               glm::vec3(0,0,0),
+                               COLOR_WHITE,
+                               Fonts::FONT_DEFAULT,
+                               16,
+                               false);
     }
     
     GUIMenu::~GUIMenu()
     {
+        delete _label;
         _widgets.clear();
     }
     
-    void GUIMenu::Draw()
+    const void GUIMenu::Draw() const
     {
         if ( !_visible ) return;
+
         Primitives2D& primitives = *Locator::getRenderer().DrawPrimitives2D();
         
-        int height = GetHeight();
+        
+        int height = _size.y;
 
         glm::ivec2 drawPos = glm::ivec2(_position.x-(_size.x*0.5), _position.y-(height*0.5));
         
         // Pixel perfect outer border (should render with 1px shaved off corners)
         primitives.Line(glm::vec2(drawPos.x,drawPos.y),
-                        glm::vec2(drawPos.x,drawPos.y+_size.y),
+                        glm::vec2(drawPos.x,drawPos.y+height),
                         COLOR_UI_BORDER_OUTER,
                         COLOR_UI_BORDER_OUTER,
                         _position.z);  // L
@@ -70,15 +82,25 @@ namespace GUI
             gradColTop *= 1.1;
             gradColBottom *= 1.1;
         }
-        primitives.RectangleGradientY(glm::vec2(_position.x,_position.y), glm::vec2(_size.x,height), gradColTop, gradColBottom, _position.z);
+        primitives.RectangleGradientY(glm::vec2(_position.x,_position.y),
+                                      glm::vec2(_size.x,height),
+                                      gradColTop,
+                                      gradColBottom,
+                                      _position.z);
         
         // Inside border
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        primitives.RectOutline(glm::vec2(_position.x,_position.y), glm::vec2(_size.x-2,height-2), COLOR_UI_BORDER_INNER, _position.z+1);
+        primitives.RectOutline(glm::vec2(_position.x,_position.y),
+                               glm::vec2(_size.x-2,height-2),
+                               COLOR_UI_BORDER_INNER,
+                               _position.z+1);
+        
+        // Menu bar
+        
     }
     
-    void GUIMenu::Update()
+    const void GUIMenu::Update()
     {
         
     }
@@ -89,7 +111,7 @@ namespace GUI
 
     }
     // If point is within menu area returns true
-    bool GUIMenu::Contains( int tx, int ty )
+    const bool GUIMenu::Contains( int tx, int ty ) const
     {
         if ( !_visible ) return false;
         // If point is within button area, then returns true
@@ -106,13 +128,15 @@ namespace GUI
     }
     void GUIMenu::AddWidget(GUIWidget *widget)
     {
-        widget->SetPosition(glm::ivec2(_position.x + _paddingX, _position.y + GetContentHeight() + _paddingY));
+//        widget->SetPosition(glm::ivec2(_position.x,
+//                                       _position.y - GetHeight()/2 - _paddingY));
         widget->SetDepth(_position.z + 1);
-
+        // Adjust width but keep height of added widget to fit into our frame
+        widget->SetSize(glm::ivec2(_size.x-_paddingX*2,widget->GetHeight()));
         _widgets.push_back(widget);
     }
     
-    const unsigned int GUIMenu::GetHeight()
+    const unsigned int GUIMenu::GetHeight() const
     {
         unsigned int height = _size.y;
         height += GetContentHeight();
@@ -124,7 +148,6 @@ namespace GUI
         int height = 0;
         for (GUIWidget* widget:_widgets) {
             height += widget->GetHeight() + 2;
-            height += _paddingY;
         }
         return height;
     }

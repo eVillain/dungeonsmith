@@ -31,7 +31,7 @@ namespace GUI
         }
     }
     
-    void GUIButton::Draw()
+    const void GUIButton::Draw() const
     {
         if ( !_visible ) return;
         Primitives2D& primitives = *Locator::getRenderer().DrawPrimitives2D();
@@ -90,10 +90,8 @@ namespace GUI
                                _position.z+1);
     }
     
-    void GUIButton::Update()
-    {
-        
-    }
+    const void GUIButton::Update()
+    { }
     
     // When clicked/pressed
     void GUIButton::OnInteract( const bool interact )

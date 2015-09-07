@@ -23,8 +23,8 @@ namespace GUI
         ~GUIButton();
         
         // Overrides from GUIWidget
-        virtual void Draw();
-        virtual void Update();
+        virtual const void Draw() const;
+        virtual const void Update();
         // When clicked/pressed
         virtual void OnInteract( const bool interact );
         

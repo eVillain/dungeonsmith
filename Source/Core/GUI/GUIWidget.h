@@ -39,20 +39,20 @@ namespace GUI
         // When clicked/pressed
         virtual void OnInteract( const bool interact ) { };
         // Cursor over widget test - returns true if point is inside widget
-        virtual bool Contains( const glm::ivec2& coord );
+        virtual const bool Contains( const glm::ivec2& coord ) const;
         
         // Override this for drawing different widgets
         virtual const void Draw() const;
         // Update - Unused for most widgets but some will need it
-        virtual void Update()
+        virtual const void Update()
         { /* printf("[GUIWidget] update called, override me!\n"); */ };
         
-        inline bool IsActive() { return _active; };
-        inline bool IsVisible() { return _visible; };
-        inline bool HasFocus() { return _focus; };
+        inline const bool IsActive() const { return _active; };
+        inline const bool IsVisible() const { return _visible; };
+        inline const bool HasFocus() const { return _focus; };
         
-        virtual const unsigned int GetHeight() { return _size.y; };
-        virtual const int GetDepth() { return _position.z; };
+        virtual const unsigned int GetHeight() const { return _size.y; };
+        virtual const int GetDepth() const { return _position.z; };
     protected:
         // UIWidget attributes
         glm::ivec3 _position;

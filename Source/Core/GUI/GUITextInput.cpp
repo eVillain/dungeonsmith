@@ -62,7 +62,7 @@ namespace GUI
         return false;
     }
     
-    void GUITextInput::Draw()
+    const void GUITextInput::Draw() const
     {
         if ( !_visible ) return;
         GUIWidget::Draw();
@@ -109,13 +109,6 @@ namespace GUI
         
         // Render blinking cursor
         if ( _textInputActive ) {
-            double timeNow = Timer::Seconds();
-            double cursorBlinkDelta = timeNow - _lastCursorBlink;
-            if (cursorBlinkDelta > CURSOR_BLINK_RATE)
-            {
-                _cursorBlink = !_cursorBlink;
-                _lastCursorBlink = timeNow;
-            }
             if (_cursorBlink)
             {
                 // Draw cursor
@@ -129,9 +122,15 @@ namespace GUI
         }
     }
     
-    void GUITextInput::Update()
+    const void GUITextInput::Update()
     {
-        /* Unused for now */
+        double timeNow = Timer::Seconds();
+        double cursorBlinkDelta = timeNow - _lastCursorBlink;
+        if (cursorBlinkDelta > CURSOR_BLINK_RATE)
+        {
+            _cursorBlink = !_cursorBlink;
+            _lastCursorBlink = timeNow;
+        }
     }
     
     void GUITextInput::SetFocus( const bool focus)

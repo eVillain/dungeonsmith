@@ -152,7 +152,8 @@ void TextManager::Render2D() {
     textShader->Begin();
     for ( unsigned int i=0; i < _labels2D.size(); i++ ) {
         TextLabel& label = *_labels2D[i];
-        Setup2DMatrix(label.position, label.rotation);
+        glm::vec3 labelOffset = glm::vec3(label.GetSize()*0.5f, 0);
+        Setup2DMatrix(label.position-labelOffset, label.rotation);
         textShader->setUniform4fv("color", label.color);
         label.Draw();
         blocksRendered++;
@@ -170,7 +171,8 @@ void TextManager::Render3D()
     textShader->Begin();
     for ( unsigned int i=0; i < _labels3D.size(); i++ ) {
         TextLabel& label = *_labels3D[i];
-        Setup3DMatrix(label.position, label.rotation);
+        glm::vec3 labelOffset = glm::vec3(label.GetSize()*0.5f, 0);
+        Setup3DMatrix(label.position-labelOffset, label.rotation);
         textShader->setUniform4fv("color", label.color);
         label.Draw();
         blocksRendered++;

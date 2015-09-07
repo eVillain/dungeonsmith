@@ -49,7 +49,7 @@ namespace GUI
     }
     
     // If point is within widget area returns true
-    bool GUIWidget::Contains( const glm::ivec2& coord )
+    const bool GUIWidget::Contains( const glm::ivec2& coord ) const
     {
         if ( !_visible ) return false;
         // If point is within button area, then returns true
