@@ -30,6 +30,7 @@ namespace GUI
         // Test cursor events on widgets - return value true means event was swallowed
         bool OnCursorHover( const glm::ivec2& coord );
         bool OnCursorPress( const glm::ivec2& coord );
+        bool OnCursorDrag( const glm::ivec2& coord );
         bool OnCursorRelease( const glm::ivec2& coord );
         
     protected:
@@ -42,6 +43,7 @@ namespace GUI
         bool OnMouse( const glm::ivec2& coord );
         
         glm::ivec2 _currentMouseCoord;
+        bool _mouseDrag;
     };
 }    /* namespace GUI */
 

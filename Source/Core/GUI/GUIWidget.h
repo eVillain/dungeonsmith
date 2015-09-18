@@ -37,7 +37,9 @@ namespace GUI
         // Visible is true when the widget should be drawn, otherwise only update
         virtual void SetVisible( const bool visible ) { _visible = visible; };
         // When clicked/pressed
-        virtual void OnInteract( const bool interact ) { };
+        virtual void OnInteract( const bool interact, const glm::ivec2& coord ) { };
+        // When dragged with cursor, most widgets won't support this
+        virtual void OnDrag( const glm::ivec2& coord ) { };
         // Cursor over widget test - returns true if point is inside widget
         virtual const bool Contains( const glm::ivec2& coord ) const;
         

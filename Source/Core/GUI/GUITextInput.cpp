@@ -161,7 +161,7 @@ namespace GUI
     }
     
     // When clicked/pressed
-    void GUITextInput::OnInteract( const bool interact )
+    void GUITextInput::OnInteract( const bool interact, const glm::ivec2& coord )
     {
         if ( !_focus ) return;
         if ( !interact && !_textInputActive )

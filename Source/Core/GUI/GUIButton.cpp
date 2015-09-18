@@ -94,7 +94,7 @@ namespace GUI
     { }
     
     // When clicked/pressed
-    void GUIButton::OnInteract( const bool interact )
+    void GUIButton::OnInteract( const bool interact, const glm::ivec2& coord )
     {
         if ( _pressed && !interact && _focus)
         {

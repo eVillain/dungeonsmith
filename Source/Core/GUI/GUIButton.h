@@ -26,7 +26,7 @@ namespace GUI
         virtual const void Draw() const;
         virtual const void Update();
         // When clicked/pressed
-        virtual void OnInteract( const bool interact );
+        virtual void OnInteract( const bool interact, const glm::ivec2& coord );
         
         // Attach a behavior to make the button do something when pressed
         void SetBehavior( ButtonBehavior* behavior ) { _behavior = behavior; };

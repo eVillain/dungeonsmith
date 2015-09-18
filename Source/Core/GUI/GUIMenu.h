@@ -31,8 +31,8 @@ namespace GUI
         virtual const void Draw() const;
         virtual const void Update();
         // When clicked/pressed
-        virtual void OnInteract( const bool interact );
-        virtual const bool Contains( const int tx, const int ty ) const;
+        virtual void OnInteract( const bool interact, const glm::ivec2& coord );
+        virtual const bool Contains( const glm::ivec2& coord ) const;
 
         virtual void AddWidget( GUIWidget* widget );
         

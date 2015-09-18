@@ -14,6 +14,7 @@ namespace GUI
     {
         Input::RegisterEventObserver(this);
         Input::RegisterMouseObserver(this);
+        _mouseDrag = false;
     }
     
     GUIManager::~GUIManager()
@@ -57,7 +58,19 @@ namespace GUI
         {
             if( widget->Contains(coord) )
             {
-                widget->OnInteract(true);
+                widget->OnInteract(true, coord);
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    bool GUIManager::OnCursorDrag( const glm::ivec2& coord ) {
+        for (GUIWidget* widget : _widgets)
+        {
+            if( widget->Contains(coord) )
+            {
+                widget->OnDrag(coord);
                 return true;
             }
         }
@@ -69,7 +82,7 @@ namespace GUI
         {
             if( widget->Contains(coord) )
             {
-                widget->OnInteract(false);
+                widget->OnInteract(false, coord);
                 return true;
             }
         }
@@ -88,6 +101,7 @@ namespace GUI
                 widget->SetFocus(false);
             }
         }
+        if ( !overWidget ) { _mouseDrag = false; }
         return overWidget;
     }
     
@@ -97,11 +111,14 @@ namespace GUI
         {
             if ( amount == -1 )
             {
+                _mouseDrag = false;
                 return OnCursorRelease(_currentMouseCoord);
             }
             else if ( amount == 1 )
             {
-                return OnCursorPress(_currentMouseCoord);
+                bool clickedWidget = OnCursorPress(_currentMouseCoord);
+                if ( clickedWidget ) { _mouseDrag = true; }
+                return clickedWidget;
             }
         }
         return false;
@@ -111,6 +128,9 @@ namespace GUI
     {
         _currentMouseCoord.x = coord.x;
         _currentMouseCoord.y = coord.y;
+        if ( _mouseDrag) {
+            return OnCursorDrag(coord);
+        }
         return OnCursorHover(_currentMouseCoord);
     }
 }   /* namespace GUI */

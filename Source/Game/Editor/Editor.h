@@ -19,7 +19,6 @@ class BlockSet;
 
 namespace GUI {
     class GUIMenu;
-    class GUISlider;
 }
 
 class Editor : public Scene, public InputEventListener, public MouseEventListener
@@ -48,9 +47,8 @@ private:
     void AddGUI();
     void RemoveGUI();
     GUI::GUIMenu* _menu;
-    GUI::GUISlider* _slider;
     
-    bool OnEvent( const std::string& theEvent, const float& amount );
+    bool OnEvent( const std::string& event, const float& amount );
     bool OnMouse( const glm::ivec2 &coord );
     glm::ivec2 _cursorScreenPosition;
     glm::vec3 _cursorWorldPosition;

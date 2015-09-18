@@ -36,7 +36,7 @@ namespace GUI
         virtual void SetActive( const bool active );
         virtual void SetVisible( const bool visible );
         // When clicked/pressed
-        virtual void OnInteract( const bool interact );
+        virtual void OnInteract( const bool interact, const glm::ivec2& coord );
 
         // Text input operations
         void StartTextInput();

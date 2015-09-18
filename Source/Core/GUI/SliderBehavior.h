@@ -9,6 +9,7 @@
 #ifndef __DungeonSmith__SliderBehavior__
 #define __DungeonSmith__SliderBehavior__
 
+#include <sstream>
 
 namespace GUI
 {
@@ -19,6 +20,7 @@ namespace GUI
         // Takes a unit value from 0.0 to 1.0, which correspond to min and max
         virtual void SetValue(const double value) = 0;
         virtual const double GetValue() = 0;
+        virtual const std::string GetValueString() = 0;
     };
     
     template <typename UnknownType>
@@ -42,10 +44,20 @@ namespace GUI
                 *_data = newValue;
             }
         }
+        
         const double GetValue()
         {
             UnknownType range = _max - _min;
             return double((*_data-_min)/range);
+        }
+        
+        const std::string GetValueString()
+        {
+            if (!_data) return "";
+            std::ostringstream buff;
+            buff.precision(3);
+            buff<<*_data;
+            return buff.str();
         }
     private:
         UnknownType* _data;                    // Pointer to the data
@@ -84,6 +96,13 @@ namespace GUI
         {
             UnknownType range = _max - _min;
             return double((_data-_min)/range);
+        }
+        const std::string GetValueString()
+        {
+            std::ostringstream buff;
+            buff.precision(3);
+            buff<<GetValue();
+            return buff.str();
         }
     private:
         UnknownType* _data;                         // Pointer to the data

@@ -33,6 +33,9 @@ namespace GUI
     GUIMenu::~GUIMenu()
     {
         delete _label;
+        for (GUIWidget* widget:_widgets) {
+            delete widget;;
+        }
         _widgets.clear();
     }
     
@@ -106,21 +109,21 @@ namespace GUI
     }
     
     // When clicked/pressed
-    void GUIMenu::OnInteract( const bool interact )
+    void GUIMenu::OnInteract( const bool interact, const glm::ivec2& coord )
     {
 
     }
     // If point is within menu area returns true
-    const bool GUIMenu::Contains( int tx, int ty ) const
+    const bool GUIMenu::Contains( const glm::ivec2& coord ) const
     {
         if ( !_visible ) return false;
         // If point is within button area, then returns true
         int vH = GetHeight()*0.5;
         int vW = _size.x*0.5;
-        if( tx > _position.x-vW &&
-           tx < _position.x+vW &&
-           ty > _position.y-(vH-1) &&    // For some reason this is offset by 1px, check later
-           ty < _position.y+vH+1 )
+        if( coord.x > _position.x-vW &&
+           coord.x < _position.x+vW &&
+           coord.y > _position.y-(vH-1) &&    // For some reason this is offset by 1px, check later
+           coord.y < _position.y+vH+1 )
         {
             return true;
         }
@@ -128,8 +131,8 @@ namespace GUI
     }
     void GUIMenu::AddWidget(GUIWidget *widget)
     {
-//        widget->SetPosition(glm::ivec2(_position.x,
-//                                       _position.y - GetHeight()/2 - _paddingY));
+        widget->SetPosition(glm::ivec2(_position.x,
+                                       _position.y - GetHeight() - _paddingY));
         widget->SetDepth(_position.z + 1);
         // Adjust width but keep height of added widget to fit into our frame
         widget->SetSize(glm::ivec2(_size.x-_paddingX*2,widget->GetHeight()));

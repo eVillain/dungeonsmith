@@ -96,21 +96,22 @@ namespace GUI
     }
     
     // When clicked/pressed
-    void GUIList::OnInteract( const bool interact )
+    void GUIList::OnInteract( const bool interact, const glm::ivec2& coord )
     {
         
     }
+    
     // If point is within menu area returns true
-    const bool GUIList::Contains( int tx, int ty ) const
+    const bool GUIList::Contains( const glm::ivec2& coord ) const
     {
         if ( !_visible ) return false;
         // If point is within button area, then returns true
         int vH = GetHeight()*0.5;
         int vW = _size.x*0.5;
-        if( tx > _position.x-vW &&
-           tx < _position.x+vW &&
-           ty > _position.y-(vH-1) &&    // For some reason this is offset by 1px, check later
-           ty < _position.y+vH+1 )
+        if(coord.x > _position.x-vW &&
+           coord.x < _position.x+vW &&
+           coord.y > _position.y-(vH-1) &&    // For some reason this is offset by 1px, check later
+           coord.y < _position.y+vH+1)
         {
             return true;
         }
