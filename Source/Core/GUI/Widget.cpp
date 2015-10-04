@@ -1,13 +1,13 @@
-#include "GUIWidget.h"
+#include "Widget.h"
 #include "Renderer.h"
 #include "Shader.h"
 #include "Locator.h"
 #include "Primitives2D.h"
-#include "GUIManager.h"
+#include "Manager.h"
 
 namespace GUI
 {
-    GUIWidget::GUIWidget(const glm::ivec2& position,
+    Widget::Widget(const glm::ivec2& position,
                          const glm::ivec2& size,
                          const int depth) :
     _position(position.x, position.y, depth),
@@ -27,29 +27,29 @@ namespace GUI
         Locator::getGUI().Add(this);
     }
     
-    GUIWidget::~GUIWidget( void )
+    Widget::~Widget( void )
     {
         Locator::getGUI().Remove(this);
     }
     
-    void GUIWidget::SetPosition(const glm::ivec2& position)
+    void Widget::SetPosition(const glm::ivec2& position)
     {
         _position.x = position.x;
         _position.y = position.y;
     }
     
-    void GUIWidget::SetSize(const glm::ivec2& size)
+    void Widget::SetSize(const glm::ivec2& size)
     {
         _size = size;
     }
     
-    void GUIWidget::SetDepth(const int depth)
+    void Widget::SetDepth(const int depth)
     {
         _position.z = depth;
     }
     
     // If point is within widget area returns true
-    const bool GUIWidget::Contains( const glm::ivec2& coord ) const
+    const bool Widget::Contains( const glm::ivec2& coord ) const
     {
         if ( !_visible ) return false;
         // If point is within button area, then returns true
@@ -65,7 +65,7 @@ namespace GUI
         return false;
     }
     
-    const void GUIWidget::Draw() const
+    const void Widget::Draw() const
     {
         if ( !_visible ) return;
         

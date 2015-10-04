@@ -13,8 +13,9 @@
 #include "LocalGame.h"
 #include "BlockSet.h"
 #include "Primitives3D.h"
-#include "GUIMenu.h"
-#include "GUISlider.h"
+#include "Menu.h"
+#include "ButtonLabeled.h"
+#include "Slider.h"
 #include "LightSystem3D.h"
 #include "Instanced.h"
 
@@ -220,13 +221,30 @@ void Editor::UpdateMovement()
 
 void Editor::AddGUI()
 {
-    _menu = new GUI::GUIMenu(glm::ivec2(-200,200),glm::ivec2(200,20),0, "Editor Menu");
-    GUI::GUISlider* slider = new GUI::GUISlider(glm::ivec2(-200,240),glm::ivec2(200,40),0, "Near Depth");
-    slider->SetBehavior(new GUI::SliderBehavior<float>(_camera.nearDepth, 0.001, 1.0));
-    _menu->AddWidget(slider);
-    slider = new GUI::GUISlider(glm::ivec2(-200,240),glm::ivec2(200,40),0, "Far Depth");
-    slider->SetBehavior(new GUI::SliderBehavior<float>(_camera.farDepth, 1.0, 1000.0));
-    _menu->AddWidget(slider);
+    glm::ivec2 guiPos = glm::ivec2(-400,200);
+    glm::ivec2 menuSize = glm::ivec2(200,20);
+
+    _menu = new GUI::Menu(guiPos,
+                          menuSize,
+                          0,
+                          "Editor Menu");
+    
+    GUI::ButtonLabeled* button = new GUI::ButtonLabeled("File",
+                                                        guiPos,
+                                                        menuSize,
+                                                        0);
+    button->SetBehavior(new GUI::ButtonBehaviorLambda( [](){
+        // Open file menu
+    } ));
+    _menu->AddWidget(button);
+    
+//    GUI::Slider* slider = new GUI::Slider(glm::ivec2(-200,240),glm::ivec2(200,40),0, "Near Depth");
+//    slider->SetBehavior(new GUI::SliderBehavior<float>(_camera.nearDepth, 0.001, 1.0));
+//    _menu->AddWidget(slider);
+//    
+//    slider = new GUI::Slider(glm::ivec2(-200,240),glm::ivec2(200,40),0, "Far Depth");
+//    slider->SetBehavior(new GUI::SliderBehavior<float>(_camera.farDepth, 1.0, 1000.0));
+//    _menu->AddWidget(slider);
 }
 
 void Editor::RemoveGUI()

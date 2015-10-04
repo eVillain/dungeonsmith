@@ -1,60 +1,60 @@
 //
-//  GUIManager.cpp
+//  Manager.cpp
 //  DungeonSmith
 //
 //  Created by The Drudgerist on 12/05/15.
 //  Copyright (c) 2015 The Drudgerist. All rights reserved.
 //
 
-#include "GUIManager.h"
-#include "GUIWidget.h"
+#include "Manager.h"
+#include "Widget.h"
 namespace GUI
 {
-    GUIManager::GUIManager()
+    Manager::Manager()
     {
         Input::RegisterEventObserver(this);
         Input::RegisterMouseObserver(this);
         _mouseDrag = false;
     }
     
-    GUIManager::~GUIManager()
+    Manager::~Manager()
     {
         Input::UnRegisterEventObserver(this);
         Input::UnRegisterMouseObserver(this);
     }
     
-    void GUIManager::Add(GUIWidget *widget)
+    void Manager::Add(Widget *widget)
     {
         _widgets.push_back(widget);
     }
     
-    void GUIManager::Remove(GUIWidget *widget)
+    void Manager::Remove(Widget *widget)
     {
-        std::vector<GUIWidget*>::iterator it = std::find(_widgets.begin(), _widgets.end(), widget);
+        std::vector<Widget*>::iterator it = std::find(_widgets.begin(), _widgets.end(), widget);
         if ( it != _widgets.end() )
         {
             _widgets.erase(it);
         }
     }
     
-    void GUIManager::Update(double delta)
+    void Manager::Update(double delta)
     {
-        for (GUIWidget* widget : _widgets)
+        for (Widget* widget : _widgets)
         {
             widget->Update();
         }
     }
     
-    const void GUIManager::Draw() const
+    const void Manager::Draw() const
     {
-        for (GUIWidget* widget : _widgets)
+        for (Widget* widget : _widgets)
         {
             widget->Draw();
         }
     }
     
-    bool GUIManager::OnCursorPress( const glm::ivec2& coord ) {
-        for (GUIWidget* widget : _widgets)
+    bool Manager::OnCursorPress( const glm::ivec2& coord ) {
+        for (Widget* widget : _widgets)
         {
             if( widget->Contains(coord) )
             {
@@ -65,8 +65,8 @@ namespace GUI
         return false;
     }
     
-    bool GUIManager::OnCursorDrag( const glm::ivec2& coord ) {
-        for (GUIWidget* widget : _widgets)
+    bool Manager::OnCursorDrag( const glm::ivec2& coord ) {
+        for (Widget* widget : _widgets)
         {
             if( widget->Contains(coord) )
             {
@@ -77,8 +77,8 @@ namespace GUI
         return false;
     }
     
-    bool GUIManager::OnCursorRelease( const glm::ivec2& coord ) {
-        for (GUIWidget* widget : _widgets)
+    bool Manager::OnCursorRelease( const glm::ivec2& coord ) {
+        for (Widget* widget : _widgets)
         {
             if( widget->Contains(coord) )
             {
@@ -89,9 +89,9 @@ namespace GUI
         return false;
     }
     
-    bool GUIManager::OnCursorHover( const glm::ivec2& coord ) {
+    bool Manager::OnCursorHover( const glm::ivec2& coord ) {
         bool overWidget = false;
-        for (GUIWidget* widget : _widgets)
+        for (Widget* widget : _widgets)
         {
             if( widget->Contains(coord) )
             {
@@ -105,7 +105,7 @@ namespace GUI
         return overWidget;
     }
     
-    bool GUIManager::OnEvent( const std::string& event, const float& amount )
+    bool Manager::OnEvent( const std::string& event, const float& amount )
     {
         if ( event == "shoot")
         {
@@ -124,7 +124,7 @@ namespace GUI
         return false;
     }
     
-    bool GUIManager::OnMouse( const glm::ivec2& coord )
+    bool Manager::OnMouse( const glm::ivec2& coord )
     {
         _currentMouseCoord.x = coord.x;
         _currentMouseCoord.y = coord.y;

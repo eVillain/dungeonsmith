@@ -63,6 +63,7 @@ public:
     glm::ivec2 GetWindowSize();
     glm::vec3 Get3DPosition(glm::ivec2 screenCoord);
 private:
+    // Components are just subsystems for the renderer (ie. meshes/primitives)
     std::vector<IRenderComponent*> _components;
     bool InitializeComponents();
     bool TerminateComponents();
@@ -92,5 +93,7 @@ private:
     
     DebugRenderMode _debugMode;
 };
+
+
 
 #endif /* defined(__DungeonSmith__Renderer__) */

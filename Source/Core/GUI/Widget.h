@@ -1,7 +1,7 @@
 #ifndef NGN_GUI_WIDGET_H
 #define NGN_GUI_WIDGET_H
 //
-//  GUIWidget.h
+//  Widget.h
 //  DungeonSmith
 //
 //  The purpose of this class is to serve as a base class for
@@ -17,13 +17,13 @@
 
 namespace GUI
 {
-    class GUIWidget
+    class Widget
     {
     public:
-        GUIWidget(const glm::ivec2& position,
+        Widget(const glm::ivec2& position,
                   const glm::ivec2& size,
                   const int depth);
-        virtual ~GUIWidget();
+        virtual ~Widget();
         
         virtual void SetPosition(const glm::ivec2& position);
         virtual void SetSize(const glm::ivec2& size);
@@ -47,7 +47,7 @@ namespace GUI
         virtual const void Draw() const;
         // Update - Unused for most widgets but some will need it
         virtual const void Update()
-        { /* printf("[GUIWidget] update called, override me!\n"); */ };
+        { /* printf("[Widget] update called, override me!\n"); */ };
         
         inline const bool IsActive() const { return _active; };
         inline const bool IsVisible() const { return _visible; };

@@ -14,8 +14,8 @@
 #include "ParticleSys.h"
 #include "Camera.h"
 
-class GUIButton;
-class GUIMenu;
+class Button;
+class Menu;
 class GUIFileMenu;
 
 class ParticleEditor : public Scene, public InputEventListener, public MouseEventListener
@@ -45,13 +45,13 @@ private:
     Camera camera;
 
     
-    std::vector<GUIButton*> buttonVect;
-    GUIMenu* fileMenu;                      // New/Load/Save/Quit
-    GUIMenu* particleMenu;                  // Particle system vars
+    std::vector<Button*> buttonVect;
+    Menu* fileMenu;                      // New/Load/Save/Quit
+    Menu* particleMenu;                  // Particle system vars
     GUIFileMenu* fileSelectMenu;            // Open file menu
-    GUIMenu* optionsMenu;                   // Engine options menu
-    GUIMenu* cameraMenu;                    // Camera menu
-    GUIButton *optionsBtn, *cameraBtn;
+    Menu* optionsMenu;                   // Engine options menu
+    Menu* cameraMenu;                    // Camera menu
+    Button *optionsBtn, *cameraBtn;
 
     ParticleSys* m_particleSys;
     

@@ -10,7 +10,7 @@
 #include "Locator.h"
 #include "SceneManager.h"
 #include "Input.h"
-#include "GUIButton.h"
+#include "Button.h"
 #include "Planetoid.h"
 #include "LocalGame.h"
 #include "Editor.h"
@@ -88,7 +88,7 @@ bool MainMenu::OnEvent(const std::string& event, const float& amount)
 
 void MainMenu::CreateButtons()
 {
-    _buttonStartGame = new GUI::GUIButtonLabeled("Start Game",
+    _buttonStartGame = new GUI::ButtonLabeled("Start Game",
                                                  glm::ivec2(0,0),
                                                  glm::ivec2(200,40),
                                                  0);
@@ -97,7 +97,7 @@ void MainMenu::CreateButtons()
     });
     _buttonStartGame->SetBehavior(startGameBehavior);
     
-    _buttonPlanetoid = new GUI::GUIButtonLabeled("Planetoid",
+    _buttonPlanetoid = new GUI::ButtonLabeled("Planetoid",
                                                  glm::ivec2(0,40),
                                                  glm::ivec2(200,40),
                                                  0);
@@ -106,7 +106,7 @@ void MainMenu::CreateButtons()
     });
     _buttonPlanetoid->SetBehavior(startPlanetoidBehavior);
 
-    _buttonStartEditor = new GUI::GUIButtonLabeled("Editor",
+    _buttonStartEditor = new GUI::ButtonLabeled("Editor",
                                                    glm::ivec2(0,80),
                                                    glm::ivec2(200,40),
                                                    0);

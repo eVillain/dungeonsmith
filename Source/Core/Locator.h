@@ -22,7 +22,7 @@ class Physics;
 class Particles;
 
 namespace GUI {
-    class GUIManager;
+    class Manager;
 }
 
 class Locator {
@@ -33,7 +33,7 @@ public:
     static IText& getText() { return *_textService; };
     static SceneManager& getSceneManager() { return _sceneManager; };
     
-    static GUI::GUIManager& getGUI() { return _guiManager; };
+    static GUI::Manager& getGUI() { return _guiManager; };
     static ThreadPool& getThreadPool() { return *_threadPool; };
     static Physics& getPhysics() { return _physics; };
     static Particles& getParticles() { return _particles; };
@@ -76,7 +76,7 @@ private:
     // Thread pool
     static ThreadPool* _threadPool;
     // Graphical User Interface, should always be available
-    static GUI::GUIManager _guiManager;
+    static GUI::Manager _guiManager;
     // Physics engine, should always be available
     static Physics _physics;
     // Particle engine, should always be available

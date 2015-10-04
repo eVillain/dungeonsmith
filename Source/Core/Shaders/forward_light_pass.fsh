@@ -150,6 +150,5 @@ void main(void)
         float noise = (rand(texCoord*seed) -0.5) * .08;
         color.rgb += vec3(noise);
     }
-//    color.rgb += vec3(0.5);
 }
 

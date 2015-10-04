@@ -10,7 +10,7 @@
 
 #include "Console.h"
 
-#include "GUIButton.h"
+#include "Button.h"
 //#include "GUIFileMenu.h"
 #include "TextureManager.h"
 #include "IRenderer.h"
@@ -18,7 +18,7 @@
 
 #include "TextManager.h"
 #include "Camera.h"
-#include "GUIWidget.h"
+#include "Widget.h"
 #include "Physics.h"
 
 #include "SceneManager.h"
@@ -102,7 +102,7 @@ void ParticleEditor::ShowEditor()
     glm::ivec2 resolution = Locator::getRenderer().GetWindowSize();
     if ( !optionsBtn ) {
         // Options menu button
-//        optionsBtn = GUIButton::CreateButton("", (resolution.x/2)-(padding+32), posY-8, 32, 32, ( [=]() {
+//        optionsBtn = Button::CreateButton("", (resolution.x/2)-(padding+32), posY-8, 32, 32, ( [=]() {
 //            if ( optionsMenu == NULL ) { this->ShowOptionsMenu(); }
 //            else { this->RemoveOptionsMenu(); }
 //        } ), BUTTON_TYPE_DEFAULT, true, "OptionsDefault.png", "OptionsActive.png", "OptionsPressed.png" );
@@ -117,7 +117,7 @@ void ParticleEditor::ShowEditor()
 //                int pX = posX+bW+8;
 //                int pY = resolution.y/2-(bH+8);
 //                if ( optionsMenu ) pY -= (optionsMenu->h+optionsMenu->contentHeight+8);
-//                cameraMenu = new GUIMenu(pX, pY, bW, bH, "Camera");
+//                cameraMenu = new Menu(pX, pY, bW, bH, "Camera");
 //                Camera& camera = m_hyperVisor.GetCamera();
 //                cameraMenu->AddVar<bool>("Auto Rotate", &camera.autoRotate, "Camera" );
 //                cameraMenu->AddVar<bool>("3rd Person", &camera.thirdPerson, "Camera" );
@@ -287,7 +287,7 @@ void ParticleEditor::ShowEditor()
 }
 void ParticleEditor::RemoveEditor()
 {
-    std::vector<GUIButton*>::iterator it = buttonVect.begin();
+    std::vector<Button*>::iterator it = buttonVect.begin();
     while (it != buttonVect.end() ) {
         delete (*it);
         it++;

@@ -10,9 +10,9 @@
 #include "HyperVisor.h"
 #include "SceneManager.h"
 #include "Camera.h"
-#include "GUIManager.h"
+#include "Manager.h"
 #include "ThreadPool.h"
-#include "GUIManager.h"
+#include "Manager.h"
 #include "Physics.h"
 #include "Particles.h"
 
@@ -25,7 +25,7 @@ IText* Locator::_textService = &_nullTextService;
 HyperVisor* Locator::_hv = nullptr;
 
 ThreadPool* Locator::_threadPool = nullptr;
-GUI::GUIManager Locator::_guiManager;
+GUI::Manager Locator::_guiManager;
 Physics Locator::_physics;
 Particles Locator::_particles;
 SceneManager Locator::_sceneManager;

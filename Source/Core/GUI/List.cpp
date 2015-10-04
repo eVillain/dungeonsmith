@@ -1,53 +1,41 @@
 //
-//  GUIMenu.cpp
+//  List.cpp
 //  DungeonSmith
 //
-//  Created by The Drudgerist on 29/07/15.
+//  Created by eVillain on 06/09/15.
 //  Copyright (c) 2015 The Drudgerist. All rights reserved.
 //
 
-#include "GUIMenu.h"
+#include "List.h"
 #include "Locator.h"
 #include "Primitives2D.h"
 #include "Renderer.h"
+#include "ButtonLabeled.h"
 
 namespace GUI
 {
-    GUIMenu::GUIMenu(const glm::ivec2& position,
+    List::List(const glm::ivec2& position,
                      const glm::ivec2& size,
-                     const int depth,
-                     const std::string label) :
-    GUIWidget(position, size, depth),
-    _paddingX(DEFAULT_MENU_PADDING_X), _paddingY(DEFAULT_MENU_PADDING_Y),
-    _label(nullptr)
+                     const int depth) :
+    Widget(position, size, depth),
+    _paddingX(DEFAULT_LIST_PADDING_X), _paddingY(DEFAULT_LIST_PADDING_Y)
     {
-        _label = new TextLabel(label,
-                               glm::vec3(position.x, position.y, depth+2),
-                               glm::vec3(0,0,0),
-                               COLOR_WHITE,
-                               Fonts::FONT_DEFAULT,
-                               16,
-                               false);
     }
     
-    GUIMenu::~GUIMenu()
+    List::~List()
     {
-        delete _label;
-        for (GUIWidget* widget:_widgets) {
-            delete widget;;
-        }
         _widgets.clear();
     }
     
-    const void GUIMenu::Draw() const
+    const void List::Draw() const
     {
         if ( !_visible ) return;
-
+        
         Primitives2D& primitives = *Locator::getRenderer().DrawPrimitives2D();
         
         
-        int height = _size.y;
-
+        int height = GetHeight();
+        
         glm::ivec2 drawPos = glm::ivec2(_position.x-(_size.x*0.5), _position.y-(height*0.5));
         
         // Pixel perfect outer border (should render with 1px shaved off corners)
@@ -103,55 +91,74 @@ namespace GUI
         
     }
     
-    const void GUIMenu::Update()
+    const void List::Update()
     {
         
     }
     
     // When clicked/pressed
-    void GUIMenu::OnInteract( const bool interact, const glm::ivec2& coord )
+    void List::OnInteract( const bool interact, const glm::ivec2& coord )
     {
-
+        
     }
+    
     // If point is within menu area returns true
-    const bool GUIMenu::Contains( const glm::ivec2& coord ) const
+    const bool List::Contains( const glm::ivec2& coord ) const
     {
         if ( !_visible ) return false;
         // If point is within button area, then returns true
         int vH = GetHeight()*0.5;
         int vW = _size.x*0.5;
-        if( coord.x > _position.x-vW &&
+        if(coord.x > _position.x-vW &&
            coord.x < _position.x+vW &&
            coord.y > _position.y-(vH-1) &&    // For some reason this is offset by 1px, check later
-           coord.y < _position.y+vH+1 )
+           coord.y < _position.y+vH+1)
         {
             return true;
         }
         return false;
     }
-    void GUIMenu::AddWidget(GUIWidget *widget)
+    
+    void List::AddItems(const std::vector<const std::string> items)
     {
-        widget->SetPosition(glm::ivec2(_position.x,
-                                       _position.y - GetHeight() - _paddingY));
-        widget->SetDepth(_position.z + 1);
-        // Adjust width but keep height of added widget to fit into our frame
-        widget->SetSize(glm::ivec2(_size.x-_paddingX*2,widget->GetHeight()));
-        _widgets.push_back(widget);
+        for (const std::string item : items) {
+            const glm::ivec2 position = glm::ivec2(_position.x,
+                                                   _position.y - (GetHeight()/2) - _paddingY);
+            const glm::ivec2 size = glm::ivec2(_size.x-_paddingX*2,
+                                               _size.y-DEFAULT_LIST_PADDING_Y);
+            const int depth = _position.z + 1;
+            
+            ButtonLabeled* listItem = new ButtonLabeled(item,
+                                                              position,
+                                                              size,
+                                                              depth);
+            // Each item in the list will call SelectItem on click
+            listItem->SetBehavior( new ButtonBehaviorLambda( [=](){
+                this->SelectItem(item);
+            } ));
+            _widgets.push_back(listItem);
+        }
     }
     
-    const unsigned int GUIMenu::GetHeight() const
+    const unsigned int List::GetHeight() const
     {
         unsigned int height = _size.y;
         height += GetContentHeight();
         return height;
     }
     
-    const unsigned int GUIMenu::GetContentHeight() const
+    const unsigned int List::GetContentHeight() const
     {
         int height = 0;
-        for (GUIWidget* widget:_widgets) {
+        for (Widget* widget:_widgets) {
             height += widget->GetHeight() + 2;
+            height += _paddingY;
         }
         return height;
+    }
+    
+    void List::SelectItem(const std::string item)
+    {
+        printf("Selected list item: %s\n", item.c_str());
     }
 }   /* namespace GUI */

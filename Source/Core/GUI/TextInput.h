@@ -1,14 +1,14 @@
 #ifndef NGN_GUI_TEXTINPUT_H
 #define NGN_GUI_TEXTINPUT_H
 //
-//  GUITextInput.h
+//  TextInput.h
 //  DungeonSmith
 //
 //  Created by The Drudgerist on 10/01/13.
 //  Copyright (c) 2013 The Drudgerist. All rights reserved.
 //
 
-#include "GUIWidget.h"
+#include "Widget.h"
 #include "TextInputBehavior.h"
 #include "InputListener.h"
 #include "TextLabel.h"
@@ -17,17 +17,17 @@
 
 namespace GUI
 {
-    class GUITextInput:
-    public GUIWidget,
+    class TextInput:
+    public Widget,
     public InputEventListener,
     public TextInputEventListener
     {
     public:
-        GUITextInput(const glm::ivec2& position,
+        TextInput(const glm::ivec2& position,
                      const glm::ivec2& size,
                      const int depth,
                      const std::string defaultVal="<text input>");
-        ~GUITextInput();
+        ~TextInput();
         
         // Overriden from UIWidget
         virtual const void Draw() const;

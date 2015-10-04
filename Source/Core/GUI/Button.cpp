@@ -1,28 +1,28 @@
 //
-//  GUIButton.cpp
+//  Button.cpp
 //  DungeonSmith
 //
 //  Created by The Drudgerist on 29/07/15.
 //  Copyright (c) 2015 The Drudgerist. All rights reserved.
 //
 
-#include "GUIButton.h"
+#include "Button.h"
 #include "Locator.h"
 #include "Primitives2D.h"
 #include "Renderer.h"
 
 namespace GUI
 {
-    GUIButton::GUIButton(const glm::ivec2& position,
+    Button::Button(const glm::ivec2& position,
                          const glm::ivec2& size,
                          const int depth) :
-    GUIWidget(position, size, depth)
+    Widget(position, size, depth)
     {
         _pressed = false;
         _behavior = nullptr;
     }
     
-    GUIButton::~GUIButton()
+    Button::~Button()
     {
         if ( _behavior )
         {
@@ -31,7 +31,7 @@ namespace GUI
         }
     }
     
-    const void GUIButton::Draw() const
+    const void Button::Draw() const
     {
         if ( !_visible ) return;
         Primitives2D& primitives = *Locator::getRenderer().DrawPrimitives2D();
@@ -90,11 +90,11 @@ namespace GUI
                                _position.z+1);
     }
     
-    const void GUIButton::Update()
+    const void Button::Update()
     { }
     
     // When clicked/pressed
-    void GUIButton::OnInteract( const bool interact, const glm::ivec2& coord )
+    void Button::OnInteract( const bool interact, const glm::ivec2& coord )
     {
         if ( _pressed && !interact && _focus)
         {

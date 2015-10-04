@@ -11,7 +11,7 @@
 
 #include "Scene.h"
 #include "InputListener.h"
-#include "GUIButtonLabeled.h"
+#include "ButtonLabeled.h"
 
 class MainMenu : public Scene, public InputEventListener
 {
@@ -34,9 +34,9 @@ private:
 
     void CreateButtons();
     void RemoveButtons();
-    GUI::GUIButtonLabeled* _buttonStartGame;
-    GUI::GUIButtonLabeled* _buttonStartEditor;
-    GUI::GUIButtonLabeled* _buttonPlanetoid;
+    GUI::ButtonLabeled* _buttonStartGame;
+    GUI::ButtonLabeled* _buttonStartEditor;
+    GUI::ButtonLabeled* _buttonPlanetoid;
 
 };
 #endif /* defined(__DungeonSmith__MainMenu__) */

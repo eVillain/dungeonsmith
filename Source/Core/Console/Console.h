@@ -23,7 +23,7 @@
 
 class TextLabel;
 namespace GUI{
-    class GUITextInput;
+    class TextInput;
 };
 typedef struct {
     std::string text;
@@ -57,7 +57,7 @@ private:
     static ConsoleVarMap            m_cvars;                // Holds cvars by name
     static std::deque<ConsoleLine>  m_textLines;            // Holds lines of text
     static bool                     visible;                // Whether the console is shown on screen
-    static GUI::GUITextInput*       textWidget;             // Widget which takes text input
+    static GUI::TextInput*       textWidget;             // Widget which takes text input
     
     static void Refresh();
     static void Show();

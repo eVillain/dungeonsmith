@@ -96,7 +96,7 @@ glm::vec2 Rect2D::GetIntersectionDepth( const Rect2D& rectA, const Rect2D& rectB
     float minDistanceY = halfHeightA + halfHeightB;
     
     // If we are not intersecting at all, return (0, 0).
-    if ( abs(distanceX) >= minDistanceX || abs(distanceY) >= minDistanceY )
+    if ( fabsf(distanceX) >= minDistanceX || fabsf(distanceY) >= minDistanceY )
         return glm::vec2();
     
     // Calculate and return intersection depths.

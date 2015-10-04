@@ -1,35 +1,39 @@
 //
-//  GUIButtonLabeled.h
+//  ButtonLabeled.h
 //  DungeonSmith
 //
 //  Created by The Drudgerist on 01/08/15.
 //  Copyright (c) 2015 The Drudgerist. All rights reserved.
 //
 
-#ifndef __DungeonSmith__GUIButtonLabeled__
-#define __DungeonSmith__GUIButtonLabeled__
+#ifndef __DungeonSmith__ButtonLabeled__
+#define __DungeonSmith__ButtonLabeled__
 
-#include "GUIButton.h"
+#include "Button.h"
 
 #include "TextLabel.h"
 
 namespace GUI
 {
-    class GUIButtonLabeled : public GUIButton
+    class ButtonLabeled : public Button
     {
     public:
-        GUIButtonLabeled(const std::string& newText,
+        ButtonLabeled(const std::string& newText,
                          const glm::ivec2& position,
                          const glm::ivec2& size,
                          const int depth);
-        ~GUIButtonLabeled();
+        ~ButtonLabeled();
         
         void SetText(const std::string& newText);
         void SetFont(const Fonts::FontID newFont);
         void SetFontSize(const int newFontSize);
 
+        void SetPosition(const glm::ivec2& position);
+        void SetSize(const glm::ivec2& size);
+        void SetDepth(const int depth);
+
     private:
         TextLabel _label;
     };
 }   /* namespace GUI */
-#endif /* defined(__DungeonSmith__GUIButtonLabeled__) */
+#endif /* defined(__DungeonSmith__ButtonLabeled__) */

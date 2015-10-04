@@ -1,12 +1,12 @@
 //
-//  GUISlider.cpp
+//  Slider.cpp
 //  DungeonSmith
 //
 //  Created by The Drudgerist on 29/08/15.
 //  Copyright (c) 2015 The Drudgerist. All rights reserved.
 //
 
-#include "GUISlider.h"
+#include "Slider.h"
 #include "Locator.h"
 #include "Primitives2D.h"
 #include "Renderer.h"
@@ -15,11 +15,11 @@
 
 namespace GUI
 {
-    GUISlider::GUISlider(const glm::ivec2& position,
+    Slider::Slider(const glm::ivec2& position,
                          const glm::ivec2& size,
                          const int depth,
                          const std::string& name) :
-    GUIWidget(position, size, depth)
+    Widget(position, size, depth)
     {
         _behavior = nullptr;
         _sliderValue = 0.5;
@@ -38,7 +38,7 @@ namespace GUI
                                false);
     }
     
-    GUISlider::~GUISlider()
+    Slider::~Slider()
     {
         if ( _behavior )
         {
@@ -49,7 +49,7 @@ namespace GUI
         _label = nullptr;
     }
     
-    void GUISlider::SetPosition(const glm::ivec2& position)
+    void Slider::SetPosition(const glm::ivec2& position)
     {
         _position.x = position.x;
         _position.y = position.y;
@@ -58,10 +58,10 @@ namespace GUI
                                      _position.z+3);
     }
     
-    const void GUISlider::Draw() const
+    const void Slider::Draw() const
     {
         if ( !_visible ) return;
-        GUIWidget::Draw();
+        Widget::Draw();
         
         Primitives2D& primitives = *Locator::getRenderer().DrawPrimitives2D();
         
@@ -133,24 +133,24 @@ namespace GUI
         }
     }
     
-    const void GUISlider::Update()
+    const void Slider::Update()
     {
         
     }
     
     // When clicked/pressed
-    void GUISlider::OnInteract( const bool interact, const glm::ivec2& coord )
+    void Slider::OnInteract( const bool interact, const glm::ivec2& coord )
     {
         if (interact) CheckSliderPress(coord);
         else _draggingSlider = false;
     }
     
-    void GUISlider::OnDrag( const glm::ivec2& coord )
+    void Slider::OnDrag( const glm::ivec2& coord )
     {
         CheckSliderPress(coord);
     }
     
-    void GUISlider::CheckSliderPress(const glm::ivec2 &coord)
+    void Slider::CheckSliderPress(const glm::ivec2 &coord)
     {
         if (_focus)
         {
@@ -196,10 +196,9 @@ namespace GUI
                         _label->SetText(_name + ": " + _behavior->GetValueString());
                     }
                     else {
-//                        _label->SetText(_name + ": " + StringUtil::DoubleToString(_sliderValue));
+                        _label->SetText(_name + ": " + StringUtil::DoubleToString(_sliderValue));
                     }
                 }
-                _draggingSlider = true;
             }
         }
     }

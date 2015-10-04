@@ -28,7 +28,7 @@
 #include "FileUtil.h"
 
 #include "TextLabel.h"
-#include "GUITextInput.h"
+#include "TextInput.h"
 
 inline void VarLoadGuard( void ) {
     bool b = true;
@@ -44,7 +44,7 @@ inline void VarLoadGuard( void ) {
 std::map<std::string, ConsoleVar*>  Console::m_cvars;                // Holds cvars by name
 std::deque<ConsoleLine>             Console::m_textLines;            // Holds lines of text
 bool                                Console::visible = false;        // Whether the console is shown on screen
-GUI::GUITextInput*                  Console::textWidget = nullptr;
+GUI::TextInput*                  Console::textWidget = nullptr;
 //========================================================================
 // 'Public' console functions, available to outside
 //========================================================================
@@ -302,7 +302,7 @@ void Console::Show() {
     std::string consoleInfo = "DungeonSmith v." + HyperVisor::VERSION();
     
     int winWidth = Locator::getRenderer().GetWindowSize().x;
-    textWidget = new GUI::GUITextInput(glm::ivec2(0, 1),
+    textWidget = new GUI::TextInput(glm::ivec2(0, 1),
                                        glm::ivec2(winWidth-1, CONSOLE_TEXT_HEIGHT),
                                        CONSOLE_TEXT_DEPTH,
                                        consoleInfo);

@@ -1,4 +1,4 @@
-#include "GUITextInput.h"
+#include "TextInput.h"
 #include "Locator.h"
 #include "Renderer.h"
 #include "Input.h"
@@ -11,11 +11,11 @@
 
 namespace GUI
 {
-    GUITextInput::GUITextInput(const glm::ivec2& position,
+    TextInput::TextInput(const glm::ivec2& position,
                                const glm::ivec2& size,
                                const int depth,
                                const std::string defaultText )  :
-    GUIWidget(position, size, depth),
+    Widget(position, size, depth),
     _label(defaultText, glm::vec3(position.x-(size.x/2)+8,position.y-(size.y/4),depth+1)),
     _inputText(defaultText),
     _defaultText(defaultText)
@@ -26,18 +26,18 @@ namespace GUI
         _lastCursorBlink = 0;
     }
     
-    GUITextInput::~GUITextInput()
+    TextInput::~TextInput()
     {
         
     }
     
-    void GUITextInput::OnTextInput( const std::string& inputText )
+    void TextInput::OnTextInput( const std::string& inputText )
     {
         _inputText = inputText;
         _label.SetText(_inputText);
     }
     
-    bool GUITextInput::OnEvent( const std::string& theEvent, const float& amount )
+    bool TextInput::OnEvent( const std::string& theEvent, const float& amount )
     {
         if ( theEvent == "back" && _textInputActive )
         {
@@ -62,10 +62,10 @@ namespace GUI
         return false;
     }
     
-    const void GUITextInput::Draw() const
+    const void TextInput::Draw() const
     {
         if ( !_visible ) return;
-        GUIWidget::Draw();
+        Widget::Draw();
         
         Primitives2D& primitives = *Locator::getRenderer().DrawPrimitives2D();
         
@@ -122,7 +122,7 @@ namespace GUI
         }
     }
     
-    const void GUITextInput::Update()
+    const void TextInput::Update()
     {
         double timeNow = Timer::Seconds();
         double cursorBlinkDelta = timeNow - _lastCursorBlink;
@@ -133,12 +133,12 @@ namespace GUI
         }
     }
     
-    void GUITextInput::SetFocus( const bool focus)
+    void TextInput::SetFocus( const bool focus)
     {
         _focus = focus;
     }
     
-    void GUITextInput::SetActive( const bool active )
+    void TextInput::SetActive( const bool active )
     {
         if ( active != _textInputActive ) {
             if ( _active && _textInputActive ) // Widget made inactive with input active
@@ -149,7 +149,7 @@ namespace GUI
         _active = active;
     }
     
-    void GUITextInput::SetVisible( const bool visible )
+    void TextInput::SetVisible( const bool visible )
     {
         if ( _visible != visible ) {
             if ( _visible && _textInputActive ) // Widget made invisible with input active
@@ -161,7 +161,7 @@ namespace GUI
     }
     
     // When clicked/pressed
-    void GUITextInput::OnInteract( const bool interact, const glm::ivec2& coord )
+    void TextInput::OnInteract( const bool interact, const glm::ivec2& coord )
     {
         if ( !_focus ) return;
         if ( !interact && !_textInputActive )
@@ -170,7 +170,7 @@ namespace GUI
         }
     }
     
-    void GUITextInput::StartTextInput()
+    void TextInput::StartTextInput()
     {
         if ( _textInputActive ) return;
         Input::StartTextInput(this);
@@ -183,7 +183,7 @@ namespace GUI
         }
     }
     
-    void GUITextInput::StopTextInput()
+    void TextInput::StopTextInput()
     {
         if ( !_textInputActive ) return;
         _textInputActive = false;
@@ -191,7 +191,7 @@ namespace GUI
         Input::UnRegisterEventObserver(this);
     }
     
-    void GUITextInput::ClearText()
+    void TextInput::ClearText()
     {
         _inputText.clear();
         _label.SetText(_inputText);

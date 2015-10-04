@@ -18,7 +18,7 @@
 class BlockSet;
 
 namespace GUI {
-    class GUIMenu;
+    class Menu;
 }
 
 class Editor : public Scene, public InputEventListener, public MouseEventListener
@@ -46,7 +46,7 @@ private:
     
     void AddGUI();
     void RemoveGUI();
-    GUI::GUIMenu* _menu;
+    GUI::Menu* _menu;
     
     bool OnEvent( const std::string& event, const float& amount );
     bool OnMouse( const glm::ivec2 &coord );

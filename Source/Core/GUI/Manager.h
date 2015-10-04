@@ -1,13 +1,13 @@
 //
-//  GUIManager.h
+//  Manager.h
 //  DungeonSmith
 //
 //  Created by The Drudgerist on 12/05/15.
 //  Copyright (c) 2015 The Drudgerist. All rights reserved.
 //
 
-#ifndef __DungeonSmith__GUIManager__
-#define __DungeonSmith__GUIManager__
+#ifndef __DungeonSmith__Manager__
+#define __DungeonSmith__Manager__
 
 #include <vector>
 #include "Input.h"
@@ -15,14 +15,14 @@
 
 namespace GUI
 {
-    class GUIWidget;
+    class Widget;
     
-    class GUIManager : public InputEventListener, public MouseEventListener
+    class Manager : public InputEventListener, public MouseEventListener
     {
-        friend class GUIWidget;
+        friend class Widget;
     public:
-        GUIManager();
-        ~GUIManager();
+        Manager();
+        ~Manager();
         
         void Update( double delta );
         const void Draw() const;
@@ -34,10 +34,10 @@ namespace GUI
         bool OnCursorRelease( const glm::ivec2& coord );
         
     protected:
-        void Add(GUIWidget* widget);
-        void Remove(GUIWidget* widget);
+        void Add(Widget* widget);
+        void Remove(Widget* widget);
     private:
-        std::vector<GUIWidget*> _widgets;
+        std::vector<Widget*> _widgets;
         
         bool OnEvent( const std::string& theEvent, const float& amount );
         bool OnMouse( const glm::ivec2& coord );
@@ -47,4 +47,4 @@ namespace GUI
     };
 }    /* namespace GUI */
 
-#endif /* defined(__DungeonSmith__GUIManager__) */
+#endif /* defined(__DungeonSmith__Manager__) */

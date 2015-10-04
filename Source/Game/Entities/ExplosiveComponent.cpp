@@ -57,12 +57,12 @@ void ExplosiveComponent::Update( const double delta ) {
                     m_manager->KillEntity(m_ownerID);
                 }
             }
-        } else if ( fabsf(m_timer - 0.2) < 0.05f ) {
+        } else if ( fabs(m_timer - 0.2) < 0.05f ) {
             Entity* m_owner = m_manager->GetEntity(m_ownerID);
             float explosionForce = m_owner->GetAttributeDataPtr<float>("explosionForce");
             if ( explosionForce < 0.0f ) { // Imploder hop up before detonating
                 PhysicsComponent* pComp = (PhysicsComponent*)m_manager->GetComponent(m_ownerID, "Physics");
-//                if ( pComp ) pComp->GetRigidBody()->applyCentralImpulse(btVector3(0.0f,0.5f,0.0f));
+                if ( pComp ) pComp->GetRigidBody()->applyCentralImpulse(btVector3(0.0f,0.5f,0.0f));
             }
         }
     }

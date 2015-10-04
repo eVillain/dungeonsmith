@@ -8,6 +8,7 @@
 
 #include "HyperVisor.h"
 #include "Locator.h"
+
 #include "Input.h"
 #include "Renderer.h"
 #include "CommandProcessor.h"
@@ -16,7 +17,7 @@
 #include "TextManager.h"
 #include "FileUtil.h"
 #include "Scene.h"
-#include "GUIManager.h"
+#include "Manager.h"
 #include "ThreadPool.h"
 #include "SceneManager.h"
 #include "Physics.h"
