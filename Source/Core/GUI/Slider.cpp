@@ -19,7 +19,16 @@ namespace GUI
                          const glm::ivec2& size,
                          const int depth,
                          const std::string& name) :
-    Widget(position, size, depth)
+    Widget(position, size, depth),
+    _label(name,
+            glm::vec3(position.x,
+                      position.y+_size.y*0.25,
+                      depth+3),
+            glm::vec3(0,0,0),
+            COLOR_WHITE,
+            Fonts::FONT_DEFAULT,
+            16,
+            false)
     {
         _behavior = nullptr;
         _sliderValue = 0.5;
@@ -27,15 +36,6 @@ namespace GUI
         _sliderPadding = 6;
         _draggingSlider = false;
         _name = name;
-        _label = new TextLabel(_name,
-                               glm::vec3(position.x,
-                                         position.y+_size.y*0.25,
-                                         depth+3),
-                               glm::vec3(0,0,0),
-                               COLOR_WHITE,
-                               Fonts::FONT_DEFAULT,
-                               16,
-                               false);
     }
     
     Slider::~Slider()
@@ -45,17 +45,21 @@ namespace GUI
             delete _behavior;
             _behavior = nullptr;
         }
-        delete _label;
-        _label = nullptr;
     }
     
     void Slider::SetPosition(const glm::ivec2& position)
     {
         _position.x = position.x;
         _position.y = position.y;
-        _label->position = glm::vec3(_position.x,
+        _label.position = glm::vec3(_position.x,
                                      _position.y+_size.y*0.25,
                                      _position.z+3);
+    }
+    
+    void Slider::SetVisible(const bool visible)
+    {
+        Widget::SetVisible(visible);
+        _label.SetVisible(visible);
     }
     
     const void Slider::Draw() const
@@ -193,10 +197,10 @@ namespace GUI
                     _sliderValue = newValue;
                     if ( _behavior ) {
                         _behavior->SetValue(_sliderValue);
-                        _label->SetText(_name + ": " + _behavior->GetValueString());
+                        _label.SetText(_name + ": " + _behavior->GetValueString());
                     }
                     else {
-                        _label->SetText(_name + ": " + StringUtil::DoubleToString(_sliderValue));
+                        _label.SetText(_name + ": " + StringUtil::DoubleToString(_sliderValue));
                     }
                 }
             }

@@ -25,7 +25,7 @@
 #include <glm/gtc/random.hpp>
 
 Planetoid::Planetoid() : Scene("Game"),
-_numPlanetCubes(4096)
+_numPlanetCubes(2048)
 {
 }
 
@@ -92,7 +92,6 @@ void Planetoid::Resume()
 
 void Planetoid::Update( double deltaTime )
 {
-    Locator::getPhysics().Update(deltaTime);
     Locator::getPhysics().AddExplosion(btVector3(), 1000.0, -0.980);
 
     std::string fpsText =
@@ -123,6 +122,8 @@ void Planetoid::Update( double deltaTime )
                          COLOR_WHITE);
     }
     _planetCubes.Update(deltaTime);
+    
+    Locator::getPhysics().Update(deltaTime);
 }
 
 void Planetoid::Draw()

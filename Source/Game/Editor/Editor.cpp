@@ -13,31 +13,20 @@
 #include "LocalGame.h"
 #include "BlockSet.h"
 #include "Primitives3D.h"
-#include "Menu.h"
-#include "ButtonLabeled.h"
-#include "Slider.h"
 #include "LightSystem3D.h"
 #include "Instanced.h"
+#include "EditorGUI.h"
 
 Editor::Editor() : Scene("Editor")
 {
-    _menu = nullptr;
     _blockSet = std::unique_ptr<BlockSet>(new BlockSet);
-//    _blockSet->SetSize(glm::ivec3(2));
-//    for (int i=0; i<2; i++) {
-//        for (int j=0; j<2; j++) {
-//            for (int k=0; k<2; k++) {
-//            _blockSet->Set(glm::ivec3(i,k,j), Type_Grass);
-//            }
-//        }
-//    }
-//    _blockSet->ReplaceType(Type_Empty, Type_Snow);
     _blockSet->Set(glm::ivec3(0,0,0), Type_Grass);
     
     Vertex_XYZW_DSN* verts = nullptr;
     int32_t count = 0;
     _blockSet->GenerateMesh(&verts, count);
-    _buffer = new MeshInstanceVertexColored(count, 1);
+    
+    _buffer = std::unique_ptr<MeshInstanceVertexColored>(new MeshInstanceVertexColored(count, 1));
     _buffer->Buffer(*verts, count);
     delete [] verts;
     _buffer->Bind();
@@ -59,8 +48,6 @@ Editor::Editor() : Scene("Editor")
 
 Editor::~Editor()
 {
-    delete _buffer;
-    _buffer = nullptr;
 }
 
 void Editor::Initialize()
@@ -145,7 +132,7 @@ void Editor::Draw()
                                                            glm::quat(),
                                                            COLOR_WHITE);
     
-    Locator::getRenderer().DrawInstanced()->RenderDeferred(_buffer, _camera.GetMVP());
+    Locator::getRenderer().DrawInstanced()->RenderDeferred(_buffer.get(), _camera.GetMVP());
     _cursorWorldPosition = Locator::getRenderer().Get3DPosition(_cursorScreenPosition);
     // Adjust cursor position by a small bias (1cm) as the cursor is at the
     // surface and we actually want the position just under the surface
@@ -221,39 +208,13 @@ void Editor::UpdateMovement()
 
 void Editor::AddGUI()
 {
-    glm::ivec2 guiPos = glm::ivec2(-400,200);
-    glm::ivec2 menuSize = glm::ivec2(200,20);
-
-    _menu = new GUI::Menu(guiPos,
-                          menuSize,
-                          0,
-                          "Editor Menu");
-    
-    GUI::ButtonLabeled* button = new GUI::ButtonLabeled("File",
-                                                        guiPos,
-                                                        menuSize,
-                                                        0);
-    button->SetBehavior(new GUI::ButtonBehaviorLambda( [](){
-        // Open file menu
-    } ));
-    _menu->AddWidget(button);
-    
-//    GUI::Slider* slider = new GUI::Slider(glm::ivec2(-200,240),glm::ivec2(200,40),0, "Near Depth");
-//    slider->SetBehavior(new GUI::SliderBehavior<float>(_camera.nearDepth, 0.001, 1.0));
-//    _menu->AddWidget(slider);
-//    
-//    slider = new GUI::Slider(glm::ivec2(-200,240),glm::ivec2(200,40),0, "Far Depth");
-//    slider->SetBehavior(new GUI::SliderBehavior<float>(_camera.farDepth, 1.0, 1000.0));
-//    _menu->AddWidget(slider);
+    _gui = std::unique_ptr<EditorGUI>(new EditorGUI(*this));
 }
 
 void Editor::RemoveGUI()
 {
-    if (_menu)
-    {
-        delete _menu;
-        _menu = nullptr;
-    }
+    EditorGUI* gui = _gui.release();
+    delete gui;
 }
 
 void Editor::AddBlock()

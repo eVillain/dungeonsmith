@@ -62,6 +62,10 @@ namespace GUI
         _label.position.z = depth + 1;
     }
     
-    
+    void ButtonLabeled::SetVisible(const bool visible)
+    {
+        Widget::SetVisible(visible);
+        _label.SetVisible(visible);
+    }
 } /* namespace GUI */
 

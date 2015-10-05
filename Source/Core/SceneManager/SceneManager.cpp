@@ -327,9 +327,6 @@ void SceneManager::SetActiveScene(std::string theSceneID) {
 
 void SceneManager::Cleanup(void)
 {
-    // Always call our cleanup events with our pointer when this method is called
-//    mCleanupEvents.DoEvents();
-    
     // Remove one of our dead scenes
     if( !mDead.empty() ) {
         // Retrieve the dead scene

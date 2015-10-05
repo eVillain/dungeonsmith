@@ -37,6 +37,7 @@ private:
     GUI::ButtonLabeled* _buttonStartGame;
     GUI::ButtonLabeled* _buttonStartEditor;
     GUI::ButtonLabeled* _buttonPlanetoid;
+    GUI::ButtonLabeled* _buttonExit;
 
 };
 #endif /* defined(__DungeonSmith__MainMenu__) */

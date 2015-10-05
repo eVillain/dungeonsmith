@@ -68,9 +68,6 @@ namespace GUI
         bool moveable;                              // Whether widget can be moved
         bool dragging;                              // Moving widget by dragging menu bar
         int dragX, dragY;                           // Dragging amount
-        
-        bool minimizeable;                          // Whether widget can be minimized
-        bool minimized;                             // Widget is currently minimized
     };
 }   /* namespace GUI */
 

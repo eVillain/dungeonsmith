@@ -19,8 +19,6 @@ namespace GUI
         
         moveable=false;
         dragging=false;
-        minimizeable=false;
-        minimized=false;
         dragX=0;
         dragY=0;
         

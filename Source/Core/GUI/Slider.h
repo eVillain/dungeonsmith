@@ -26,6 +26,7 @@ namespace GUI
         
         // Overrides from Widget
         virtual void SetPosition(const glm::ivec2& position);
+        virtual void SetVisible(const bool visible);
         virtual const void Draw() const;
         virtual const void Update();
         // When clicked/pressed
@@ -40,7 +41,7 @@ namespace GUI
         int _sliderPadding;
         bool _draggingSlider;
         std::string _name;
-        TextLabel* _label;
+        TextLabel _label;
         
         void CheckSliderPress(const glm::ivec2& coord);
     };

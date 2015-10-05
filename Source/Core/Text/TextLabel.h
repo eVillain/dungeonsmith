@@ -33,7 +33,8 @@ public:
     void SetText(const std::string& newText);
     void SetFont(const Fonts::FontID newFont);
     void SetFontSize(const int newFontSize);
-
+    
+    virtual void SetVisible(const bool visible);
     
     glm::vec3 position;
     glm::vec3 rotation;
@@ -46,6 +47,7 @@ protected:
     void Draw();
     
 private:
+    bool _visible;
     std::string _text;
     glm::vec2 _size;
     

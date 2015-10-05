@@ -14,6 +14,7 @@
 #include "Planetoid.h"
 #include "LocalGame.h"
 #include "Editor.h"
+#include "CommandProcessor.h"
 
 MainMenu::MainMenu() : Scene("Main Menu")
 {
@@ -115,6 +116,14 @@ void MainMenu::CreateButtons()
     });
     _buttonStartEditor->SetBehavior(startEditorBehavior);
 
+    _buttonExit = new GUI::ButtonLabeled("Exit",
+                                                glm::ivec2(0,-40),
+                                                glm::ivec2(200,40),
+                                                0);
+    GUI::ButtonBehaviorLambda* exitBehavior = new GUI::ButtonBehaviorLambda([](){
+        CommandProcessor::Buffer("quit");
+    });
+    _buttonExit->SetBehavior(exitBehavior);
 }
 
 void MainMenu::RemoveButtons()
@@ -133,5 +142,10 @@ void MainMenu::RemoveButtons()
     {
         delete _buttonStartEditor;
         _buttonStartEditor = nullptr;
+    }
+    if ( _buttonExit )
+    {
+        delete _buttonExit;
+        _buttonExit = nullptr;
     }
 }

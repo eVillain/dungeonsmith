@@ -14,9 +14,9 @@
 namespace GUI
 {
     Menu::Menu(const glm::ivec2& position,
-                     const glm::ivec2& size,
-                     const int depth,
-                     const std::string label) :
+               const glm::ivec2& size,
+               const int depth,
+               const std::string label) :
     Widget(position, size, depth),
     _paddingX(DEFAULT_MENU_PADDING_X), _paddingY(DEFAULT_MENU_PADDING_Y),
     _label(label,
@@ -24,9 +24,11 @@ namespace GUI
            glm::vec3(0,0,0),
            COLOR_WHITE,
            Fonts::FONT_DEFAULT,
-           size.y*0.5)
+           size.y*0.5),
+    minimizeable(false),
+    _minimized(false)
     {
-
+        
     }
     
     Menu::~Menu()
@@ -42,7 +44,6 @@ namespace GUI
         if ( !_visible ) return;
 
         Primitives2D& primitives = *Locator::getRenderer().DrawPrimitives2D();
-        
         
         int height = _size.y;
 
@@ -97,7 +98,38 @@ namespace GUI
                                COLOR_UI_BORDER_INNER,
                                _position.z+1);
         
-        // Menu bar
+        // Minimize box
+        if (minimizeable)
+        {
+            gradColTop = COLOR_UI_GRADIENT_TOP;
+            gradColBottom = COLOR_UI_GRADIENT_BOTTOM;
+            const int boxPadding = 4;
+            const glm::vec2 boxSize = glm::vec2(height*0.5);
+            const glm::vec2 boxCenter = glm::vec2(_position.x+((_size.x-boxSize.x)/2)-boxPadding,
+                                                  _position.y);
+            primitives.RectOutline(boxCenter,
+                                   boxSize,
+                                   COLOR_UI_BORDER_INNER,
+                                   _position.z+2);
+            if ( _minimized )
+            {
+                gradColTop *= 0.5;
+                gradColBottom *= 0.5;
+            }
+            primitives.RectangleGradientY(boxCenter,
+                                          boxSize,
+                                          gradColTop,
+                                          gradColBottom,
+                                          _position.z+1);
+            
+            primitives.Line(glm::vec2(boxCenter.x-boxSize.x/3,boxCenter.y-boxSize.y/3),
+                            glm::vec2(boxCenter.x+boxSize.x/3,boxCenter.y-boxSize.y/3),
+                            COLOR_UI_BORDER_INNER,
+                            COLOR_UI_BORDER_INNER,
+                            _position.z+2);
+
+            
+        }
         
     }
     
@@ -109,8 +141,27 @@ namespace GUI
     // When clicked/pressed
     void Menu::OnInteract( const bool interact, const glm::ivec2& coord )
     {
-
+        if (minimizeable && !interact)
+        {
+            const int boxPadding = 4;
+            const int boxSize = _size.y*0.5;
+            const glm::vec2 boxCenter = glm::vec2(_position.x+((_size.x-boxSize)/2)-boxPadding,
+                                                  _position.y);
+            if( coord.x > boxCenter.x-boxSize &&
+               coord.x < boxCenter.x+boxSize &&
+               coord.y > boxCenter.y-(boxSize-1) &&    // For some reason this is offset by 1px, check later
+               coord.y < boxCenter.y+boxSize+1 )
+            {
+                if (_minimized)
+                {
+                    Maximize();
+                } else {
+                    Minimize();
+                }
+            }
+        }
     }
+    
     // If point is within menu area returns true
     const bool Menu::Contains( const glm::ivec2& coord ) const
     {
@@ -148,8 +199,30 @@ namespace GUI
     {
         int height = 0;
         for (Widget* widget:_widgets) {
+            if (!widget->IsVisible()) continue;
             height += widget->GetHeight() + 2;
         }
         return height;
+    }
+    
+    void Menu::Minimize()
+    {
+        if (minimizeable && !_minimized)
+        {
+            for (Widget* widget:_widgets) {
+                widget->SetVisible(false);
+            }
+            _minimized = true;
+        }
+    }
+    void Menu::Maximize()
+    {
+        if (minimizeable && _minimized)
+        {
+            for (Widget* widget:_widgets) {
+                widget->SetVisible(true);
+            }
+            _minimized = false;
+        }
     }
 }   /* namespace GUI */

@@ -14,12 +14,10 @@
 #include "Light3D.h"
 #include "Camera.h"
 #include "MeshInstanceVertexColored.h"
+//#include "EditorGUI.h"
 
 class BlockSet;
-
-namespace GUI {
-    class Menu;
-}
+class EditorGUI;
 
 class Editor : public Scene, public InputEventListener, public MouseEventListener
 {
@@ -38,15 +36,17 @@ public:
     void Draw( void );
     
 private:
+    friend class EditorGUI;
+
     std::unique_ptr<BlockSet> _blockSet;
-    MeshInstanceVertexColored* _buffer;
+    std::unique_ptr<EditorGUI> _gui;
+    std::unique_ptr<MeshInstanceVertexColored> _buffer;
     
     Light3D _light;
     Camera _camera;
     
     void AddGUI();
     void RemoveGUI();
-    GUI::Menu* _menu;
     
     bool OnEvent( const std::string& event, const float& amount );
     bool OnMouse( const glm::ivec2 &coord );

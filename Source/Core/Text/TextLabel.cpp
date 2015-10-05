@@ -23,7 +23,8 @@ rotation(rotation),
 color(color),
 _font(font),
 _fontSize(fontSize),
-_render3D(render3D)
+_render3D(render3D), 
+_visible(true)
 {
     Locator::getText().Add(this);
     
@@ -66,6 +67,11 @@ void TextLabel::SetFontSize(const int newFontSize)
     _dirty = true;
 }
 
+void TextLabel::SetVisible(const bool visibility)
+{
+    _visible = visibility;
+}
+
 const glm::vec2 TextLabel::GetSize() const
 {
     return _size;
@@ -73,6 +79,7 @@ const glm::vec2 TextLabel::GetSize() const
 
 void TextLabel::Draw()
 {
+    if ( !_visible ) return;
     // Bind our vertex array and vertex buffer
     glBindVertexArray(_vao);
     glBindBuffer(GL_ARRAY_BUFFER, _vbo);

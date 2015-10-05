@@ -32,6 +32,7 @@ namespace GUI
         void SetSize(const glm::ivec2& size);
         void SetDepth(const int depth);
 
+        void SetVisible( const bool visible );
     private:
         TextLabel _label;
     };

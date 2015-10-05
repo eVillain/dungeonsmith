@@ -28,20 +28,29 @@ namespace GUI
         ~Menu();
         
         // Overrides from Widget
-        virtual const void Draw() const;
-        virtual const void Update();
+        const void Draw() const;
+        const void Update();
         // When clicked/pressed
-        virtual void OnInteract( const bool interact, const glm::ivec2& coord );
-        virtual const bool Contains( const glm::ivec2& coord ) const;
-
-        virtual void AddWidget( Widget* widget );
+        void OnInteract( const bool interact, const glm::ivec2& coord );
+        // Check if point is inside menu
+        const bool Contains( const glm::ivec2& coord ) const;
+        // Add a widget to the bottom of the menu
+        void AddWidget( Widget* widget );
         
-        virtual const unsigned int GetHeight() const;
+        const unsigned int GetHeight() const;
+        
+        bool minimizeable;
+        void Minimize();
+        void Maximize();
+
+        const bool IsMinimized() const { return _minimized; };
     private:
         std::vector<Widget*> _widgets;
         unsigned int _paddingX, _paddingY;
+        // The total height of all the widgets
         const unsigned int GetContentHeight() const;
         TextLabel _label;
+        bool _minimized;
     };
 }   /* namespace GUI */
 
