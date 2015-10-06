@@ -21,8 +21,8 @@ namespace GUI
     {
     public:
         Widget(const glm::ivec2& position,
-                  const glm::ivec2& size,
-                  const int depth);
+               const glm::ivec2& size,
+               const int depth);
         virtual ~Widget();
         
         virtual void SetPosition(const glm::ivec2& position);

@@ -182,7 +182,15 @@ void Input::ProcessInput() {
             input = "MouseButton" + StringUtil::IntToString(event.button.button);
         }
         else if (event.type == SDL_MOUSEWHEEL)
-        { /* TODO: Implement mousewheel :) */}
+        {
+            if (event.wheel.y != 0) {
+                amount = event.wheel.y;
+                input = "MouseWheelY";
+            } else if (event.wheel.x != 0) {
+                amount = event.wheel.x;
+                input = "MouseWheelX";
+            }
+        }
         
         // We have to check for input events first, blocking the regular events
         if ( textInputObserver && ProcessTextInput(event))
@@ -280,6 +288,8 @@ void Input::SetDefaultBindings()
     // Mouse bindings
     Bind("MouseButton1", "shoot");
     Bind("MouseButton3", "shoot2");
+    
+    Bind("MouseWheelY", "scrollY");
 }
 
 // Text input

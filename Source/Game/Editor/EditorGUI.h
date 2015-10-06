@@ -23,10 +23,12 @@ private:
     Editor& _owner;
     void Initialize();
     
-    std::unique_ptr<GUI::Menu> _menu;
-    
+    std::unique_ptr<GUI::Menu> _fileMenu;
+    std::unique_ptr<GUI::Menu> _editMenu;
     std::unique_ptr<GUI::Menu> _cameraMenu;
-
+    
+    void SetupFileMenu(glm::ivec2& position);
+    void SetupEditMenu(glm::ivec2& position);
 };
 
 #endif /* EditorGUI_h */

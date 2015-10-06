@@ -14,7 +14,7 @@
 #include "Light3D.h"
 #include "Camera.h"
 #include "MeshInstanceVertexColored.h"
-//#include "EditorGUI.h"
+#include "BlockDefs.h"
 
 class BlockSet;
 class EditorGUI;
@@ -42,6 +42,8 @@ private:
     std::unique_ptr<EditorGUI> _gui;
     std::unique_ptr<MeshInstanceVertexColored> _buffer;
     
+    Block _newBlockType;
+    
     Light3D _light;
     Camera _camera;
     
@@ -57,6 +59,7 @@ private:
     glm::vec2 inputMove;
     glm::vec2 inputLook;
     
+    void RefreshBlockMesh();
     void AddBlock();
     void RemoveBlock();
 };

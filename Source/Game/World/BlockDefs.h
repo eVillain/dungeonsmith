@@ -62,15 +62,102 @@ typedef enum : unsigned char {
     Type_Silver = 53,
     
     // Color types for debugging
-    Type_Red = 65,
-    Type_Green = 66,
-    Type_Blue = 67,
-    Type_Yellow = 68,
-    Type_Cyan = 69,
-    Type_Purple = 70,
+    Type_Red = 70,
+    Type_Green = 71,
+    Type_Blue = 72,
+    Type_Yellow = 73,
+    Type_Cyan = 74,
+    Type_Purple = 75,
 } Block;
 
+static const std::string BlockTypeName[] =
+{
+    "Empty",    // 0
+    "Blood",    // 1
+    "Water",    // 2
+    "Ice",      // 3
+    "Mud",      // 4
+    "Glass",    // 5
+    "Diamond",  // 6
+    "Ruby",     // 7
+    "Emerald",  // 8
+    "Sapphire", // 9
+    
+    "Unknown_10"    // 10
+    "Unknown_11"    // 11
+    "Unknown_12"    // 12
+    "Unknown_13"    // 13
+    "Unknown_14"    // 14
+    "Unknown_15"    // 15
+    
+    "Dirt",         // 16
+    "Snow",         // 17
+    "Grass",        // 18
+    "Sand",         // 19
+    "Gravel",       // 20
+    "Stone",        // 21
+    "Oak Tree",     // 22
+    "Tree 2",       // 23
+    "Tree 3",       // 24
+    "Jungle Tree",  // 25
+    "Oak Leaves",   // 26
+    "Leaves2",      // 27
+    "Leaves3",      // 28
+    "Jungle Leaves",// 29
 
+    "Unknown_30"    // 30
+    "Unknown_31"    // 31
+    "Unknown_32"    // 32
+    "Unknown_33"    // 33
+    "Unknown_34"    // 34
+    "Unknown_35"    // 35
+    "Unknown_36"    // 36
+    "Unknown_37"    // 37
+    "Unknown_38"    // 38
+    "Unknown_39"    // 39
+
+    "Leather (Light)",  // 40
+    "Leather (Heavy)",  // 41
+    "Hide (Light)",     // 42
+    "Hide (Heavy)",     // 43
+    "Bone",             // 44
+    "Skin",             // 45
+    "Meat",             // 46
+    "Brainmatter",      // 47
+    "Coal",             // 48
+    "Bronze",           // 49
+    "Iron",             // 50
+    "Steel",            // 51
+    "Gold",             // 52
+    "Silver",           // 53
+    
+    "Unknown_54"    // 54
+    "Unknown_55"    // 55
+    "Unknown_56"    // 56
+    "Unknown_57"    // 57
+    "Unknown_58"    // 58
+    "Unknown_59"    // 59
+    
+    "Unknown_60"    // 60
+    "Unknown_61"    // 61
+    "Unknown_62"    // 62
+    "Unknown_63"    // 63
+    "Unknown_64"    // 64
+    "Unknown_65"    // 65
+    "Unknown_66"    // 66
+    "Unknown_67"    // 67
+    "Unknown_68"    // 68
+    "Unknown_69"    // 69
+    
+    "Red",  // 70
+    "Green",  // 71
+    "Blue",  // 72
+    "Yellow",  // 73
+    "Cyan",  // 74
+    "Purple",  // 75
+
+};
+// Deprecated, use the array above :)
 inline static std::string NameForType( Block type ) {
     switch (type) {
         case Type_Empty: { return "Empty Block"; } break;

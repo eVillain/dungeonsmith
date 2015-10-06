@@ -39,6 +39,10 @@ Editor::Editor() : Scene("Editor")
         1.0,
     };
     _buffer->BufferInstance(instance);
+    
+    _newBlockType = Type_Grass;
+    
+    
     _light.position = glm::vec4(512.0,512.0,512.0,0.0f);
     _camera.position = glm::vec3(0.0,0.0,2.0);
     
@@ -170,6 +174,16 @@ bool Editor::OnEvent(const std::string& event, const float& amount)
     else if ( event == "moveright" ) { inputMove.x += amount; return true; }
     else if ( event == "moveback" ) { inputMove.y += amount; return true; }
     else if ( event == "moveforward" ) { inputMove.y -= amount; return true; }
+    else if ( event == "scrollY" )
+    {
+        if ( amount > 0 ) {
+            _newBlockType = (Block)(_newBlockType-1);
+            if (_newBlockType == Type_Empty) _newBlockType = Type_Water;
+        } else {
+            _newBlockType = (Block)(_newBlockType+1);
+            if (_newBlockType > Type_Purple) _newBlockType = Type_Purple;
+        }
+    }
     else if ( amount == 1 )
     {
         if ( event == "run" ) { _camera.movementSpeedFactor = 20.0; return true; }
@@ -217,6 +231,22 @@ void Editor::RemoveGUI()
     delete gui;
 }
 
+void Editor::RefreshBlockMesh()
+{
+    Vertex_XYZW_DSN* verts = nullptr;
+    int32_t count = 0;
+    _blockSet->GenerateMesh(&verts, count);
+    _buffer->Clear();
+    _buffer->Resize(count);
+    _buffer->Buffer(*verts, count);
+    delete [] verts;
+    verts = nullptr;
+    
+    _buffer->Bind();
+    _buffer->Upload();
+    _buffer->Unbind();
+}
+
 void Editor::AddBlock()
 {
     if ( _blockSet->IsWithinBounds(_cursorWorldPosition) )
@@ -224,19 +254,10 @@ void Editor::AddBlock()
         glm::vec3 surfaceBlockPosition = _blockSet->GetSurfaceBlockCenter(_cursorWorldPosition);
         if ( _blockSet->IsWithinBounds(surfaceBlockPosition) )
         {
-            _blockSet->Set(_blockSet->WorldToLocalCoord(surfaceBlockPosition), Type_Snow);
+            _blockSet->Set(_blockSet->WorldToLocalCoord(surfaceBlockPosition), _newBlockType);
         }
     }
-    Vertex_XYZW_DSN* verts = nullptr;
-    int32_t count = 0;
-    _blockSet->GenerateMesh(&verts, count);
-    _buffer->Clear();
-    _buffer->Resize(count);
-    _buffer->Buffer(*verts, count);
-    _buffer->Bind();
-    _buffer->Upload();
-    _buffer->Unbind();
-    delete [] verts;
+    RefreshBlockMesh();
 }
 
 void Editor::RemoveBlock()
@@ -245,14 +266,5 @@ void Editor::RemoveBlock()
     {
         _blockSet->Set(_blockSet->WorldToLocalCoord(_cursorWorldPosition), Type_Empty);
     }
-    Vertex_XYZW_DSN* verts = nullptr;
-    int32_t count = 0;
-    _blockSet->GenerateMesh(&verts, count);
-    _buffer->Clear();
-    _buffer->Resize(count);
-    _buffer->Buffer(*verts, count);
-    _buffer->Bind();
-    _buffer->Upload();
-    _buffer->Unbind();
-    delete [] verts;
+    RefreshBlockMesh();
 }
