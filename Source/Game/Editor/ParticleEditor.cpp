@@ -30,8 +30,8 @@
 
 ParticleEditor::ParticleEditor() : Scene("Editor")
 {
-    Input::RegisterEventObserver(this);
-    Input::RegisterMouseObserver(this);
+    Locator::getInput().RegisterEventObserver(this);
+    Locator::getInput().RegisterMouseObserver(this);
 
     optionsMenu = NULL;
     fileMenu = NULL;
@@ -51,8 +51,8 @@ ParticleEditor::ParticleEditor() : Scene("Editor")
 }
 ParticleEditor::~ParticleEditor()
 {
-    Input::UnRegisterEventObserver(this);
-    Input::UnRegisterMouseObserver(this);
+    Locator::getInput().UnRegisterEventObserver(this);
+    Locator::getInput().UnRegisterMouseObserver(this);
 
     Locator::getParticles().RemoveSystem(m_particleSys);
 }
@@ -71,8 +71,8 @@ void ParticleEditor::Pause( void )
     {
         Scene::Pause();
         RemoveEditor();
-        Input::UnRegisterEventObserver(this);
-        Input::UnRegisterMouseObserver(this);
+        Locator::getInput().UnRegisterEventObserver(this);
+        Locator::getInput().UnRegisterMouseObserver(this);
     }
 
 }
@@ -82,8 +82,8 @@ void ParticleEditor::Resume( void )
     {
         Scene::Resume();
         ShowEditor();
-        Input::RegisterEventObserver(this);
-        Input::RegisterMouseObserver(this);
+        Locator::getInput().RegisterEventObserver(this);
+        Locator::getInput().RegisterMouseObserver(this);
     }
 }
 void ParticleEditor::Release()

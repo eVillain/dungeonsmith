@@ -173,8 +173,8 @@ namespace GUI
     void TextInput::StartTextInput()
     {
         if ( _textInputActive ) return;
-        Input::StartTextInput(this);
-        Input::RegisterEventObserver(this);
+        Locator::getInput().StartTextInput(this);
+        Locator::getInput().RegisterEventObserver(this);
 
         _textInputActive = true;
         if ( _inputText == _defaultText )
@@ -187,8 +187,8 @@ namespace GUI
     {
         if ( !_textInputActive ) return;
         _textInputActive = false;
-        Input::StopTextInput(this);
-        Input::UnRegisterEventObserver(this);
+        Locator::getInput().StopTextInput(this);
+        Locator::getInput().UnRegisterEventObserver(this);
     }
     
     void TextInput::ClearText()

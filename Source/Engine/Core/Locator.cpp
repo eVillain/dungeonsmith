@@ -15,6 +15,7 @@
 #include "Manager.h"
 #include "Physics.h"
 #include "Particles.h"
+#include "Input.h"
 
 NullRenderer Locator::_nullRenderService;
 NullText Locator::_nullTextService;
@@ -23,6 +24,7 @@ NullText Locator::_nullTextService;
 IRenderer* Locator::_renderService = &_nullRenderService;
 IText* Locator::_textService = &_nullTextService;
 HyperVisor* Locator::_hv = nullptr;
+Input Locator::_input;
 
 ThreadPool* Locator::_threadPool = nullptr;
 GUI::Manager Locator::_guiManager;

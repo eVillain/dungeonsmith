@@ -33,7 +33,7 @@ void MainMenu::Initialize()
 {
     Scene::Initialize();
     
-    Input::RegisterEventObserver(this);
+    Locator::getInput().RegisterEventObserver(this);
     
     CreateButtons();
 }
@@ -56,10 +56,11 @@ void MainMenu::Pause()
     if ( !IsPaused() )
     {
         Scene::Pause();
+        
+        Locator::getInput().UnRegisterEventObserver(this);
+        
+        RemoveButtons();
     }
-    Input::UnRegisterEventObserver(this);
-    
-    RemoveButtons();
 }
 
 void MainMenu::Resume()
@@ -67,10 +68,11 @@ void MainMenu::Resume()
     if ( IsPaused() )
     {
         Scene::Resume();
+        
+        Locator::getInput().RegisterEventObserver(this);
+        
+        CreateButtons();
     }
-    Input::RegisterEventObserver(this);
-    
-    CreateButtons();
 }
 
 void MainMenu::Update( double deltaTime )

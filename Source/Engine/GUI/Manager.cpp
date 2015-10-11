@@ -8,19 +8,22 @@
 
 #include "Manager.h"
 #include "Widget.h"
+#include "Locator.h"
+
 namespace GUI
 {
     Manager::Manager()
     {
-        Input::RegisterEventObserver(this);
-        Input::RegisterMouseObserver(this);
+        printf("GUI Manager constructor...\n");
+        Locator::getInput().RegisterEventObserver(this);
+        Locator::getInput().RegisterMouseObserver(this);
         _mouseDrag = false;
     }
     
     Manager::~Manager()
     {
-        Input::UnRegisterEventObserver(this);
-        Input::UnRegisterMouseObserver(this);
+        Locator::getInput().UnRegisterEventObserver(this);
+        Locator::getInput().UnRegisterMouseObserver(this);
     }
     
     void Manager::Add(Widget *widget)

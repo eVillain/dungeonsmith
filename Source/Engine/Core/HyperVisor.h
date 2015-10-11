@@ -22,7 +22,9 @@ public:
     void Terminate();
     
     int Run();
-    void Stop(const int errorCode=0); // TODO: Add reason for stop as parameter for error handling
+    
+    void Stop(const int errorCode=0);
+    
     bool OnEvent( const std::string& theEvent, const float& amount );
 
 private:

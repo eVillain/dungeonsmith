@@ -58,8 +58,8 @@ void Editor::Initialize()
 {
     Scene::Initialize();
     
-    Input::RegisterEventObserver(this);
-    Input::RegisterMouseObserver(this);
+    Locator::getInput().RegisterEventObserver(this);
+    Locator::getInput().RegisterMouseObserver(this);
     
     AddGUI();
 }
@@ -83,8 +83,8 @@ void Editor::Pause()
     {
         Scene::Pause();
     }
-    Input::UnRegisterEventObserver(this);
-    Input::UnRegisterMouseObserver(this);
+    Locator::getInput().UnRegisterEventObserver(this);
+    Locator::getInput().UnRegisterMouseObserver(this);
     RemoveGUI();
 }
 
@@ -94,8 +94,8 @@ void Editor::Resume()
     {
         Scene::Resume();
     }
-    Input::RegisterEventObserver(this);
-    Input::RegisterMouseObserver(this);
+    Locator::getInput().RegisterEventObserver(this);
+    Locator::getInput().RegisterMouseObserver(this);
     
     AddGUI();
 }

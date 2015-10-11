@@ -29,13 +29,18 @@ namespace GUI
         virtual void SetSize(const glm::ivec2& size);
         virtual void SetDepth(const int depth);
         
+        
+        
+
+        // Active is true when the widget is 'on' and interactable (default = true)
+        virtual void SetActive( const bool active ) { _active = active;} ;
+        
+        // Visible is true when the widget should be drawn, otherwise only update
+        virtual void SetVisible( const bool visible ) { _visible = visible; };
+        
         /* Override these for different cursor events */
         // Focus is true when the cursor is over a widget
         virtual void SetFocus( const bool focus) { _focus = focus; };
-        // Active is true when the widget is 'on' and interactable (default = true)
-        virtual void SetActive( const bool active ) { _active = active;} ;
-        // Visible is true when the widget should be drawn, otherwise only update
-        virtual void SetVisible( const bool visible ) { _visible = visible; };
         // When clicked/pressed
         virtual void OnInteract( const bool interact, const glm::ivec2& coord ) { };
         // When dragged with cursor, most widgets won't support this
@@ -43,8 +48,10 @@ namespace GUI
         // Cursor over widget test - returns true if point is inside widget
         virtual const bool Contains( const glm::ivec2& coord ) const;
         
+        
         // Override this for drawing different widgets
         virtual const void Draw() const;
+        
         // Update - Unused for most widgets but some will need it
         virtual const void Update()
         { /* printf("[Widget] update called, override me!\n"); */ };

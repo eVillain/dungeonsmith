@@ -58,9 +58,9 @@ _debugEnabled(false)
     info.m_numIterations = 2;
     info.m_solverMode = (info.m_solverMode|SOLVER_ENABLE_FRICTION_DIRECTION_CACHING);
 
-    CommandProcessor::AddCommand("debugphysics", Command<>([&](){
-        _debugEnabled = !_debugEnabled;
-    }));
+//    CommandProcessor::AddCommand("debugphysics", Command<>([&](){
+//        _debugEnabled = !_debugEnabled;
+//    }));
 }
 
 Physics::~Physics() {

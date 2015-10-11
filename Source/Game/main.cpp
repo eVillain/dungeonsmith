@@ -24,13 +24,14 @@ int main(int argc, char * arg[])
     
     // Test game scene, this should be selected some other way or we should have
     // a default main menu / intro scene to add here
-    Locator::getSceneManager().AddActiveScene( new MainMenu());
+    MainMenu* mainMenuScene = new MainMenu();
+    Locator::getSceneManager().AddActiveScene(mainMenuScene);
 
     // Here we pass control over to the HyperVisor to execute the main loop.
     // When finished the engine will return a termination code.
     // Abnormal termination is signalled by a non-zero return.
     int errorCode = hv.Run();
-    
+
     // Clean up
     hv.Terminate();
     

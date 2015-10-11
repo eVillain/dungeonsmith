@@ -20,6 +20,7 @@ class Camera;
 class ThreadPool;
 class Physics;
 class Particles;
+class Input;
 
 namespace GUI {
     class Manager;
@@ -37,6 +38,7 @@ public:
     static ThreadPool& getThreadPool() { return *_threadPool; };
     static Physics& getPhysics() { return _physics; };
     static Particles& getParticles() { return _particles; };
+    static Input& getInput() { return _input; };
     // Setters for configuring services
     static void provideRenderer(IRenderer* service)
     {
@@ -83,6 +85,8 @@ private:
     static Particles _particles;
     // Scene manager, should always be available
     static SceneManager _sceneManager;
+    // Input manager
+    static Input _input;
 };
 
 #endif /* defined(NGN_LOCATOR_H) */

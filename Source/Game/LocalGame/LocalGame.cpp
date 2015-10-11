@@ -33,7 +33,7 @@ void LocalGame::Initialize()
     Scene::Initialize();
     world.Initialize();
     
-    Input::RegisterEventObserver(this);
+    Locator::getInput().RegisterEventObserver(this);
     
     Locator::getRenderer().SetCamera(&world.GetCamera());
     _labelFPS = nullptr;
@@ -57,10 +57,11 @@ void LocalGame::Pause()
     if ( !IsPaused() )
     {
         Scene::Pause();
+        
+        Locator::getInput().UnRegisterEventObserver(this);
+        delete _labelFPS;
+        _labelFPS = nullptr;
     }
-    Input::UnRegisterEventObserver(this);
-    delete _labelFPS;
-    _labelFPS = nullptr;
 }
 
 void LocalGame::Resume()
@@ -68,8 +69,9 @@ void LocalGame::Resume()
     if ( IsPaused() )
     {
         Scene::Resume();
+        
+        Locator::getInput().RegisterEventObserver(this);
     }
-    Input::RegisterEventObserver(this);
 }
 
 void LocalGame::Update( double deltaTime )

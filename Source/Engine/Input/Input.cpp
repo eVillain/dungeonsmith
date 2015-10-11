@@ -14,62 +14,70 @@
 #include "RangeReverseAdapter.h"
 #include "Renderer.h"
 
-std::map<std::string, std::string> Input::InputBindings;
-std::vector<InputEventListener*> Input::eventObserverList;
-std::vector<MouseEventListener*> Input::mouseObserverList;
-TextInputEventListener* Input::textInputObserver = nullptr;
-std::string Input::_inputText = "";
+Input::Input() :
+_inputText(""),
+_textInputListener(nullptr)
+{     printf("[Input] %p Constructor...\n", this);
+}
 
-void Input::Initialize() {
+void Input::Initialize()
+{    
+    printf("[Input] %p Initializing...\n", this);
     // Add our binding mechanic to our console commands
-    CommandProcessor::AddCommand("bind", Command<std::string,std::string>(Input::Bind));
+    CommandProcessor::AddCommand("bind",
+                                 Command<const std::string&,const std::string&>([=](const std::string& input,const std::string& event)
+    {
+        this->Bind(input, event);
+    } ));
 
     SetDefaultBindings();
 }
 
 void Input::Terminate() {
+    printf("[Input] %p Terminating...\n", this);
     // Clear up all bindings
-    InputBindings.clear();
-    eventObserverList.clear();
-    textInputObserver = nullptr;
+    _inputBindings.clear();
+    _inputEventListeners.clear();
+    _textInputListener = nullptr;
 }
 
 void Input::RegisterEventObserver( InputEventListener* observer ) {
-    eventObserverList.push_back( observer );
+    _inputEventListeners.push_back( observer );
+    printf("[Input] %p registered InputEventListener (%lu in stack)\n",this, _inputEventListeners.size());
 }
 
 void Input::UnRegisterEventObserver( InputEventListener* observer ) {
-    // Try to find observer in list
-    bool found = false;
-    for ( unsigned int i=0; i < eventObserverList.size(); i++ ) {
-        if ( eventObserverList[i] == observer ) {
-            found = true;
-            eventObserverList.erase( eventObserverList.begin() + i );
-            break;
-        }
-    }
-    if (!found) {
-        printf("[Input] tried to unregister non-existent EventObserver functor\n");
+    std::vector<InputEventListener*>::iterator it = std::find(_inputEventListeners.begin(), _inputEventListeners.end(), observer);
+    if ( it != _inputEventListeners.end() )
+    {
+        printf("[Input] %p unregistered InputEventListener (%lu in stack)\n", this, _inputEventListeners.size());
+        _inputEventListeners.erase(it);
+    } else {
+        printf("[Input] %p tried to unregister non-existent InputEventListener (%lu in stack)\n", this, _inputEventListeners.size());
     }
 }
 
 void Input::RegisterMouseObserver( MouseEventListener* observer ) {
-    mouseObserverList.push_back( observer );
+    _mouseEventListeners.push_back( observer );
+    printf("[Input] %p registered MouseEventListener (%lu in stack)\n", this, _mouseEventListeners.size());
 }
 
 
 void Input::UnRegisterMouseObserver( MouseEventListener* observer ) {
-    std::vector<MouseEventListener*>::iterator it = std::find(mouseObserverList.begin(), mouseObserverList.end(), observer);
-    if ( it != mouseObserverList.end() )
+    std::vector<MouseEventListener*>::iterator it = std::find(_mouseEventListeners.begin(), _mouseEventListeners.end(), observer);
+    if ( it != _mouseEventListeners.end() )
     {
-        mouseObserverList.erase(it);
+        printf("[Input] %p unregistered MouseEventListener (%lu in stack)\n", this, _mouseEventListeners.size());
+        _mouseEventListeners.erase(it);
+    } else {
+        printf("[Input] %p tried to unregister non-existent MouseEventListener (%lu in stack)\n", this, _mouseEventListeners.size());
     }
 }
 
 
 void Input::Bind( std::string input, std::string event ) {
     printf("[Input] binding %s to %s\n", input.c_str(), event.c_str());
-    InputBindings[input] = event;
+    _inputBindings[input] = event;
 }
 
 /* Print modifier info */
@@ -161,8 +169,9 @@ void Input::ProcessInput() {
         }
         else if (event.type == SDL_MOUSEMOTION)
         {
+            printf("Mouse listeners: %lu \n", _mouseEventListeners.size());
             glm::ivec2 adjustedCoords = ConvertSDLCoordToScreen(event.motion.x, event.motion.y);
-            for ( MouseEventListener* listener : mouseObserverList )
+            for ( MouseEventListener* listener : _mouseEventListeners )
             {
                 bool swallowed = (*listener).OnMouse( adjustedCoords );
                 if ( swallowed ) // Event was swallowed, don't propagate
@@ -193,24 +202,24 @@ void Input::ProcessInput() {
         }
         
         // We have to check for input events first, blocking the regular events
-        if ( textInputObserver && ProcessTextInput(event))
+        if ( _textInputListener && ProcessTextInput(event))
         {
             // Call the registered observer
-            (*textInputObserver).OnTextInput(_inputText);
+            (*_textInputListener).OnTextInput(_inputText);
         }
         else if ( input.length() )   // Regular events
         {
 //          printf("Input: %s\n", input.c_str());
-            if ( InputBindings.find(input) != InputBindings.end() )
+            if ( _inputBindings.find(input) != _inputBindings.end() )
             {
-                if (textInputObserver && input != "Escape" && input != "Return")
+                if (_textInputListener && input != "Escape" && input != "Return")
                 {
                     return;
                 }
-//           printf("Bound to: %s\n", InputBindings[input].c_str());
-                for ( InputEventListener* listener : eventObserverList )
+//           printf("Bound to: %s\n", _inputBindings[input].c_str());
+                for ( InputEventListener* listener : _inputEventListeners )
                 {
-                    bool swallowed = (*listener).OnEvent( InputBindings[input], amount );
+                    bool swallowed = (*listener).OnEvent( _inputBindings[input], amount );
                     if ( swallowed )
                     { break; }  // Event was swallowed, don't propagate
                 }
@@ -297,7 +306,7 @@ void Input::StartTextInput( TextInputEventListener* observer )
 {
     //Enable text input
     SDL_StartTextInput();
-    textInputObserver = observer;
+    _textInputListener = observer;
     _inputText.clear();
 }
 
@@ -309,7 +318,7 @@ void Input::UpdateTextInput()
 
 void Input::StopTextInput( TextInputEventListener* observer )
 {
-    textInputObserver = nullptr;
+    _textInputListener = nullptr;
     // Disable text input
     SDL_StopTextInput();
 }

@@ -38,7 +38,7 @@ void Planetoid::Initialize()
 {
     Scene::Initialize();
     
-    Input::RegisterEventObserver(this);
+    Locator::getInput().RegisterEventObserver(this);
     
     Locator::getRenderer().SetCamera(&_camera);
     _camera.position.z = 150;
@@ -76,7 +76,7 @@ void Planetoid::Pause()
     {
         Scene::Pause();
     }
-    Input::UnRegisterEventObserver(this);
+    Locator::getInput().UnRegisterEventObserver(this);
     delete _labelFPS;
     _labelFPS = nullptr;
 }
@@ -87,7 +87,7 @@ void Planetoid::Resume()
     {
         Scene::Resume();
     }
-    Input::RegisterEventObserver(this);
+    Locator::getInput().RegisterEventObserver(this);
 }
 
 void Planetoid::Update( double deltaTime )

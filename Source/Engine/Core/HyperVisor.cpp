@@ -24,7 +24,8 @@
 
 HyperVisor::HyperVisor() :
 quit(false),
-errorCode(0)
+errorCode(0),
+initialized(false)
 {
 }
 
@@ -45,15 +46,17 @@ void HyperVisor::Initialize(int argc, char * arg[])
         CommandProcessor::AddCommand("quit", Command<int>([=](int reason){ Stop(reason); } ));
         // TODO: Figure out why the below does not compile
 //        CommandProcessor::AddCommand("quit", InstanceCommand<HyperVisor, int>(&HyperVisor::Stop, this));
+        
+        Console::Initialize();
 
         const int hwThreads = std::thread::hardware_concurrency();
 		const int numThreads = (2*hwThreads)-1;
 
         ThreadPool* threadPool = new ThreadPool(numThreads);
         
-        Input::Initialize();
-        Input::RegisterEventObserver(this);
-        Console::Initialize();
+        
+        Locator::getInput().Initialize();
+        Locator::getInput().RegisterEventObserver(this);
         
         // Create and initialize all of our engine subsystems
         Renderer* renderer = new Renderer();
@@ -84,8 +87,9 @@ void HyperVisor::Terminate()
     // Clean up
     if ( initialized )
     {
-        Input::UnRegisterEventObserver(this);
-
+//        Locator::getInput().UnRegisterEventObserver(this);
+//        Locator::getInput().Terminate();
+        
         CommandProcessor::Terminate();
         
         Console::Terminate();
@@ -120,7 +124,7 @@ int HyperVisor::Run()
         timeAtLastFrameStart = timeAtThisFrameStart;
         
         // --- Update stuff --- //
-        Input::ProcessInput();
+        Locator::getInput().ProcessInput();
         CommandProcessor::Update(deltaTime);
         
         Locator::getGUI().Update(deltaTime);

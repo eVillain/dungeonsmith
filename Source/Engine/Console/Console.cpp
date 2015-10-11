@@ -275,7 +275,7 @@ void Console::Refresh() {
     {
         int msgCount = (int)m_textLines.size();
         int winWidth = Locator::getRenderer().GetWindowSize().x;
-        double labelPosX = -winWidth / 2 + 8;    // left edge of screen
+        double labelPosX = -winWidth / 2 + 80;    // left edge of screen
         double labelPosY = CONSOLE_TEXT_HEIGHT+(msgCount + 2)*CONSOLE_FONT_SIZE;
         // Move existing labels up
         for (int i = 0; i < msgCount; i++) {
@@ -303,9 +303,9 @@ void Console::Show() {
     
     int winWidth = Locator::getRenderer().GetWindowSize().x;
     textWidget = new GUI::TextInput(glm::ivec2(0, 1),
-                                       glm::ivec2(winWidth-1, CONSOLE_TEXT_HEIGHT),
-                                       CONSOLE_TEXT_DEPTH,
-                                       consoleInfo);
+                                    glm::ivec2(winWidth-1, CONSOLE_TEXT_HEIGHT),
+                                    CONSOLE_TEXT_DEPTH,
+                                    consoleInfo);
     
     GUI::TextInputBehaviorLambda* behavior = new GUI::TextInputBehaviorLambda(
         [](const std::string& inputText)
